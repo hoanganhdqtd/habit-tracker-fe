@@ -141,11 +141,11 @@ export const editHabit = createAsyncThunk(
 
 export const deleteHabit = createAsyncThunk(
   "habits/deleteHabit",
-  async ({ id }, { rejectWithValue, dispatch }) => {
+  async ({ habitId }, { rejectWithValue, dispatch }) => {
     try {
-      let url = `/habits/${id}`;
+      let url = `/habits/${habitId}`;
       await apiService.delete(url);
-      dispatch(getHabitById(id));
+      dispatch(getHabitById(habitId));
       return;
     } catch (error) {
       return rejectWithValue(error);

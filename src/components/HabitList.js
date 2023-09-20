@@ -16,7 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { changePage } from "../features/habit/habitSlice";
 import LoadingScreen from "./LoadingScreen";
 import EditHabitForm from "./EditHabitForm";
-import DeleteConfirm from "./DeleteConfirm";
+import DeleteHabitConfirm from "./DeleteHabitConfirm";
+
+import { deleteHabit } from "../features/habit/habitSlice";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -28,16 +30,21 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function HabitList() {
-  const [isEditForm, setIsEditForm] = useState(false);
-  const [isDeleteConfirm, setIsDeleteConfirm] = useState(false);
+  const [isHabitEdit, setIsHabitEdit] = useState(false);
+  const [isHabitDelete, setIsHabitDelete] = useState(false);
 
-  const { currentPageHabits, habitById, isLoading, search } = useSelector(
+  const dispatch = useDispatch();
+  const handleHabitDelete = async (habitId) => {
+    setIsHabitDelete(false);
+    dispatch(deleteHabit({ habitId }));
+  };
+
+  const { currentPageHabits, habitById, isLoading, search, date } = useSelector(
     (state) => state.habit
   );
 
   const habits = currentPageHabits.map((habitId) => habitById[habitId]);
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleChangePage = () => {
@@ -47,7 +54,7 @@ export default function HabitList() {
   return isLoading ? (
     <LoadingScreen />
   ) : !habits.length ? (
-    search ? (
+    search || date ? (
       <h1>No habit found.</h1>
     ) : (
       <h1>There's no habit yet</h1>
@@ -79,17 +86,21 @@ export default function HabitList() {
               variant="contained"
               onClick={() => {
                 console.log("Edit form");
-                setIsEditForm(true);
+                setIsHabitEdit(true);
               }}
             >
               Edit
             </Button>
-            <Button
-              variant="contained"
-              onClick={() => setIsDeleteConfirm(true)}
-            >
+            <Button variant="contained" onClick={() => setIsHabitDelete(true)}>
               Delete
             </Button>
+            {isHabitDelete && (
+              <DeleteHabitConfirm
+                handleHabitDelete={handleHabitDelete}
+                setIsHabitDelete={setIsHabitDelete}
+                habitId={habit._id}
+              />
+            )}
           </Stack>
         </Item>
       ))}

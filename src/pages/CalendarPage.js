@@ -1,9 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 import { eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
+
+import HabitList from "../components/HabitList";
+import { getHabits } from "../features/habit/habitSlice";
 
 const weekday = [
   "Sunday",
@@ -22,18 +27,16 @@ const getWeekday = (date) => {
 const getWeekFromDate = (date) => {
   // const firstDay = date.getDate() - date.getDay();
   // const lastDay = firstDay + 6;
-  let newDate;
-  if (!date) {
-    newDate = newDate(date);
-  } else {
-    newDate = new Date();
-  }
+
+  const newDate = date ? new Date(date) : new Date();
 
   // let dateOfWeekday = startOfWeek(date); // starts with Sunday
   // const firstDay = startOfWeek(date, { weekStartsOn: 1 }); // Monday
   // const lastDay = endOfWeek(date); // Saturday
 
   let dateOfWeekday = startOfWeek(newDate);
+
+  console.log("dateOfWeekday:", dateOfWeekday);
 
   const weekDate = {};
 
@@ -46,14 +49,34 @@ const getWeekFromDate = (date) => {
 };
 
 function CalendarPage() {
-  const [dateValue, setDateValue] = useState(null);
-  const newDate = new Date();
-  const weekDate = getWeekFromDate(newDate);
+  const [dateValue, setDateValue] = useState(dayjs(new Date()));
 
+  console.log("instanceof dateValue:", dateValue instanceof Date);
+  console.log("dateValue:", dateValue);
+
+  let weekDate = getWeekFromDate(dateValue);
   console.log("weekDate:", weekDate);
 
-  console.log(weekDate["Tuesday"].toString());
-  console.log("newDate:", newDate.toString());
+  const today = getWeekday(new Date());
+  // const weekdayToPick = getWeekday(dateValue);
+
+  console.log("today:", today);
+  // console.log("weekdayToPick:", weekdayToPick);
+
+  const dispatch = useDispatch();
+  const handleDateChange = (newDateValue) => {
+    console.log("newDateValue:", newDateValue);
+    setDateValue(newDateValue);
+    weekDate = getWeekFromDate(dateValue);
+    // console.log("weekDate:", weekDate);
+    dispatch(getHabits({ date: newDateValue }));
+  };
+  useEffect(() => {
+    dispatch(getHabits({ date: dateValue }));
+    // dispatch(getTags());
+  }, [dateValue, dispatch]);
+  console.log("dateValue instanceof Date:", dateValue instanceof Date);
+  console.log("dateValue:", dateValue);
 
   return (
     <div>
@@ -61,24 +84,44 @@ function CalendarPage() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label="Pick date"
-          value={dateValue}
-          onChange={(newDateValue) => setDateValue(newDateValue)}
+          value={dayjs(dateValue)}
+          // onChange={(newDateValue) => {
+          //   setDateValue(newDateValue);
+          //   weekDate = getWeekFromDate(dateValue);
+          //   dispatch(getHabits({ date: newDateValue }));
+          // }}
+          onChange={handleDateChange}
         />
       </LocalizationProvider>
       <div>
-        {weekday.map((day) => (
-          <div
-            key={day}
-            style={
-              weekDate[day].toString().slice(0, 15) ===
-              newDate.toString().slice(0, 15)
-                ? { color: "red" }
-                : {}
-            }
-          >
-            {`${weekDate[day]}`.slice(0, 15)}
-          </div>
-        ))}
+        {weekday.map((day) => {
+          console.log("", dayjs(weekDate[day]).toString().slice(0, 15));
+          console.log("", dayjs(dateValue).toString().slice(0, 15));
+          console.log(
+            dayjs(weekDate[day]).toString().slice(0, 15) ===
+              dayjs(dateValue).toString().slice(0, 15)
+          );
+          return (
+            <div
+              key={day}
+              style={
+                dayjs(weekDate[day]).toString().slice(0, 15) ===
+                dayjs(dateValue).toString().slice(0, 15)
+                  ? { color: "red", cursor: "pointer" }
+                  : { cursor: "pointer" }
+              }
+              onClick={() => {
+                // setDateValue(dayjs(weekDate[day]));
+                setDateValue(weekDate[day]);
+                dispatch(getHabits({ date: weekDate[day] }));
+              }}
+            >
+              {/* {dayjs(weekDate[day]).toString()} {dayjs(dateValue).toString()}{" "} */}
+              {`${weekDate[day]}`.slice(0, 15)}
+            </div>
+          );
+        })}
+        <HabitList />
       </div>
     </div>
   );

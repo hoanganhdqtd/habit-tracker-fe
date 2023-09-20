@@ -16,7 +16,7 @@ import {
   FDatePicker,
   FTimePicker,
 } from "./form";
-import { addHabit } from "../features/habit/habitSlice";
+import { addHabit, getHabits } from "../features/habit/habitSlice";
 import { getTags } from "../features/tag/tagSlice";
 
 const weekdays = [
@@ -75,11 +75,12 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, tags }) {
     console.log("duration:", duration);
     // console.log("time:", time);
     dispatch(
-      addHabit({ name, goal, startDate: dateValue, duration, time: timeValue })
+      addHabit({ name, goal, startDate: dateValue, time: timeValue, duration })
     );
 
     handleClose();
     navigate("/");
+    dispatch(getHabits({ date: dateValue }));
   };
 
   const handleClose = () => setAddNewHabit(false);
@@ -133,16 +134,8 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, tags }) {
                 }}
               />
 
-              <FDatePicker
-                name="startDate"
-                dateValue={dateValue}
-                setDateValue={setDateValue}
-              />
-              <FTimePicker
-                name="time"
-                timeValue={timeValue}
-                setTimeValue={setTimeValue}
-              />
+              <FDatePicker dateValue={dateValue} setDateValue={setDateValue} />
+              <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} />
 
               <FTextField
                 name="duration"

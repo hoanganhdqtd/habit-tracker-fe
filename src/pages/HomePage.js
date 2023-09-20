@@ -49,7 +49,7 @@ function HomePage() {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getHabits({ page, search, dateValue }));
+    dispatch(getHabits({ page, search, date: dateValue }));
     // dispatch(getTags());
   }, [page, search, dateValue, dispatch]);
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -9,9 +8,10 @@ export default function FDatePicker({ dateValue, setDateValue }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="Pick date to start"
-        value={dateValue}
+        value={dayjs(dateValue)}
+        // value={dateValue}
         onChange={(newDateValue) => {
-          console.log("newDateValue:", newDateValue);
+          // setDateValue(dayjs(newDateValue));
           setDateValue(newDateValue);
         }}
       />

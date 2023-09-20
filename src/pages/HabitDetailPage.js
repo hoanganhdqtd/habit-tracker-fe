@@ -32,6 +32,7 @@ function HabitDetailPage() {
       <div>Name: {habitDetail.name}</div>
       <div>Goal: {habitDetail.goal}</div>
       <div>Start date: {habitDetail.startDate}</div>
+      <div>Time: {habitDetail.time}</div>
       <div>Duration: {habitDetail.duration}</div>
       <div>
         <button>Edit</button>

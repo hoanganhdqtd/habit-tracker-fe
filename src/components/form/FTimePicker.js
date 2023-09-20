@@ -1,4 +1,3 @@
-import { useState } from "react";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -9,7 +8,8 @@ export default function FTimePicker({ timeValue, setTimeValue }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <TimePicker
         label="Pick time"
-        value={timeValue}
+        value={dayjs(timeValue)}
+        // value={timeValue}
         onChange={(newTimeValue) => setTimeValue(newTimeValue)}
       />
     </LocalizationProvider>
