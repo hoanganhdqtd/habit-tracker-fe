@@ -1,42 +1,98 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { getHabitById } from "../features/habit/habitSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { getHabitById, editHabit } from "../features/habit/habitSlice";
+
+import AddReminderForm from "../components/AddReminderForm";
+import EditHabitForm from "../components/EditHabitForm";
+
+const weekdaysByIndex = {
+  0: "Sunday",
+  1: "Monday",
+  2: "Tuesday",
+  3: "Wednesday",
+  4: "Thursday",
+  5: "Friday",
+  6: "Saturday",
+};
+
+const getWeekdays = (weekdays) =>
+  weekdays.map((weekday) => weekdaysByIndex[weekday]).join(", ");
 
 function HabitDetailPage() {
+  const [addNewReminder, setAddNewReminder] = useState(false);
+  const [isHabitEdit, setIsHabitEdit] = useState(false);
   const { habitId } = useParams();
   const dispatch = useDispatch();
-
-  // const { name, goal, startDate, duration } = useSelector(
-  //   (state) => state.habit.habit
-  // );
-
-  const { habit, habitDetail } = useSelector((state) => state.habit);
-  // const { name, goal, startDate, duration } = habit;
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getHabitById(habitId));
   }, [habitId, dispatch]);
 
+  console.log("habitDetail habitId:", habitId);
+
+  const { habitDetail } = useSelector((state) => state.habit);
+  console.log("habitDetail:", habitDetail);
+  const { name, goal, startDate, duration, onWeekdays } = habitDetail;
+
+  const handleHabitEdit = async ({
+    habitId,
+    name,
+    goal,
+    startDate,
+    duration,
+    onWeekdays,
+  }) => {
+    console.log("handleHabitEdit:");
+    console.log(
+      "habitId, name, goal, startDate, duration, onWeekdays:",
+      habitId,
+      name,
+      goal,
+      startDate,
+      duration,
+      onWeekdays
+    );
+    setIsHabitEdit(false);
+    dispatch(
+      editHabit({ habitId, name, goal, startDate, duration, onWeekdays })
+    );
+  };
+
   return (
     <div>
       Habit Detail
-      {/* <div>Name: {habit.name}</div>
-      <div>Goal: {habit.goal}</div>
-      <div>Start date: {habit.startDate}</div>
-      <div>Duration: {habit.duration}</div> */}
-      {/* <div>Name: {name}</div>
+      <div>Name: {name}</div>
       <div>Goal: {goal}</div>
-      <div>Start date: {startDate}</div>
-      <div>Duration: {duration}</div> */}
-      <div>Name: {habitDetail.name}</div>
-      <div>Goal: {habitDetail.goal}</div>
-      <div>Start date: {habitDetail.startDate}</div>
-      <div>Time: {habitDetail.time}</div>
-      <div>Duration: {habitDetail.duration}</div>
+      <div>Start date: {new Date(startDate).toDateString()}</div>
+      <div>Duration: {duration}</div>
+      <div>On weekdays: {getWeekdays(onWeekdays)}</div>
+      {/* <div>Name: </div>
+      <div>Goal: </div>
+      <div>Start date: </div>
+      <div>Duration: </div>
+      <div>On weekdays: </div> */}
+      <div>Reminders:</div>
       <div>
-        <button>Edit</button>
-        <button>Cancel</button>
+        <button onClick={() => setIsHabitEdit(true)}>Edit</button>
+        {isHabitEdit && (
+          <EditHabitForm
+            isHabitEdit={isHabitEdit}
+            setIsHabitEdit={setIsHabitEdit}
+            habitId={habitId}
+            handleHabitEdit={handleHabitEdit}
+          />
+        )}
+        <button onClick={() => setAddNewReminder(true)}>Add reminders</button>
+        {addNewReminder && (
+          <AddReminderForm
+            addNewReminder={addNewReminder}
+            setAddNewReminder={setAddNewReminder}
+            habitId={habitId}
+          />
+        )}
+        <button onClick={() => navigate(-1)}>Cancel</button>
       </div>
     </div>
   );

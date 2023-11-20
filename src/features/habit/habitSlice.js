@@ -6,18 +6,23 @@ import { HABITS_PER_PAGE } from "../../app/config";
 const initialState = {
   isLoading: false,
   error: null,
-  habitById: {},
-  habitDetail: {},
+  habitsById: {},
+  habitDetail: {
+    onWeekdays: [],
+    reminders: [],
+    progress: [],
+  },
   currentPageHabits: [],
   totalHabits: 0,
   search: "",
   page: 1,
   totalPages: 0,
+  remindersByHabitId: {},
 };
 
 export const getHabits = createAsyncThunk(
   "habits/getHabits",
-  async ({ page, search, date }, { rejectWithValue }) => {
+  async ({ page, search, date }, { rejectWithValue, getState }) => {
     try {
       let url = `/habits?page=${page}&limit=${HABITS_PER_PAGE}`;
       if (search) url += `&search=${search}`;
@@ -28,6 +33,7 @@ export const getHabits = createAsyncThunk(
       console.log("date:", date);
       const response = await apiService.get(url);
       console.log("response:", response);
+      // console.log("getState:", getState());
 
       return response.data;
     } catch (error) {
@@ -60,7 +66,7 @@ export const getHabitById = createAsyncThunk(
       let url = `/habits/${id}`;
       const response = await apiService.get(url);
 
-      // console.log("response:", response);
+      console.log("getHabitById response:", response);
 
       if (!response.data) return rejectWithValue({ message: "No data" });
       return response.data;
@@ -87,7 +93,7 @@ export const addHabit = createAsyncThunk(
   ) => {
     try {
       let url = "/habits";
-      await apiService.post(url, {
+      const response = await apiService.post(url, {
         name,
         description,
         goal,
@@ -97,7 +103,8 @@ export const addHabit = createAsyncThunk(
         onWeekdays,
         reminders,
       });
-      return;
+      // console.log("response.data", response.data);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -121,8 +128,9 @@ export const editHabit = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
+      console.log("name:", name);
       let url = `/habits/${habitId}`;
-      await apiService.put(url, {
+      const response = await apiService.put(url, {
         name,
         description,
         goal,
@@ -132,7 +140,9 @@ export const editHabit = createAsyncThunk(
         onWeekdays,
         reminders,
       });
-      return;
+      // return;
+      console.log("response.data:", response.data);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -146,7 +156,43 @@ export const deleteHabit = createAsyncThunk(
       let url = `/habits/${habitId}`;
       await apiService.delete(url);
       dispatch(getHabitById(habitId));
-      return;
+      return habitId;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getHabitReminders = createAsyncThunk(
+  "habits/getHabitReminders",
+  async ({ habitId }, { rejectWithValue }) => {
+    try {
+      let url = `/reminders/habit/${habitId}`;
+      const response = await apiService.get(url);
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const addHabitReminder = createAsyncThunk(
+  "habits/addHabitReminder",
+  async (
+    { habitId, reminderFrequency, onWeekdays, time, status, startDate },
+    { rejectWithValue, dispatch }
+  ) => {
+    try {
+      const response = await apiService.post(`/reminders/habit/${habitId}`, {
+        reminderFrequency,
+        onWeekdays,
+        startDate,
+        time,
+        status,
+      });
+      console.log("response.data:", response.data);
+      return response.data;
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -174,26 +220,35 @@ export const habitSlice = createSlice({
   extraReducers: {
     [getHabits.pending]: (state, action) => {
       state.isLoading = true;
-      state.errorMessage = "";
+      state.error = null;
     },
 
     [getHabitById.pending]: (state) => {
       state.isLoading = true;
-      state.errorMessage = "";
+      state.error = null;
     },
 
     [addHabit.pending]: (state) => {
       state.isLoading = true;
-      state.errorMessage = "";
+      state.error = null;
     },
     [deleteHabit.pending]: (state) => {
       state.isLoading = true;
-      state.errorMessage = "";
+      state.error = null;
     },
     [editHabit.pending]: (state) => {
       state.isLoading = true;
-      state.errorMessage = "";
+      state.error = null;
     },
+    [addHabitReminder.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [getHabitReminders.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+
     [getHabits.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.totalHabits = action.payload.count;
@@ -210,7 +265,7 @@ export const habitSlice = createSlice({
       // }
       state.currentPageHabits = [];
       action.payload.habits.forEach((habit) => {
-        state.habitById[habit._id] = habit;
+        state.habitsById[habit._id] = habit;
         if (!state.currentPageHabits.includes(habit._id))
           state.currentPageHabits.push(habit._id);
       });
@@ -232,7 +287,7 @@ export const habitSlice = createSlice({
 
       state.currentPageHabits = [];
       action.payload.habits.forEach((habit) => {
-        state.habitById[habit._id] = habit;
+        state.habitsById[habit._id] = habit;
         if (!state.currentPageHabits.includes(habit._id))
           state.currentPageHabits.push(habit._id);
       });
@@ -240,66 +295,130 @@ export const habitSlice = createSlice({
     [getHabitById.fulfilled]: (state, action) => {
       state.isLoading = false;
       // state.habit = action.payload;
+      console.log("getHabitById action.payload:", action.payload);
       state.habitDetail = action.payload;
     },
-    [addHabit.fulfilled]: (state) => {
+    [addHabit.fulfilled]: (state, action) => {
       state.isLoading = false;
+      console.log("action.payload:", action.payload);
+      const newHabit = action.payload;
+      if (
+        state.currentPageHabits.length > 0 &&
+        state.currentPageHabits.length % HABITS_PER_PAGE === 0
+      ) {
+        state.currentPageHabits.pop();
+      }
+      // console.log("newHabit._id:", newHabit._id);
+      state.habitsById[newHabit._id] = newHabit;
+      state.currentPageHabits.unshift(newHabit._id);
+      state.totalHabits += 1;
     },
-    [deleteHabit.fulfilled]: (state) => {
+    [deleteHabit.fulfilled]: (state, action) => {
       state.isLoading = false;
+      console.log("action.payload:", action.payload);
+      state.currentPageHabits = state.currentPageHabits.filter(
+        (habitId) => habitId !== action.payload
+      );
+      // delete state.habitsById[action.payload];
+      state.totalHabits -= 1;
+      state.totalPages = Math.ceil(state.totalHabits / HABITS_PER_PAGE);
     },
-    [deleteHabit.fulfilled]: (state) => {
-      state.isLoading = true;
+    [editHabit.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      console.log("action.payload:", action.payload);
+
+      const {
+        name,
+        description,
+        goal,
+        startDate,
+        progress,
+        duration,
+        onWeekdays,
+        reminders,
+        _id: habitId,
+      } = action.payload;
+
+      if (name) {
+        state.habitsById[habitId].name = name;
+      }
+      if (description) {
+        state.habitsById[habitId].description = description;
+      }
+      if (goal) {
+        state.habitsById[habitId].goal = goal;
+      }
+      if (startDate) {
+        state.habitsById[habitId].startDate = startDate;
+      }
+      if (duration) {
+        state.habitsById[habitId].duration = duration;
+      }
+      if (onWeekdays) {
+        state.habitsById[habitId].onWeekdays = onWeekdays;
+      }
     },
+    [addHabitReminder.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      console.log("action.payload:", action.payload);
+
+      // remindersByHabitId'
+      // state.remindersByHabitId[]
+    },
+    [getHabitReminders.fulfilled]: (state, action) => {},
+
     [getHabits.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
-        state.errorMessage = action.payload.message;
+        // state.errorMessage = action.payload.message;
+        state.error = action.payload;
       } else {
-        state.errorMessage = action.error.message;
+        // state.errorMessage = action.error.message;
+        state.error = action.error;
       }
     },
     [getHabitsByUserId.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
-        state.errorMessage = action.payload.message;
+        state.error = action.payload;
       } else {
-        state.errorMessage = action.error.message;
+        state.error = action.error;
       }
     },
     [getHabitById.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
-        state.errorMessage = action.payload.message;
+        state.error = action.payload;
       } else {
-        state.errorMessage = action.error.message;
+        state.error = action.error;
       }
     },
 
     [addHabit.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
-        state.errorMessage = action.payload.message;
+        state.error = action.payload;
       } else {
-        state.errorMessage = action.error.message;
+        state.error = action.error;
       }
     },
     [deleteHabit.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
-        state.errorMessage = action.payload.message;
+        state.error = action.payload;
       } else {
-        state.errorMessage = action.error.message;
+        state.error = action.error;
       }
     },
     [editHabit.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
-        state.errorMessage = action.payload.message;
+        state.error = action.payload;
       } else {
-        state.errorMessage = action.error.message;
+        state.error = action.error;
       }
     },
+    [getHabitReminders.rejected]: (state, action) => {},
   },
 });
 

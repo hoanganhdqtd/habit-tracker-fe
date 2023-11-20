@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import dayjs from "dayjs";
 
 import { useDispatch, useSelector } from "react-redux";
 import { getHabits, changePage } from "../features/habit/habitSlice";
@@ -35,8 +36,6 @@ const CenterPagination = styled(Pagination)(({ theme }) => ({
 function HomePage() {
   const [addNewHabit, setAddNewHabit] = useState(false);
   const [dateValue, setDateValue] = useState(null);
-  console.log("addNewHabit:", addNewHabit);
-  console.log("dateValue:", dateValue);
 
   const [pageNum, setPageNum] = useState(1);
   const handlePageChange = (event, value) => {
@@ -68,6 +67,7 @@ function HomePage() {
         <AddHabitForm
           addNewHabit={addNewHabit}
           setAddNewHabit={setAddNewHabit}
+          dateValue={dateValue}
           tags={tags}
         />
       )}
@@ -75,10 +75,17 @@ function HomePage() {
         <DatePicker
           label="Pick date"
           value={dateValue}
-          onChange={(newDateValue) => setDateValue(newDateValue)}
+          onChange={(newDateValue) =>
+            setDateValue(
+              dayjs(newDateValue)
+                .set("hour", 0)
+                .set("minute", 0)
+                .set("second", 0)
+            )
+          }
         />
       </LocalizationProvider>
-      <HabitList />
+      <HabitList date={dateValue} />
       {totalPages ? (
         <CenterPagination
           sx={{

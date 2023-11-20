@@ -8,7 +8,10 @@ export default function FDatePicker({ dateValue, setDateValue }) {
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
         label="Pick date to start"
-        value={dayjs(dateValue)}
+        value={dayjs(dateValue)
+          .set("hour", 0)
+          .set("minute", 0)
+          .set("second", 0)}
         // value={dateValue}
         onChange={(newDateValue) => {
           // setDateValue(dayjs(newDateValue));

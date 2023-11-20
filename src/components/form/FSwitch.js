@@ -10,7 +10,10 @@ function FSwitch({ name, ...other }) {
         <Controller
           name={name}
           control={control}
-          render={({ field }) => <Switch {...field} checked={field.value} />}
+          render={({ field }) => {
+            console.log("FSwitch field:", field);
+            return <Switch {...field} checked={field.value} />;
+          }}
         />
       }
       {...other}

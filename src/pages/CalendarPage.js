@@ -20,9 +20,9 @@ const weekday = [
   "Saturday",
 ];
 
-const getWeekday = (date) => {
-  return weekday[date.getDay()];
-};
+// const getWeekday = (date) => {
+//   return weekday[date.getDay()];
+// };
 
 const getWeekFromDate = (date) => {
   // const firstDay = date.getDate() - date.getDay();
@@ -34,49 +34,58 @@ const getWeekFromDate = (date) => {
   // const firstDay = startOfWeek(date, { weekStartsOn: 1 }); // Monday
   // const lastDay = endOfWeek(date); // Saturday
 
-  let dateOfWeekday = startOfWeek(newDate);
+  let startDateOfWeek = startOfWeek(newDate);
 
-  console.log("dateOfWeekday:", dateOfWeekday);
+  console.log("startDateOfWeek:", startDateOfWeek);
 
   const weekDate = {};
 
   for (let index in weekday) {
-    weekDate[weekday[index]] = new Date(dateOfWeekday);
-    dateOfWeekday.setDate(dateOfWeekday.getDate() + 1);
+    weekDate[weekday[index]] = new Date(startDateOfWeek);
+    startDateOfWeek.setDate(startDateOfWeek.getDate() + 1);
   }
 
   return weekDate;
 };
 
 function CalendarPage() {
-  const [dateValue, setDateValue] = useState(dayjs(new Date()));
+  const newDate = dayjs()
+    .set("hour", 0)
+    .set("minute", 0)
+    .set("second", 0)
+    .set("millisecond", 0);
+  // console.log("newDate:", newDate);
 
-  console.log("instanceof dateValue:", dateValue instanceof Date);
-  console.log("dateValue:", dateValue);
+  // const [dateValue, setDateValue] = useState(dayjs(new Date()));
+  const [dateValue, setDateValue] = useState(newDate);
+
+  // console.log("instanceof dateValue:", dateValue instanceof Date);
+  // console.log("dateValue:", dateValue);
 
   let weekDate = getWeekFromDate(dateValue);
-  console.log("weekDate:", weekDate);
+  // console.log("weekDate:", weekDate);
 
-  const today = getWeekday(new Date());
+  // const today = getWeekday(new Date());
   // const weekdayToPick = getWeekday(dateValue);
 
-  console.log("today:", today);
+  // console.log("today:", today);
   // console.log("weekdayToPick:", weekdayToPick);
 
   const dispatch = useDispatch();
   const handleDateChange = (newDateValue) => {
-    console.log("newDateValue:", newDateValue);
-    setDateValue(newDateValue);
+    // console.log("newDateValue:", newDateValue);
+    setDateValue(dayjs(newDateValue));
     weekDate = getWeekFromDate(dateValue);
     // console.log("weekDate:", weekDate);
     dispatch(getHabits({ date: newDateValue }));
   };
+
   useEffect(() => {
     dispatch(getHabits({ date: dateValue }));
     // dispatch(getTags());
   }, [dateValue, dispatch]);
-  console.log("dateValue instanceof Date:", dateValue instanceof Date);
-  console.log("dateValue:", dateValue);
+  // console.log("dateValue instanceof Date:", dateValue instanceof Date);
+  // console.log("dateValue:", dateValue);
 
   return (
     <div>
@@ -84,7 +93,11 @@ function CalendarPage() {
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           label="Pick date"
-          value={dayjs(dateValue)}
+          value={dayjs(dateValue)
+            .set("hour", 0)
+            .set("minute", 0)
+            .set("second", 0)
+            .set("millisecond", 0)}
           // onChange={(newDateValue) => {
           //   setDateValue(newDateValue);
           //   weekDate = getWeekFromDate(dateValue);
@@ -94,34 +107,26 @@ function CalendarPage() {
         />
       </LocalizationProvider>
       <div>
-        {weekday.map((day) => {
-          console.log("", dayjs(weekDate[day]).toString().slice(0, 15));
-          console.log("", dayjs(dateValue).toString().slice(0, 15));
-          console.log(
-            dayjs(weekDate[day]).toString().slice(0, 15) ===
+        {weekday.map((day) => (
+          <div
+            key={day}
+            style={
+              dayjs(weekDate[day]).toString().slice(0, 15) ===
               dayjs(dateValue).toString().slice(0, 15)
-          );
-          return (
-            <div
-              key={day}
-              style={
-                dayjs(weekDate[day]).toString().slice(0, 15) ===
-                dayjs(dateValue).toString().slice(0, 15)
-                  ? { color: "red", cursor: "pointer" }
-                  : { cursor: "pointer" }
-              }
-              onClick={() => {
-                // setDateValue(dayjs(weekDate[day]));
-                setDateValue(weekDate[day]);
-                dispatch(getHabits({ date: weekDate[day] }));
-              }}
-            >
-              {/* {dayjs(weekDate[day]).toString()} {dayjs(dateValue).toString()}{" "} */}
-              {`${weekDate[day]}`.slice(0, 15)}
-            </div>
-          );
-        })}
-        <HabitList />
+                ? { color: "red", cursor: "pointer" }
+                : { cursor: "pointer" }
+            }
+            onClick={() => {
+              // setDateValue(dayjs(weekDate[day]));
+              setDateValue(weekDate[day]);
+              dispatch(getHabits({ date: weekDate[day] }));
+            }}
+          >
+            {/* {dayjs(weekDate[day]).toString()} {dayjs(dateValue).toString()}{" "} */}
+            {`${weekDate[day]}`.slice(0, 15)}
+          </div>
+        ))}
+        <HabitList date={dateValue} isInCalendarPage={true} />
       </div>
     </div>
   );

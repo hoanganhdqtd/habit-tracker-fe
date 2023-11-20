@@ -6,8 +6,8 @@ import {
   FormControlLabel,
 } from "@mui/material";
 
-function FRadioGroup({ name, options, getOptionLabel, ...other }) {
-  const { control } = useFormContext();
+function FRadioGroup({ name, required, options, getOptionLabel, ...other }) {
+  const { control, register } = useFormContext();
 
   return (
     <Controller

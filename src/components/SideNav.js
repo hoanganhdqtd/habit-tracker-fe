@@ -86,6 +86,7 @@ const items = [
 
 const SideNav = ({ open = true, onClose = () => {} }) => {
   // const { open, onClose } = props;
+
   const pathname = useLocation().pathname;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
 

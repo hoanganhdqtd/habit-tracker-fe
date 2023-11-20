@@ -10,7 +10,10 @@ export default function FTimePicker({ timeValue, setTimeValue }) {
         label="Pick time"
         value={dayjs(timeValue)}
         // value={timeValue}
-        onChange={(newTimeValue) => setTimeValue(newTimeValue)}
+        onChange={(newTimeValue) => {
+          console.log("newTimeValue:", newTimeValue);
+          setTimeValue(newTimeValue);
+        }}
       />
     </LocalizationProvider>
   );
