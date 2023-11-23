@@ -84,8 +84,10 @@ const items = [
   },
 ];
 
-const SideNav = ({ open = true, onClose = () => {} }) => {
-  // const { open, onClose } = props;
+// const SideNav = ({ open = true, onClose = () => {} })
+const SideNav = (props) => {
+  const { open, onClose } = props;
+  // const [isOpen, setIsOpen] = useState(false);
 
   const pathname = useLocation().pathname;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
@@ -167,6 +169,8 @@ const SideNav = ({ open = true, onClose = () => {} }) => {
             }}
           >
             {items.map((item) => {
+              // login or register
+              // if (item.)
               const active = item.path ? pathname === item.path : false;
 
               return (

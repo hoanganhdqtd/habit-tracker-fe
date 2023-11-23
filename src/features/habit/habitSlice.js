@@ -17,7 +17,8 @@ const initialState = {
   search: "",
   page: 1,
   totalPages: 0,
-  remindersByHabitId: {},
+  // remindersByHabitId: [],
+  // reminderById: {},
 };
 
 export const getHabits = createAsyncThunk(
@@ -360,12 +361,16 @@ export const habitSlice = createSlice({
     },
     [addHabitReminder.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("action.payload:", action.payload);
+      console.log("addHabitReminder action.payload:", action.payload);
 
-      // remindersByHabitId'
       // state.remindersByHabitId[]
+
+      // state.remindersByHabitId = action.payload.reminders;
+      state.habitDetail.reminders = action.payload.reminders;
     },
-    [getHabitReminders.fulfilled]: (state, action) => {},
+    [getHabitReminders.fulfilled]: (state, action) => {
+      // remindersByHabitId[]
+    },
 
     [getHabits.rejected]: (state, action) => {
       state.isLoading = false;

@@ -11,6 +11,7 @@ import AuthRequire from "./AuthRequire";
 import UserProfilePage from "../pages/UserProfilePage";
 import CalendarPage from "../pages/CalendarPage";
 import HabitDetailPage from "../pages/HabitDetailPage";
+import ReminderDetailPage from "../pages/ReminderDetailPage";
 
 function Router() {
   return (
@@ -31,6 +32,7 @@ function Router() {
         <Route path="/account" element={<UserProfilePage />} />
         {/* <Route path="/habit" element={<HabitDetailPage />} /> */}
         <Route path="/habit/:habitId" element={<HabitDetailPage />} />
+        <Route path="/reminder/:reminderId" element={<ReminderDetailPage />} />
       </Route>
 
       <Route element={<MainLayout />}>

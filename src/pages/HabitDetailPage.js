@@ -34,7 +34,9 @@ function HabitDetailPage() {
 
   const { habitDetail } = useSelector((state) => state.habit);
   console.log("habitDetail:", habitDetail);
-  const { name, goal, startDate, duration, onWeekdays } = habitDetail;
+  console.log("habitDetail reminders:", habitDetail.reminders);
+  const { name, goal, startDate, duration, onWeekdays, reminders } =
+    habitDetail;
 
   const handleHabitEdit = async ({
     habitId,
@@ -73,7 +75,14 @@ function HabitDetailPage() {
       <div>Start date: </div>
       <div>Duration: </div>
       <div>On weekdays: </div> */}
-      <div>Reminders:</div>
+      <div>
+        Reminders:{" "}
+        {reminders.map((reminder) => (
+          <button onClick={() => navigate(`/reminder/${reminder._id}`)}>
+            {reminder.time}
+          </button>
+        ))}
+      </div>
       <div>
         <button onClick={() => setIsHabitEdit(true)}>Edit</button>
         {isHabitEdit && (
