@@ -28,6 +28,7 @@ import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import CalendarIcon from "@heroicons/react/24/solid/CalendarIcon";
+import useAuth from "../hooks/useAuth";
 // import useAuth from "../hooks/useAuth";
 // import { SvgIcon } from "@mui/material";
 
@@ -73,6 +74,16 @@ const items = [
     ),
   },
   {
+    title: "Logout",
+    path: "/login",
+    authRequired: true,
+    icon: (
+      <SvgIcon fontSize="small">
+        <LockClosedIcon />
+      </SvgIcon>
+    ),
+  },
+  {
     title: "Register",
     path: "/register",
     authRequired: false,
@@ -87,6 +98,7 @@ const items = [
 // const SideNav = ({ open = true, onClose = () => {} })
 const SideNav = (props) => {
   const { open, onClose } = props;
+  const { isAuthenticated } = useAuth();
   // const [isOpen, setIsOpen] = useState(false);
 
   const pathname = useLocation().pathname;
@@ -171,7 +183,10 @@ const SideNav = (props) => {
             {items.map((item) => {
               // login or register
               // if (item.)
+
               const active = item.path ? pathname === item.path : false;
+              if (!isAuthenticated && item.authRequired) return null;
+              if (isAuthenticated && !item.authRequired) return null;
 
               return (
                 <SideNavItem

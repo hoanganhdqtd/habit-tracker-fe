@@ -30,7 +30,7 @@ function HabitCard({ key, habit, isInCalendarPage }) {
 
   console.log("isInCalendarPage:", isInCalendarPage);
 
-  const defaultValues = { status: "incomplete" };
+  const defaultValues = { isCompleted: false };
   const methods = useForm({ defaultValues });
   const {
     handleSubmit,
@@ -106,7 +106,7 @@ function HabitCard({ key, habit, isInCalendarPage }) {
 
         {isInCalendarPage && (
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <FSwitch name="completed" label="Completed?" />
+            <FSwitch name="isCompleted" label="Completed?" />
           </FormProvider>
         )}
 

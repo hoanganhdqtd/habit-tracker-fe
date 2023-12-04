@@ -25,7 +25,7 @@ const LayoutContainer = styled("div")({
 function MainLayout() {
   return (
     <Stack sx={{ minHeight: "100vh" }}>
-      <SideNav />
+      <SideNav inMainLayout={true} />
 
       <LayoutRoot>
         <LayoutContainer>
