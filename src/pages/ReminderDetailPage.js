@@ -1,7 +1,11 @@
 // import axios from "axios";
 import apiService from "../app/apiService";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
+import EditReminderForm from "../components/EditReminderForm";
+import { useDispatch } from "react-redux";
+import DeleteReminderConfirm from "../components/DeleteReminderConfirm";
 
 const weekdaysByIndex = {
   0: "Sunday",
@@ -25,11 +29,16 @@ const getWeekdays = (weekdays) => {
 
 function ReminderDetailPage() {
   const [reminder, setReminder] = useState({});
-  const [isEditReminder, setIsEditReminder] = useState(false);
-  const [isDeleteReminder, setIsDeleteReminder] = useState(false);
+  const [isReminderEdit, setIsReminderEdit] = useState(false);
+  const [isReminderDelete, setIsReminderDelete] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { reminderId } = useParams();
   console.log("reminderId:", reminderId);
+
+  const handleReminderEdit = async () => {};
 
   useEffect(() => {
     const getReminder = async () => {
@@ -57,8 +66,23 @@ function ReminderDetailPage() {
       Reminder detail
       <div>On: {getWeekdays(reminder.onWeekdays)}</div>
       <div>At: {reminder.time}</div>
-      <button>Edit</button>
-      <button>Delete</button>
+      <button onClick={() => setIsReminderEdit(true)}>Edit</button>
+      {isReminderEdit && (
+        <EditReminderForm
+          isReminderEdit={isReminderEdit}
+          setIsReminderEdit={setIsReminderEdit}
+          reminderId={reminderId}
+          handleReminderEdit={handleReminderEdit}
+        />
+      )}
+      <button onClick={() => setIsReminderDelete(true)}>Delete</button>
+      {isReminderDelete && (
+        <DeleteReminderConfirm
+          isReminderDelete={isReminderDelete}
+          setIsReminderDelete={setIsReminderDelete}
+          reminderId={reminderId}
+        />
+      )}
     </div>
   );
 }

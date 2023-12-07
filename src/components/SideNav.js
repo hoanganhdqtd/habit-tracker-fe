@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { Link, NavLink } from "react-router-dom";
 // import { usePathname } from "next/navigation";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ArrowTopRightOnSquareIcon from "@heroicons/react/24/solid/ArrowTopRightOnSquareIcon";
 import ChevronUpDownIcon from "@heroicons/react/24/solid/ChevronUpDownIcon";
 import {
@@ -29,7 +29,6 @@ import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
 import CalendarIcon from "@heroicons/react/24/solid/CalendarIcon";
 import useAuth from "../hooks/useAuth";
-// import useAuth from "../hooks/useAuth";
 // import { SvgIcon } from "@mui/material";
 
 const items = [
@@ -82,6 +81,7 @@ const items = [
         <LockClosedIcon />
       </SvgIcon>
     ),
+    onclick: function () {},
   },
   {
     title: "Register",
@@ -98,8 +98,9 @@ const items = [
 // const SideNav = ({ open = true, onClose = () => {} })
 const SideNav = (props) => {
   const { open, onClose } = props;
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
   // const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const pathname = useLocation().pathname;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
@@ -185,6 +186,7 @@ const SideNav = (props) => {
               // if (item.)
 
               const active = item.path ? pathname === item.path : false;
+
               if (!isAuthenticated && item.authRequired) return null;
               if (isAuthenticated && !item.authRequired) return null;
 
@@ -197,6 +199,11 @@ const SideNav = (props) => {
                   key={item.title}
                   path={item.path}
                   title={item.title}
+                  onClick={() => {
+                    if (item.title === "Logout") {
+                      logout(() => navigate("/"));
+                    }
+                  }}
                 />
               );
             })}
