@@ -59,7 +59,6 @@ function EditReminderForm({
   handleReminderEdit,
   reminderId,
 }) {
-  console.log("Edit Reminder Form");
   const newDate = dayjs()
     .set("hour", 0)
     .set("minute", 0)

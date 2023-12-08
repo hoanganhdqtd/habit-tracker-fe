@@ -20,7 +20,7 @@ const getWeekdays = (weekdays) =>
   weekdays.map((weekday) => weekdaysByIndex[weekday]).join(", ");
 
 function HabitDetailPage() {
-  const [addNewReminder, setAddNewReminder] = useState(false);
+  const [isAddNewReminder, setIsAddNewReminder] = useState(false);
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const { habitId } = useParams();
   const dispatch = useDispatch();
@@ -78,7 +78,11 @@ function HabitDetailPage() {
       <div>
         Reminders:{" "}
         {reminders.map((reminder) => (
-          <button onClick={() => navigate(`/reminder/${reminder._id}`)}>
+          <button
+            onClick={() =>
+              navigate(`/habit/${habitId}/reminder/${reminder._id}`)
+            }
+          >
             {reminder.time}
           </button>
         ))}
@@ -93,11 +97,11 @@ function HabitDetailPage() {
             handleHabitEdit={handleHabitEdit}
           />
         )}
-        <button onClick={() => setAddNewReminder(true)}>Add reminders</button>
-        {addNewReminder && (
+        <button onClick={() => setIsAddNewReminder(true)}>Add reminders</button>
+        {isAddNewReminder && (
           <AddReminderForm
-            addNewReminder={addNewReminder}
-            setAddNewReminder={setAddNewReminder}
+            isAddNewReminder={isAddNewReminder}
+            setIsAddNewReminder={setIsAddNewReminder}
             habitId={habitId}
           />
         )}

@@ -32,7 +32,10 @@ function Router() {
         <Route path="/account" element={<UserProfilePage />} />
         {/* <Route path="/habit" element={<HabitDetailPage />} /> */}
         <Route path="/habit/:habitId" element={<HabitDetailPage />} />
-        <Route path="/reminder/:reminderId" element={<ReminderDetailPage />} />
+        <Route
+          path="/habit/:habitId/reminder/:reminderId"
+          element={<ReminderDetailPage />}
+        />
       </Route>
 
       <Route element={<MainLayout />}>

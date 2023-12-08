@@ -35,8 +35,9 @@ function ReminderDetailPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { reminderId } = useParams();
+  const { reminderId, habitId } = useParams();
   console.log("reminderId:", reminderId);
+  console.log("habitId:", habitId);
 
   const handleReminderEdit = async () => {};
 
@@ -67,6 +68,7 @@ function ReminderDetailPage() {
       <div>On: {getWeekdays(reminder.onWeekdays)}</div>
       <div>At: {reminder.time}</div>
       <button onClick={() => setIsReminderEdit(true)}>Edit</button>
+      <button onClick={() => setIsReminderDelete(true)}>Delete</button>
       {isReminderEdit && (
         <EditReminderForm
           isReminderEdit={isReminderEdit}
@@ -75,11 +77,10 @@ function ReminderDetailPage() {
           handleReminderEdit={handleReminderEdit}
         />
       )}
-      <button onClick={() => setIsReminderDelete(true)}>Delete</button>
       {isReminderDelete && (
         <DeleteReminderConfirm
-          isReminderDelete={isReminderDelete}
           setIsReminderDelete={setIsReminderDelete}
+          habitId={habitId}
           reminderId={reminderId}
         />
       )}

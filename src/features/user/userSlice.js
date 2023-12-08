@@ -121,6 +121,7 @@ export const getCurrentUserProfile = () => async (dispatch) => {
   try {
     const response = await apiService.get("/users/me");
     dispatch(userSlice.actions.getCurrentUserSuccess(response.data));
+    return response.data;
   } catch (error) {
     dispatch(userSlice.actions.hasError(error));
   }

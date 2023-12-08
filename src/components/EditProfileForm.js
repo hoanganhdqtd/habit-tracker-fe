@@ -17,6 +17,8 @@ import {
   FTimePicker,
 } from "./form";
 
+import { updateCurrentUserProfile } from "../features/user/userSlice";
+
 const defaultValues = {
   name: "",
   password: "",
@@ -36,18 +38,15 @@ const style = {
   p: 4,
 };
 
-function EditProfileForm({
-  isProfileEdit,
-  setIsProfileEdit,
-  handleProfileEdit,
-}) {
+function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const methods = useForm({ defaultValues });
   const {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
-
-  const navigate = useNavigate();
 
   const onSubmit = (data) => {
     const { name, password, avatarUrl } = data;
@@ -56,6 +55,11 @@ function EditProfileForm({
     handleClose();
     // navigate("/");
     // navigate(`/habit/${habitId}`);
+  };
+
+  const handleProfileEdit = async ({ name, password, avatarUrl }) => {
+    setIsProfileEdit(false);
+    dispatch(updateCurrentUserProfile({ name, password, avatarUrl }));
   };
 
   const handleClose = () => setIsProfileEdit(false);

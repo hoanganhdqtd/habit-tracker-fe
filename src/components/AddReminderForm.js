@@ -50,7 +50,7 @@ const style = {
   p: 4,
 };
 
-function AddReminderForm({ addNewReminder, setAddNewReminder, habitId }) {
+function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
   const newDate = dayjs()
     .set("hour", 0)
     .set("minute", 0)
@@ -96,12 +96,12 @@ function AddReminderForm({ addNewReminder, setAddNewReminder, habitId }) {
     );
   };
 
-  const handleClose = () => setAddNewReminder(false);
+  const handleClose = () => setIsAddNewReminder(false);
 
   return (
     <div>
       <Modal
-        open={addNewReminder}
+        open={isAddNewReminder}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

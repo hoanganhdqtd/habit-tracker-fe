@@ -10,11 +10,21 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useDispatch } from "react-redux";
 
-function DeleteReminderConfirm({ reminderId, setIsReminderDelete }) {
+import { deleteHabitSingleReminder } from "../features/habit/habitSlice";
+import { useNavigate } from "react-router-dom";
+
+function DeleteReminderConfirm({ habitId, reminderId, setIsReminderDelete }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleClose = () => setIsReminderDelete(false);
 
-  const handleReminderDelete = async (reminderId) => {};
+  const handleReminderDelete = async (reminderId, habitId) => {
+    setIsReminderDelete(false);
+    dispatch(deleteHabitSingleReminder({ habitId, reminderId }));
+    navigate(`/habit/${habitId}`, { replace: true });
+  };
 
   return (
     <Dialog open={true} maxWidth="sm" fullWidth>
@@ -34,7 +44,7 @@ function DeleteReminderConfirm({ reminderId, setIsReminderDelete }) {
         <Button
           color="secondary"
           variant="contained"
-          onClick={() => handleReminderDelete(reminderId)}
+          onClick={() => handleReminderDelete(reminderId, habitId)}
         >
           Confirm
         </Button>

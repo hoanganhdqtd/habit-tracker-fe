@@ -200,6 +200,21 @@ export const addHabitReminder = createAsyncThunk(
   }
 );
 
+export const deleteHabitSingleReminder = createAsyncThunk(
+  "habits/deleteHabitSingleReminder",
+  async ({ habitId, reminderId }, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await apiService.delete(
+        `/reminders/${reminderId}/habit/${habitId}`
+      );
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const habitSlice = createSlice({
   name: "habit",
   initialState,
@@ -246,6 +261,10 @@ export const habitSlice = createSlice({
       state.error = null;
     },
     [getHabitReminders.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [deleteHabitSingleReminder.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
     },
@@ -371,6 +390,11 @@ export const habitSlice = createSlice({
     [getHabitReminders.fulfilled]: (state, action) => {
       // remindersByHabitId[]
     },
+    [deleteHabitSingleReminder.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      console.log("deleteHabitSingleReminder action.payload:", action.payload);
+      // state.habitDetail.reminders = action.payload.reminders;
+    },
 
     [getHabits.rejected]: (state, action) => {
       state.isLoading = false;
@@ -424,6 +448,7 @@ export const habitSlice = createSlice({
       }
     },
     [getHabitReminders.rejected]: (state, action) => {},
+    [deleteHabitSingleReminder.rejected]: (state, action) => {},
   },
 });
 

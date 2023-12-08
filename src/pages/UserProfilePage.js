@@ -1,9 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserProfile } from "../features/user/userSlice";
 import LoadingScreen from "../components/LoadingScreen";
+import EditProfileForm from "../components/EditProfileForm";
 
 function UserProfilePage() {
+  const [isProfileEdit, setIsProfileEdit] = useState(false);
+
   const { currentUser, isLoading } = useSelector((state) => state.user);
   let name, email, avatarUrl;
 
@@ -30,7 +33,13 @@ function UserProfilePage() {
       <div>Email: {email}</div>
       <div>Avatar: {avatarUrl}</div>
       <div>
-        <button>Edit</button>
+        <button onClick={() => setIsProfileEdit(true)}>Edit</button>
+        {isProfileEdit && (
+          <EditProfileForm
+            isProfileEdit={isProfileEdit}
+            setIsProfileEdit={setIsProfileEdit}
+          />
+        )}
       </div>
     </div>
   );
