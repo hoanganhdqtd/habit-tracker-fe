@@ -40,7 +40,6 @@ const style = {
 
 function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const methods = useForm({ defaultValues });
   const {

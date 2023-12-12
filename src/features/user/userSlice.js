@@ -37,6 +37,7 @@ export const userSlice = createSlice({
 
       // when the profile is updated,
       // dispatch UPDATE_PROFILE action in the AuthContext
+      // console("action.payload:", action.payload);
       state.updatedProfile = action.payload;
     },
 
@@ -60,7 +61,9 @@ export const userSlice = createSlice({
 
       // when the profile is updated,
       // dispatch UPDATE_PROFILE action in the AuthContext
+      // console.log("action.payload:", action.payload);
       state.updatedProfile = action.payload;
+      state.currentUser = action.payload;
     },
   },
 });
@@ -91,11 +94,21 @@ export const updateCurrentUserProfile =
   async (dispatch) => {
     dispatch(userSlice.actions.startLoading());
     try {
-      const data = {
-        name,
-        password,
-        avatarUrl,
-      };
+      // const data = {
+      //   name,
+      //   password,
+      //   avatarUrl,
+      // };
+      const data = {};
+      if (name) {
+        data.name = name;
+      }
+      if (password) {
+        data.password = password;
+      }
+      if (avatarUrl) {
+        data.avatarUrl = avatarUrl;
+      }
 
       // if upload a file, not a link
       // => upload to Cloudinary to get the link
@@ -108,7 +121,9 @@ export const updateCurrentUserProfile =
       const response = await apiService.put(`/users/me`, data);
 
       // response.data: user's data after updated
-      dispatch(userSlice.actions.updateUserProfileSuccess(response.data));
+      dispatch(
+        userSlice.actions.updateCurrentUserProfileSuccess(response.data)
+      );
       toast.success("Update Profile successfully");
     } catch (error) {
       dispatch(userSlice.actions.hasError(error.message));

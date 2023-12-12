@@ -38,7 +38,7 @@ function HabitCard({ key, habit, isInCalendarPage }) {
   } = methods;
 
   const onSubmit = (data) => {
-    console.log("data:", data);
+    console.log("Fswitch onSubmit data:", data);
     const { completed } = data;
 
     console.log("completed:", completed);
@@ -80,6 +80,10 @@ function HabitCard({ key, habit, isInCalendarPage }) {
     );
   };
 
+  const handleHabitStatusChange = () => {
+    console.log("handleHabitStatusChange");
+  };
+
   const navigate = useNavigate();
   return (
     <Item
@@ -106,7 +110,11 @@ function HabitCard({ key, habit, isInCalendarPage }) {
 
         {isInCalendarPage && (
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <FSwitch name="isCompleted" label="Completed?" />
+            <FSwitch
+              name="isCompleted"
+              label="Completed"
+              handleHabitStatusChange={handleHabitStatusChange}
+            />
           </FormProvider>
         )}
 
