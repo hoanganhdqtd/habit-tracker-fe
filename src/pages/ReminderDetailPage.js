@@ -115,6 +115,7 @@ function ReminderDetailPage() {
       <div>Status: {reminder.status}</div>
       <button onClick={() => setIsReminderEdit(true)}>Edit</button>
       <button onClick={() => setIsReminderDelete(true)}>Delete</button>
+      <button onClick={() => navigate(-1)}>Cancel</button>
       {isReminderEdit && (
         <EditReminderForm
           isReminderEdit={isReminderEdit}

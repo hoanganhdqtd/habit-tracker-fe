@@ -116,6 +116,12 @@ function EditHabitForm({
 
   const handleClose = () => setIsHabitEdit(false);
 
+  useEffect(() => {
+    if (onWeekdays && onWeekdays.length) {
+      methods.setValue("onWeekdays", onWeekdays);
+    }
+  }, [onWeekdays]);
+
   return (
     <div>
       <Modal
