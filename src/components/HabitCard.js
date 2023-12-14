@@ -9,7 +9,11 @@ import { FormProvider } from "./form";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { deleteHabit, editHabit } from "../features/habit/habitSlice";
+import {
+  deleteHabit,
+  editHabit,
+  getHabitById,
+} from "../features/habit/habitSlice";
 import EditHabitForm from "./EditHabitForm";
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
 import { FSwitch } from "./form";
@@ -27,6 +31,9 @@ const Item = styled(Paper)(({ theme }) => ({
 function HabitCard({ key, habit, isInCalendarPage }) {
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   console.log("isInCalendarPage:", isInCalendarPage);
 
@@ -49,8 +56,6 @@ function HabitCard({ key, habit, isInCalendarPage }) {
 
     // dispatch(getHabits({ date: dateValue }));
   };
-
-  const dispatch = useDispatch();
 
   const handleHabitDelete = async (habitId) => {
     setIsHabitDelete(false);
@@ -84,7 +89,6 @@ function HabitCard({ key, habit, isInCalendarPage }) {
     console.log("handleHabitStatusChange");
   };
 
-  const navigate = useNavigate();
   return (
     <Item
       key={key}
@@ -121,7 +125,7 @@ function HabitCard({ key, habit, isInCalendarPage }) {
         <Button
           variant="contained"
           onClick={() => {
-            console.log("Edit form");
+            console.log("Habit edit form");
             setIsHabitEdit(true);
           }}
         >

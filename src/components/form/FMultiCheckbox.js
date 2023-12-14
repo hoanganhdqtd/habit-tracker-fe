@@ -1,7 +1,7 @@
 import { useFormContext, Controller } from "react-hook-form";
 import { Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 
-function FMultiCheckbox({ name, options, ...other }) {
+function FMultiCheckbox({ name, value, options, ...other }) {
   const { control } = useFormContext();
 
   const weekdaysIndex = {

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack } from "@mui/material";
+import { alpha, Button, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
@@ -57,6 +57,8 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  maxHeight: "600px",
+  overflow: "scroll",
 };
 
 function EditHabitForm({
@@ -65,6 +67,17 @@ function EditHabitForm({
   handleHabitEdit,
   habitId,
 }) {
+  const dispatch = useDispatch();
+  const { habitDetail } = useSelector((state) => state.habit);
+  const { name, description, goal, onWeekdays, startDate, duration } =
+    habitDetail;
+
+  // useEffect(() => {
+  //   dispatch(getHabitById(habitId));
+  // }, [dispatch, habitId]);
+
+  // const { search, page, totalPages } = useSelector((state) => state.habit);
+
   const newDate = dayjs()
     .set("hour", 0)
     .set("minute", 0)
@@ -112,6 +125,9 @@ function EditHabitForm({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Edit habit
+          </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
               {/* <FTextField
@@ -126,11 +142,13 @@ function EditHabitForm({
                   },
                 }}
               /> */}
+              {"Name"}
               <FTextField
                 name="name"
                 fullWidth
                 rows={4}
-                placeholder="Name"
+                // placeholder="Name"
+                value={name}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -139,11 +157,13 @@ function EditHabitForm({
                   },
                 }}
               />
+              {"Description"}
               <FTextField
                 name="description"
                 fullWidth
                 rows={4}
-                placeholder="Description"
+                // placeholder="Description"
+                value={description}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -152,12 +172,13 @@ function EditHabitForm({
                   },
                 }}
               />
-
+              {"Goal"}
               <FTextField
                 name="goal"
                 fullWidth
                 rows={4}
-                placeholder="Goal"
+                // placeholder="Goal"
+                value={goal}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -167,14 +188,19 @@ function EditHabitForm({
                 }}
               />
 
-              <FDatePicker dateValue={dateValue} setDateValue={setDateValue} />
+              <FDatePicker
+                dateValue={dayjs(startDate)}
+                setDateValue={setDateValue}
+              />
               {/* <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} /> */}
 
+              {"Duration (hours/day)"}
               <FTextField
                 name="duration"
                 fullWidth
                 rows={4}
-                placeholder="Duration (hours/day)"
+                // placeholder="Duration (hours/day)"
+                value={duration}
                 required={false}
                 sx={{
                   "& fieldset": {

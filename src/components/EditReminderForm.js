@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack } from "@mui/material";
+import { alpha, Button, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
@@ -19,6 +19,7 @@ import {
   FMultiCheckbox,
   FDatePicker,
   FTimePicker,
+  FRadioGroup,
 } from "./form";
 
 const weekdays = [
@@ -51,6 +52,8 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  maxHeight: "600px",
+  overflow: "scroll",
 };
 
 function EditReminderForm({
@@ -58,14 +61,41 @@ function EditReminderForm({
   setIsReminderEdit,
   handleReminderEdit,
   reminderId,
+  reminder,
 }) {
-  const newDate = dayjs()
-    .set("hour", 0)
-    .set("minute", 0)
-    .set("second", 0)
-    .set("millisecond", 0);
-  const [dateValue, setDateValue] = useState(newDate);
-  const [timeValue, setTimeValue] = useState(dayjs(new Date()));
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const { reminderFrequency, onWeekdays, startDate, time, status } =
+  //   useSelector((state) =>
+  //     state.habit.habitDetail.reminders.filter(
+  //       (reminder) => reminder._id === reminderId
+  //     )
+  //   );
+  const { reminderFrequency, onWeekdays, startDate, time, status } = reminder;
+  console.log("reminder startDate:", startDate);
+  console.log("reminder time:", time);
+
+  // const newDate = dayjs()
+  //   .set("hour", 0)
+  //   .set("minute", 0)
+  //   .set("second", 0)
+  //   .set("millisecond", 0);
+  // const [dateValue, setDateValue] = useState(newDate);
+  // const [timeValue, setTimeValue] = useState(dayjs(new Date()));
+
+  const [dateValue, setDateValue] = useState(
+    dayjs(startDate)
+      .set("hour", 0)
+      .set("minute", 0)
+      .set("second", 0)
+      .set("millisecond", 0)
+  );
+  const [timeValue, setTimeValue] = useState(dayjs(time));
+
+  const [reminderFreq, setReminderFreq] = useState(reminderFrequency);
+  const [onWeekdaysValue, setOnWeekdaysValue] = useState(onWeekdays);
+
+  console.log("onWeekdaysValue:", onWeekdaysValue);
 
   const methods = useForm({
     resolver: yupResolver(editReminderSchema),
@@ -77,17 +107,17 @@ function EditReminderForm({
     formState: { isSubmitting },
   } = methods;
 
-  const navigate = useNavigate();
   const handleClose = () => setIsReminderEdit(false);
 
   const onSubmit = (data) => {
-    const { reminderFrequency, time, onWeekdays, status } = data;
+    const { reminderFrequency, onWeekdays, status } = data;
 
     console.log("onSubmit editReminder:");
+    console.log("data:", data);
     handleReminderEdit({
       reminderId,
       reminderFrequency,
-      time,
+      time: timeValue,
       onWeekdays,
       status,
       startDate: dateValue,
@@ -95,6 +125,12 @@ function EditReminderForm({
 
     handleClose();
   };
+
+  useEffect(() => {
+    if (onWeekdays && onWeekdays.length) {
+      methods.setValue("onWeekdays", onWeekdays);
+    }
+  }, [onWeekdays]);
 
   return (
     <div>
@@ -105,13 +141,33 @@ function EditReminderForm({
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Edit reminder
+          </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              <FDatePicker dateValue={dateValue} setDateValue={setDateValue} />
+              {"Reminder frequency:"}
+              <FRadioGroup
+                name="reminderFrequency"
+                options={["once", "repeated"]}
+                // required={true}
+                value={reminderFreq}
+                onChange={(e) => {
+                  setReminderFreq(e.target.value);
+                }}
+              />
+              <FDatePicker
+                dateValue={dayjs(startDate)}
+                setDateValue={setDateValue}
+              />
               <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} />
 
               {"On weekdays:"}
-              <FMultiCheckbox name="onWeekdays" options={weekdays} />
+              <FMultiCheckbox
+                name="onWeekdays"
+                options={weekdays}
+                value={onWeekdaysValue}
+              />
 
               {/* <FMultiCheckbox name="tags" options={tags} /> */}
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack } from "@mui/material";
+import { alpha, Button, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
@@ -40,6 +40,8 @@ const style = {
 
 function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
   const dispatch = useDispatch();
+  const { currentUser } = useSelector((state) => state.user);
+  const { name, password, avatarUrl } = currentUser;
 
   const methods = useForm({ defaultValues });
   const {
@@ -72,13 +74,18 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Edit profile
+          </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
+              {"Name:"}
               <FTextField
                 name="name"
                 fullWidth
                 rows={4}
-                placeholder="Name"
+                // placeholder="Name"
+                value={name}
                 required={true}
                 sx={{
                   "& fieldset": {

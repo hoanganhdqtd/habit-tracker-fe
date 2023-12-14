@@ -18,7 +18,7 @@ const initialState = {
   page: 1,
   totalPages: 0,
   // remindersByHabitId: [],
-  // reminderById: {},
+  currentReminder: {},
 };
 
 export const getHabits = createAsyncThunk(
@@ -200,6 +200,41 @@ export const addHabitReminder = createAsyncThunk(
   }
 );
 
+export const getHabitSingleReminder = createAsyncThunk(
+  "habits/getHabitSingleReminder",
+  async (reminderId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await apiService.get(`/reminders/${reminderId}`);
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const editHabitSingleReminder = createAsyncThunk(
+  "habits/editHabitSingleReminder",
+  async (
+    { reminderId, reminderFrequency, onWeekdays, time, status, startDate },
+    { rejectWithValue, dispatch }
+  ) => {
+    try {
+      const response = await apiService.put(`/reminders/${reminderId}`, {
+        reminderFrequency,
+        onWeekdays,
+        time,
+        status,
+        startDate,
+      });
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 export const deleteHabitSingleReminder = createAsyncThunk(
   "habits/deleteHabitSingleReminder",
   async ({ habitId, reminderId }, { rejectWithValue, dispatch }) => {
@@ -261,6 +296,10 @@ export const habitSlice = createSlice({
       state.error = null;
     },
     [getHabitReminders.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [editHabitSingleReminder.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
     },
@@ -389,11 +428,26 @@ export const habitSlice = createSlice({
     },
     [getHabitReminders.fulfilled]: (state, action) => {
       // remindersByHabitId[]
+      state.isLoading = false;
+      state.habitDetail.reminders = action.payload.reminders;
+    },
+    [editHabitSingleReminder.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      console.log("editHabitSingleReminder action.payload:", action.payload);
+      // state.habitDetail.reminders = action.payload.reminders;
+      state.currentReminder = action.payload;
+    },
+    [getHabitSingleReminder.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.currentReminder = action.payload;
     },
     [deleteHabitSingleReminder.fulfilled]: (state, action) => {
       state.isLoading = false;
       console.log("deleteHabitSingleReminder action.payload:", action.payload);
-      // state.habitDetail.reminders = action.payload.reminders;
+
+      state.habitDetail.reminders = state.habitDetail.reminders.filter(
+        (reminder) => reminder._id !== action.payload._id
+      );
     },
 
     [getHabits.rejected]: (state, action) => {
@@ -447,8 +501,30 @@ export const habitSlice = createSlice({
         state.error = action.error;
       }
     },
-    [getHabitReminders.rejected]: (state, action) => {},
-    [deleteHabitSingleReminder.rejected]: (state, action) => {},
+    [getHabitReminders.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
+    [editHabitSingleReminder.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
+    [deleteHabitSingleReminder.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
   },
 });
 

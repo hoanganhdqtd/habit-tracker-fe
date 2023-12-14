@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack } from "@mui/material";
+import { alpha, Button, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
@@ -48,6 +48,8 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  maxHeight: "600px",
+  overflow: "scroll",
 };
 
 function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
@@ -73,6 +75,7 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
     const { reminderFrequency, onWeekdays, status } = data;
     // dispatch(addHabit(data));
     // startDate: new Date("23-8-2023"),
+
     console.log("reminderFrequency:", reminderFrequency);
     console.log("onWeekdays:", onWeekdays);
 
@@ -107,6 +110,9 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Add new reminder
+          </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
               {"Reminder frequency:"}
@@ -128,6 +134,7 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
                 setDateValue={setDateValue}
               />
 
+              {"On weekdays:"}
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
 
               {"Status:"}

@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -30,11 +31,8 @@ function HabitDetailPage() {
     dispatch(getHabitById(habitId));
   }, [habitId, dispatch]);
 
-  console.log("habitDetail habitId:", habitId);
-
   const { habitDetail } = useSelector((state) => state.habit);
-  console.log("habitDetail:", habitDetail);
-  console.log("habitDetail reminders:", habitDetail.reminders);
+
   const { name, goal, startDate, duration, onWeekdays, reminders } =
     habitDetail;
 
@@ -64,11 +62,11 @@ function HabitDetailPage() {
 
   return (
     <div>
-      Habit Detail
+      <h1>Habit Detail</h1>
       <div>Name: {name}</div>
       <div>Goal: {goal}</div>
       <div>Start date: {new Date(startDate).toDateString()}</div>
-      <div>Duration: {duration}</div>
+      <div>Duration: {duration}h</div>
       <div>On weekdays: {getWeekdays(onWeekdays)}</div>
       {/* <div>Name: </div>
       <div>Goal: </div>
@@ -77,15 +75,18 @@ function HabitDetailPage() {
       <div>On weekdays: </div> */}
       <div>
         Reminders:{" "}
-        {reminders.map((reminder) => (
-          <button
-            onClick={() =>
-              navigate(`/habit/${habitId}/reminder/${reminder._id}`)
-            }
-          >
-            {reminder.time}
-          </button>
-        ))}
+        {!reminders.length
+          ? "No reminder"
+          : reminders.map((reminder) => (
+              <button
+                key={reminder._id}
+                onClick={() =>
+                  navigate(`/habit/${habitId}/reminder/${reminder._id}`)
+                }
+              >
+                {dayjs(reminder.time).format("LT")}
+              </button>
+            ))}
       </div>
       <div>
         <button onClick={() => setIsHabitEdit(true)}>Edit</button>

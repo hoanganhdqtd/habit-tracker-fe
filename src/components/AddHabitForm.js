@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack } from "@mui/material";
+import { alpha, Button, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useNavigate } from "react-router-dom";
@@ -58,6 +58,8 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  maxHeight: "600px",
+  overflow: "scroll",
 };
 
 function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
@@ -111,6 +113,9 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Add new habit
+          </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
               <FTextField
