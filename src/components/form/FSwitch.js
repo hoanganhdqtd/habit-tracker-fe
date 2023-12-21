@@ -2,7 +2,7 @@ import { useFormContext, Controller } from "react-hook-form";
 import { Switch, FormControlLabel } from "@mui/material";
 import { boolean } from "yup";
 
-function FSwitch({ name, handleHabitStatusChange, ...other }) {
+function FSwitch({ name, ...other }) {
   const { control } = useFormContext();
 
   return (
@@ -12,15 +12,13 @@ function FSwitch({ name, handleHabitStatusChange, ...other }) {
           name={name}
           control={control}
           render={({ field }) => {
-            console.log("FSwitch field:", field);
             return (
               <Switch
                 {...field}
                 checked={field.value}
                 onChange={(e) => {
                   field.onChange(!field.value);
-                  console.log("field.value:", field.value);
-                  handleHabitStatusChange();
+                  console.log("field.value:", !field.value);
                 }}
               />
             );

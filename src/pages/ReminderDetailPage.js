@@ -26,7 +26,8 @@ const weekdaysByIndex = {
 
 const getWeekdays = (weekdays) => {
   if (weekdays) {
-    return weekdays
+    const copiedWeekdays = [...weekdays];
+    return copiedWeekdays
       .sort((a, b) => a - b)
       .map((weekday) => weekdaysByIndex[weekday])
       .join(", ");
@@ -44,10 +45,11 @@ function ReminderDetailPage() {
 
   // const { reminderFrequency, time, onWeekdays, startDate, status } =
   //   useSelector((state) => state.habit.currentReminder);
+  const { time, onWeekdays, startDate, status } = useSelector(
+    (state) => state.habit.currentReminder
+  );
 
   const { reminderId, habitId } = useParams();
-  console.log("reminderId:", reminderId);
-  console.log("habitId:", habitId);
 
   const handleReminderEdit = async ({
     reminderId,
@@ -59,13 +61,12 @@ function ReminderDetailPage() {
   }) => {
     console.log("handleReminderEdit:");
     console.log(
-      "reminderId, reminderFrequency, time, onWeekdays, startDate, status:",
-      reminderId,
-      reminderFrequency,
-      time,
-      onWeekdays,
-      startDate,
-      status
+      `reminderId: ${reminderId}`,
+      // reminderFrequency,
+      `time: ${time}`,
+      `onWeekdays: ${onWeekdays}`,
+      `startDate: ${startDate}`,
+      `status: ${status}`
     );
     setIsReminderEdit(false);
     // dispatch(
@@ -74,7 +75,7 @@ function ReminderDetailPage() {
     dispatch(
       editHabitSingleReminder({
         reminderId,
-        reminderFrequency,
+        // reminderFrequency,
         time,
         onWeekdays,
         startDate,
@@ -108,8 +109,10 @@ function ReminderDetailPage() {
   return (
     <div>
       <h1>Reminder detail</h1>
-      <div>Frequency: {reminder.reminderFrequency}</div>
-      <div>On: {getWeekdays(reminder.onWeekdays)}</div>
+      {/* <div>Frequency: {reminder.reminderFrequency}</div> */}
+      {/* <div>Frequency: {reminderFrequency}</div> */}
+      {/* <div>On: {getWeekdays(reminder.onWeekdays)}</div> */}
+      <div>On: {getWeekdays(onWeekdays)}</div>
       <div>Start date: {new Date(reminder.startDate).toDateString()}</div>
       <div>At: {dayjs(reminder.time).format("LT")}</div>
       <div>Status: {reminder.status}</div>

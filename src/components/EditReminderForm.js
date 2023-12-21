@@ -71,9 +71,13 @@ function EditReminderForm({
   //       (reminder) => reminder._id === reminderId
   //     )
   //   );
-  const { reminderFrequency, onWeekdays, startDate, time, status } = reminder;
+  // const { reminderFrequency, onWeekdays, startDate, time, status } = reminder;
+  const { onWeekdays, startDate, time, status } = reminder;
+  console.log("reminder onWeekdays:", onWeekdays);
   console.log("reminder startDate:", startDate);
   console.log("reminder time:", time);
+  console.log("reminder status:", status);
+  defaultValues.status = status;
 
   // const newDate = dayjs()
   //   .set("hour", 0)
@@ -92,10 +96,14 @@ function EditReminderForm({
   );
   const [timeValue, setTimeValue] = useState(dayjs(time));
 
-  const [reminderFreq, setReminderFreq] = useState(reminderFrequency);
-  const [onWeekdaysValue, setOnWeekdaysValue] = useState(onWeekdays);
+  // const [reminderFreq, setReminderFreq] = useState(reminderFrequency);
+  // const [onWeekdaysValue, setOnWeekdaysValue] = useState(onWeekdays);
 
-  console.log("onWeekdaysValue:", onWeekdaysValue);
+  if (onWeekdays.length) {
+    defaultValues.onWeekdays = onWeekdays;
+  }
+
+  console.log("status:", status);
 
   const methods = useForm({
     resolver: yupResolver(editReminderSchema),
@@ -110,13 +118,14 @@ function EditReminderForm({
   const handleClose = () => setIsReminderEdit(false);
 
   const onSubmit = (data) => {
-    const { reminderFrequency, onWeekdays, status } = data;
+    // const { reminderFrequency, onWeekdays, status } = data;
+    const { onWeekdays, status } = data;
 
     console.log("onSubmit editReminder:");
     console.log("data:", data);
     handleReminderEdit({
       reminderId,
-      reminderFrequency,
+      // reminderFrequency,
       time: timeValue,
       onWeekdays,
       status,
@@ -126,11 +135,16 @@ function EditReminderForm({
     handleClose();
   };
 
-  useEffect(() => {
-    if (onWeekdays && onWeekdays.length) {
-      methods.setValue("onWeekdays", onWeekdays);
-    }
-  }, [onWeekdays]);
+  // useEffect(() => {
+  //   if (onWeekdays && onWeekdays.length) {
+  //     methods.setValue("onWeekdays", onWeekdays);
+  //   }
+  //   if (status) {
+  //     methods.setValue("status", status);
+  //   }
+  //   methods.setValue("time", timeValue);
+  //   methods.setValue("date", dateValue);
+  // }, [onWeekdays, status, timeValue, dateValue]);
 
   return (
     <div>
@@ -146,7 +160,7 @@ function EditReminderForm({
           </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              {"Reminder frequency:"}
+              {/* {"Reminder frequency:"}
               <FRadioGroup
                 name="reminderFrequency"
                 options={["once", "repeated"]}
@@ -155,7 +169,7 @@ function EditReminderForm({
                 onChange={(e) => {
                   setReminderFreq(e.target.value);
                 }}
-              />
+              /> */}
               <FDatePicker
                 dateValue={dayjs(startDate)}
                 setDateValue={setDateValue}
@@ -166,10 +180,16 @@ function EditReminderForm({
               <FMultiCheckbox
                 name="onWeekdays"
                 options={weekdays}
-                value={onWeekdaysValue}
+                // value={onWeekdaysValue}
               />
 
               {/* <FMultiCheckbox name="tags" options={tags} /> */}
+              {"Status:"}
+              <FRadioGroup
+                name="status"
+                options={["ongoing", "pause"]}
+                required={true}
+              />
 
               <Box
                 sx={{

@@ -35,7 +35,7 @@ const defaultValues = {
   onWeekdays: [],
   time: "",
   startDate: "",
-  status: "",
+  status: "ongoing",
 };
 
 const style = {
@@ -72,11 +72,12 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const { reminderFrequency, onWeekdays, status } = data;
+    // const { reminderFrequency, onWeekdays, status } = data;
+    const { onWeekdays, status } = data;
     // dispatch(addHabit(data));
     // startDate: new Date("23-8-2023"),
 
-    console.log("reminderFrequency:", reminderFrequency);
+    // console.log("reminderFrequency:", reminderFrequency);
     console.log("onWeekdays:", onWeekdays);
 
     console.log("status:", status);
@@ -90,7 +91,7 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
     dispatch(
       addHabitReminder({
         habitId,
-        reminderFrequency,
+        // reminderFrequency,
         onWeekdays,
         startDate: dateValue,
         time: timeValue,
@@ -115,12 +116,12 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
           </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              {"Reminder frequency:"}
+              {/* {"Reminder frequency:"}
               <FRadioGroup
                 name="reminderFrequency"
                 options={["once", "repeated"]}
                 required={true}
-              />
+              /> */}
 
               <FTimePicker
                 name="time"
@@ -134,7 +135,7 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
                 setDateValue={setDateValue}
               />
 
-              {"On weekdays:"}
+              {"On weekdays (all selected without any being checked):"}
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
 
               {"Status:"}

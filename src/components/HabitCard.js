@@ -8,12 +8,16 @@ import Typography from "@mui/material/Typography";
 import { FormProvider } from "./form";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   deleteHabit,
   editHabit,
   getHabitById,
 } from "../features/habit/habitSlice";
+import {
+  getSingleProgress,
+  updateSingleProgress,
+} from "../features/progress/progressSlice";
 import EditHabitForm from "./EditHabitForm";
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
 import { FSwitch } from "./form";
@@ -28,14 +32,15 @@ const Item = styled(Paper)(({ theme }) => ({
   maxWidth: 500,
 }));
 
-function HabitCard({ key, habit, isInCalendarPage }) {
+function HabitCard({ key, habit, isInCalendarPage, date }) {
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log("isInCalendarPage:", isInCalendarPage);
+  const { progress } = useSelector((state) => state.progress);
+  const { status } = progress;
 
   const defaultValues = { isCompleted: false };
   const methods = useForm({ defaultValues });
@@ -55,6 +60,9 @@ function HabitCard({ key, habit, isInCalendarPage }) {
     // );
 
     // dispatch(getHabits({ date: dateValue }));
+
+    // edit progress
+    // dispatch(updateSingleProgress({ habitId, date, status }));
   };
 
   const handleHabitDelete = async (habitId) => {
@@ -85,8 +93,12 @@ function HabitCard({ key, habit, isInCalendarPage }) {
     );
   };
 
-  const handleHabitStatusChange = () => {
+  const handleHabitStatusChange = async ({ habitId, status }) => {
     console.log("handleHabitStatusChange");
+    console.log("status:", status);
+    console.log("habitId:", habitId);
+    // edit progress
+    dispatch(updateSingleProgress({ habitId, date, status }));
   };
 
   return (
@@ -114,11 +126,7 @@ function HabitCard({ key, habit, isInCalendarPage }) {
 
         {isInCalendarPage && (
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <FSwitch
-              name="isCompleted"
-              label="Completed"
-              handleHabitStatusChange={handleHabitStatusChange}
-            />
+            <FSwitch name="isCompleted" label="Completed" />
           </FormProvider>
         )}
 

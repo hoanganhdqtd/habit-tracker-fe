@@ -186,7 +186,7 @@ export const addHabitReminder = createAsyncThunk(
   ) => {
     try {
       const response = await apiService.post(`/reminders/habit/${habitId}`, {
-        reminderFrequency,
+        // reminderFrequency,
         onWeekdays,
         startDate,
         time,
@@ -313,7 +313,7 @@ export const habitSlice = createSlice({
       state.totalHabits = action.payload.count;
       state.totalPages = action.payload.totalPages;
       const { search } = state;
-      console.log("action.payload:", action.payload);
+
       // if (search && state.page === 1) {
       //   state.currentPageHabits = action.payload.habits;
       // } else {
@@ -354,12 +354,12 @@ export const habitSlice = createSlice({
     [getHabitById.fulfilled]: (state, action) => {
       state.isLoading = false;
       // state.habit = action.payload;
-      console.log("getHabitById action.payload:", action.payload);
+
       state.habitDetail = action.payload;
     },
     [addHabit.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("action.payload:", action.payload);
+
       const newHabit = action.payload;
       if (
         state.currentPageHabits.length > 0 &&
@@ -374,7 +374,7 @@ export const habitSlice = createSlice({
     },
     [deleteHabit.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("action.payload:", action.payload);
+
       state.currentPageHabits = state.currentPageHabits.filter(
         (habitId) => habitId !== action.payload
       );
@@ -384,7 +384,6 @@ export const habitSlice = createSlice({
     },
     [editHabit.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("action.payload:", action.payload);
 
       const {
         name,
@@ -419,7 +418,6 @@ export const habitSlice = createSlice({
     },
     [addHabitReminder.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("addHabitReminder action.payload:", action.payload);
 
       // state.remindersByHabitId[]
 
@@ -433,7 +431,7 @@ export const habitSlice = createSlice({
     },
     [editHabitSingleReminder.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("editHabitSingleReminder action.payload:", action.payload);
+
       // state.habitDetail.reminders = action.payload.reminders;
       state.currentReminder = action.payload;
     },
@@ -443,7 +441,6 @@ export const habitSlice = createSlice({
     },
     [deleteHabitSingleReminder.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("deleteHabitSingleReminder action.payload:", action.payload);
 
       state.habitDetail.reminders = state.habitDetail.reminders.filter(
         (reminder) => reminder._id !== action.payload._id

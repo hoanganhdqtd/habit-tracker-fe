@@ -67,10 +67,16 @@ function EditHabitForm({
   handleHabitEdit,
   habitId,
 }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const { habitDetail } = useSelector((state) => state.habit);
   const { name, description, goal, onWeekdays, startDate, duration } =
     habitDetail;
+  defaultValues.name = name;
+  defaultValues.description = description;
+  defaultValues.goal = goal;
+  defaultValues.onWeekdays = onWeekdays;
+  defaultValues.startDate = startDate;
+  defaultValues.duration = duration;
 
   // useEffect(() => {
   //   dispatch(getHabitById(habitId));
@@ -116,11 +122,11 @@ function EditHabitForm({
 
   const handleClose = () => setIsHabitEdit(false);
 
-  useEffect(() => {
-    if (onWeekdays && onWeekdays.length) {
-      methods.setValue("onWeekdays", onWeekdays);
-    }
-  }, [onWeekdays]);
+  // useEffect(() => {
+  //   if (onWeekdays && onWeekdays.length) {
+  //     methods.setValue("onWeekdays", onWeekdays);
+  //   }
+  // }, [onWeekdays]);
 
   return (
     <div>
@@ -154,7 +160,7 @@ function EditHabitForm({
                 fullWidth
                 rows={4}
                 // placeholder="Name"
-                value={name}
+                // value={name}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -169,7 +175,7 @@ function EditHabitForm({
                 fullWidth
                 rows={4}
                 // placeholder="Description"
-                value={description}
+                // value={description}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -184,7 +190,7 @@ function EditHabitForm({
                 fullWidth
                 rows={4}
                 // placeholder="Goal"
-                value={goal}
+                // value={goal}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -206,7 +212,7 @@ function EditHabitForm({
                 fullWidth
                 rows={4}
                 // placeholder="Duration (hours/day)"
-                value={duration}
+                // value={duration}
                 required={false}
                 sx={{
                   "& fieldset": {

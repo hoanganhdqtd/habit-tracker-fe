@@ -150,6 +150,7 @@ export default function HabitList({ date, isInCalendarPage }) {
             key={habit._id}
             habit={habit}
             isInCalendarPage={isInCalendarPage}
+            date={date}
           />
         );
       })}
