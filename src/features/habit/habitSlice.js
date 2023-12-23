@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import apiService from "../../app/apiService";
 import { HABITS_PER_PAGE } from "../../app/config";
+import dayjs from "dayjs";
 
 const initialState = {
   isLoading: false,
@@ -10,7 +11,7 @@ const initialState = {
   habitDetail: {
     onWeekdays: [],
     reminders: [],
-    progress: [],
+    progressList: [],
   },
   currentPageHabits: [],
   totalHabits: 0,
@@ -19,6 +20,7 @@ const initialState = {
   totalPages: 0,
   // remindersByHabitId: [],
   currentReminder: {},
+  currentProgress: {},
 };
 
 export const getHabits = createAsyncThunk(
@@ -88,7 +90,7 @@ export const addHabit = createAsyncThunk(
       progress,
       duration,
       onWeekdays,
-      reminders,
+      // reminders,
     },
     { rejectWithValue }
   ) => {
@@ -102,7 +104,7 @@ export const addHabit = createAsyncThunk(
         progress,
         duration,
         onWeekdays,
-        reminders,
+        // reminders,
       });
       // console.log("response.data", response.data);
       return response.data;
@@ -250,6 +252,68 @@ export const deleteHabitSingleReminder = createAsyncThunk(
   }
 );
 
+export const addHabitProgress = createAsyncThunk(
+  "habits/addHabitProgress",
+  async (habitId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await apiService.post(`/progress/habit/${habitId}`, {
+        status: "incomplete",
+        date: dayjs(new Date())
+          .set("hour", 0)
+          .set("minute", 0)
+          .set("second", 0),
+        habit: habitId,
+      });
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const getHabitSingleProgress = createAsyncThunk(
+  "habits/getHabitSingleProgress",
+  async (progressId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await apiService.get(`/progress/${progressId}`);
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const getHabitProgressList = createAsyncThunk(
+  "habits/getHabitProgressList",
+  async (habitId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await apiService.get(`/habit/${habitId}`);
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const updateSingleProgress = createAsyncThunk(
+  "habits/updateSingleProgress",
+  async ({ habitId, status, date }, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await apiService.put(`/progress/habit/${habitId}`, {
+        status,
+        date,
+      });
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 export const habitSlice = createSlice({
   name: "habit",
   initialState,
@@ -304,6 +368,22 @@ export const habitSlice = createSlice({
       state.error = null;
     },
     [deleteHabitSingleReminder.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [addHabitProgress.pending]: (state) => {
+      // state.isLoading = true;
+      state.error = null;
+    },
+    [getHabitSingleProgress.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [getHabitProgressList.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [updateSingleProgress.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
     },
@@ -390,10 +470,10 @@ export const habitSlice = createSlice({
         description,
         goal,
         startDate,
-        progress,
+        // progress,
         duration,
         onWeekdays,
-        reminders,
+        // reminders,
         _id: habitId,
       } = action.payload;
 
@@ -447,6 +527,25 @@ export const habitSlice = createSlice({
       );
     },
 
+    [addHabitProgress.fulfilled]: (state, action) => {
+      // state.isLoading = false;
+      // console.log("action.payload:", action.payload);
+      state.habitDetail.progressList.push(action.payload.progress);
+      state.currentProgress = action.payload.progress;
+    },
+    [getHabitSingleProgress.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.currentProgress = action.payload;
+    },
+    [getHabitProgressList.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.habitDetail.progressList = action.payload.progressList;
+    },
+    [updateSingleProgress.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.currentProgress = action.payload;
+    },
+
     [getHabits.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
@@ -498,6 +597,14 @@ export const habitSlice = createSlice({
         state.error = action.error;
       }
     },
+    [addHabitReminder.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
     [getHabitReminders.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
@@ -515,6 +622,39 @@ export const habitSlice = createSlice({
       }
     },
     [deleteHabitSingleReminder.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
+
+    [addHabitProgress.rejected]: (state, action) => {
+      // state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
+    [getHabitSingleProgress.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
+    [getHabitProgressList.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
+    [updateSingleProgress.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
         state.error = action.payload;

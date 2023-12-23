@@ -36,7 +36,7 @@ const getWeekdays = (weekdays) => {
 };
 
 function ReminderDetailPage() {
-  const [reminder, setReminder] = useState({});
+  // const [reminder, setReminder] = useState({});
   const [isReminderEdit, setIsReminderEdit] = useState(false);
   const [isReminderDelete, setIsReminderDelete] = useState(false);
 
@@ -53,7 +53,7 @@ function ReminderDetailPage() {
 
   const handleReminderEdit = async ({
     reminderId,
-    reminderFrequency,
+    // reminderFrequency,
     time,
     onWeekdays,
     startDate,
@@ -82,29 +82,30 @@ function ReminderDetailPage() {
         status,
       })
     );
+    dispatch(getHabitSingleReminder(reminderId));
   };
 
   useEffect(() => {
-    const getReminder = async (reminderId) => {
-      try {
-        // const response = await axios.get(
-        //   `${process.env.REACT_APP_BACKEND_API}/reminders/${reminderId}`
-        // );
-        const response = await apiService.get(`/reminders/${reminderId}`);
-        console.log("getReminder response:", response);
+    // const getReminder = async (reminderId) => {
+    //   try {
+    //     // const response = await axios.get(
+    //     //   `${process.env.REACT_APP_BACKEND_API}/reminders/${reminderId}`
+    //     // );
+    //     const response = await apiService.get(`/reminders/${reminderId}`);
+    //     console.log("getReminder response:", response);
 
-        setReminder(response.data);
-        return response.data;
-      } catch (err) {
-        console.log("getReminder err:", err);
-      }
-    };
-    getReminder(reminderId);
-    // dispatch(getHabitSingleReminder(reminderId));
-  }, [reminderId]);
+    //     setReminder(response.data);
+    //     return response.data;
+    //   } catch (err) {
+    //     console.log("getReminder err:", err);
+    //   }
+    // };
+    // getReminder(reminderId);
+    dispatch(getHabitSingleReminder(reminderId));
+  }, [reminderId, dispatch]);
 
-  // console.log("reminderFrequency, time, startDate, onWeekdays, status:");
-  // console.log(reminderFrequency, time, startDate, onWeekdays, status);
+  // console.log("time, startDate, onWeekdays, status:");
+  // console.log(time, startDate, onWeekdays, status);
 
   return (
     <div>
@@ -112,10 +113,13 @@ function ReminderDetailPage() {
       {/* <div>Frequency: {reminder.reminderFrequency}</div> */}
       {/* <div>Frequency: {reminderFrequency}</div> */}
       {/* <div>On: {getWeekdays(reminder.onWeekdays)}</div> */}
-      <div>On: {getWeekdays(onWeekdays)}</div>
-      <div>Start date: {new Date(reminder.startDate).toDateString()}</div>
+      {/* <div>Start date: {new Date(reminder.startDate).toDateString()}</div>
       <div>At: {dayjs(reminder.time).format("LT")}</div>
-      <div>Status: {reminder.status}</div>
+      <div>Status: {reminder.status}</div> */}
+      <div>On: {getWeekdays(onWeekdays)}</div>
+      <div>Start date: {new Date(startDate).toDateString()}</div>
+      <div>At: {dayjs(time).format("LT")}</div>
+      <div>Status: {status}</div>
       <button onClick={() => setIsReminderEdit(true)}>Edit</button>
       <button onClick={() => setIsReminderDelete(true)}>Delete</button>
       <button onClick={() => navigate(-1)}>Cancel</button>
@@ -125,7 +129,7 @@ function ReminderDetailPage() {
           setIsReminderEdit={setIsReminderEdit}
           reminderId={reminderId}
           handleReminderEdit={handleReminderEdit}
-          reminder={reminder}
+          // reminder={reminder}
         />
       )}
       {isReminderDelete && (

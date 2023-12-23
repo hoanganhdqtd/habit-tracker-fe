@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
+import dayjs from "dayjs";
 
 const initialState = {
   isLoading: false,
@@ -25,14 +26,15 @@ export const progressSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      state.progressList = action.payload;
+      state.progressList = action.payload.progress;
     },
 
     addHabitProgressSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
 
-      state.progress = action.payload;
+      state.progressList.push(action.payload.progress);
+      state.progress = action.payload.progress;
     },
 
     updateSingleProgressSuccess(state, action) {
@@ -59,7 +61,7 @@ export const getHabitProgressList = (habitId) => async (dispatch) => {
   dispatch(progressSlice.actions.startLoading());
 
   try {
-    const response = await apiService.get(`/habit/${habitId}`);
+    const response = await apiService.get(`progress/habit/${habitId}`);
     dispatch(progressSlice.actions.getHabitProgressListSuccess(response.data));
   } catch (error) {
     console.log("Error:", error);
@@ -70,7 +72,11 @@ export const getHabitProgressList = (habitId) => async (dispatch) => {
 export const addHabitProgress = (habitId) => async (dispatch) => {
   dispatch(progressSlice.actions.startLoading());
   try {
-    const response = await apiService.post(`/progress/habit/${habitId}`, {});
+    const response = await apiService.post(`/progress/habit/${habitId}`, {
+      status: "incomplete",
+      date: dayjs(new Date()).set("hour", 0).set("minute", 0).set("second", 0),
+      habit: habitId,
+    });
     console.log("addHabitProgress response:", response);
     dispatch(progressSlice.actions.addHabitProgressSuccess(response.data));
   } catch (error) {

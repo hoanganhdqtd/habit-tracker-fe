@@ -21,6 +21,7 @@ import {
   FTimePicker,
   FRadioGroup,
 } from "./form";
+import { getHabitSingleReminder } from "../features/habit/habitSlice";
 
 const weekdays = [
   "Sunday",
@@ -61,10 +62,11 @@ function EditReminderForm({
   setIsReminderEdit,
   handleReminderEdit,
   reminderId,
-  reminder,
+  // reminder,
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   // const { reminderFrequency, onWeekdays, startDate, time, status } =
   //   useSelector((state) =>
   //     state.habit.habitDetail.reminders.filter(
@@ -72,7 +74,10 @@ function EditReminderForm({
   //     )
   //   );
   // const { reminderFrequency, onWeekdays, startDate, time, status } = reminder;
-  const { onWeekdays, startDate, time, status } = reminder;
+  // const { onWeekdays, startDate, time, status } = reminder;
+  const { onWeekdays, startDate, time, status } = useSelector(
+    (state) => state.habit.currentReminder
+  );
   console.log("reminder onWeekdays:", onWeekdays);
   console.log("reminder startDate:", startDate);
   console.log("reminder time:", time);
@@ -145,6 +150,10 @@ function EditReminderForm({
   //   methods.setValue("time", timeValue);
   //   methods.setValue("date", dateValue);
   // }, [onWeekdays, status, timeValue, dateValue]);
+
+  useEffect(() => {
+    dispatch(getHabitSingleReminder(reminderId));
+  }, [dispatch, reminderId]);
 
   return (
     <div>

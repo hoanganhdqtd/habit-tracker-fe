@@ -93,13 +93,14 @@ function HabitCard({ key, habit, isInCalendarPage, date }) {
     );
   };
 
-  const handleHabitStatusChange = async ({ habitId, status }) => {
-    console.log("handleHabitStatusChange");
-    console.log("status:", status);
-    console.log("habitId:", habitId);
-    // edit progress
-    dispatch(updateSingleProgress({ habitId, date, status }));
-  };
+  // const handleHabitStatusChange = async ({ habitId, status }) => {
+  //   console.log("handleHabitStatusChange");
+  //   console.log("status:", status);
+  //   console.log("habitId:", habitId);
+  //   // edit progress
+  //   dispatch(updateSingleProgress({ habitId, date, status }));
+  //   dispatch(getHabitById(habitId));
+  // };
 
   return (
     <Item
@@ -126,7 +127,13 @@ function HabitCard({ key, habit, isInCalendarPage, date }) {
 
         {isInCalendarPage && (
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <FSwitch name="isCompleted" label="Completed" />
+            <FSwitch
+              name="isCompleted"
+              label="Completed"
+              habitId={habit._id}
+              // status={status}
+              date={date}
+            />
           </FormProvider>
         )}
 
