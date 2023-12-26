@@ -7,15 +7,9 @@ import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
-import {
-  FormProvider,
-  FTextField,
-  FMultiCheckbox,
-  FDatePicker,
-  FTimePicker,
-} from "./form";
+import { FormProvider, FTextField } from "./form";
 
 import { updateCurrentUserProfile } from "../features/user/userSlice";
 
@@ -83,7 +77,7 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
           </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              {"Name:"}
+              <Typography variant="inherit">Name:</Typography>
               <FTextField
                 name="name"
                 fullWidth

@@ -225,7 +225,7 @@ function EditHabitForm({
               />
 
               <Typography variant="inherit">
-                On weekdays (pick some values to edit):
+                On weekdays (pick some days to edit):
               </Typography>
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
 
