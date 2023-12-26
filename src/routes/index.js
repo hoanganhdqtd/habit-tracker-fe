@@ -12,6 +12,7 @@ import UserProfilePage from "../pages/UserProfilePage";
 import CalendarPage from "../pages/CalendarPage";
 import HabitDetailPage from "../pages/HabitDetailPage";
 import ReminderDetailPage from "../pages/ReminderDetailPage";
+import StatisticsPage from "../pages/StatisticsPage";
 
 function Router() {
   return (
@@ -36,6 +37,7 @@ function Router() {
           path="/habit/:habitId/reminder/:reminderId"
           element={<ReminderDetailPage />}
         />
+        <Route path="/statistics" element={<StatisticsPage />} />
       </Route>
 
       <Route element={<MainLayout />}>

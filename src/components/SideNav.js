@@ -3,7 +3,6 @@ import React, { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 // import { usePathname } from "next/navigation";
 import { useLocation, useNavigate } from "react-router-dom";
-import ArrowTopRightOnSquareIcon from "@heroicons/react/24/solid/ArrowTopRightOnSquareIcon";
 import ChevronUpDownIcon from "@heroicons/react/24/solid/ChevronUpDownIcon";
 import {
   Box,
@@ -20,20 +19,20 @@ import { Scrollbar } from "../components/Scrollbar";
 import { SideNavItem } from "./SideNavItem";
 
 import ChartBarIcon from "@heroicons/react/24/solid/ChartBarIcon";
-import CogIcon from "@heroicons/react/24/solid/CogIcon";
+import CharPieIcon from "@heroicons/react/24/solid/ChartPieIcon";
 import LockClosedIcon from "@heroicons/react/24/solid/LockClosedIcon";
-import ShoppingBagIcon from "@heroicons/react/24/solid/ShoppingBagIcon";
+
 import UserIcon from "@heroicons/react/24/solid/UserIcon";
 import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
-import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
-import XCircleIcon from "@heroicons/react/24/solid/XCircleIcon";
+
 import CalendarIcon from "@heroicons/react/24/solid/CalendarIcon";
 import useAuth from "../hooks/useAuth";
 // import { SvgIcon } from "@mui/material";
 
 const items = [
   {
-    title: "Overview",
+    // title: "Overview",
+    title: "Habits",
     path: "/",
     authRequired: true,
     icon: (
@@ -49,6 +48,16 @@ const items = [
     icon: (
       <SvgIcon fontSize="small">
         <CalendarIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Statistics",
+    path: "/statistics",
+    authRequired: true,
+    icon: (
+      <SvgIcon fontSize="small">
+        <CharPieIcon />
       </SvgIcon>
     ),
   },
@@ -209,48 +218,6 @@ const SideNav = (props) => {
             })}
           </Stack>
         </Box>
-        {/* <Divider sx={{ borderColor: "neutral.700" }} /> */}
-        {/* <Box
-          sx={{
-            px: 2,
-            py: 3,
-          }}
-        >
-          <Typography color="neutral.100" variant="subtitle2">
-            Need more features?
-          </Typography>
-          <Typography color="neutral.500" variant="body2">
-            Check out our Pro solution template.
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              mt: 2,
-              mx: "auto",
-              width: "160px",
-              "& img": {
-                width: "100%",
-              },
-            }}
-          >
-            <img alt="Go to pro" src="/assets/devias-kit-pro.png" />
-          </Box>
-          <Button
-            component="a"
-            endIcon={
-              <SvgIcon fontSize="small">
-                <ArrowTopRightOnSquareIcon />
-              </SvgIcon>
-            }
-            fullWidth
-            href="https://material-kit-pro-react.devias.io/"
-            sx={{ mt: 2 }}
-            target="_blank"
-            variant="contained"
-          >
-            Pro Live Preview
-          </Button>
-        </Box> */}
       </Box>
     </Scrollbar>
   );

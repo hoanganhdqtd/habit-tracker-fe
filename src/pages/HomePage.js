@@ -1,9 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Button } from "@mui/material";
+import {
+  Typography,
+  Button,
+  SvgIcon,
+  Box,
+  Container,
+  Card,
+} from "@mui/material";
 
 import { styled } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -57,50 +66,74 @@ function HomePage() {
   }, [dispatch]);
 
   return (
-    <div>
-      <h1>Homepage</h1>
-      <SearchBox />
-      <button type="button" onClick={() => setAddNewHabit(true)}>
-        Add habit
-      </button>
-      {addNewHabit && (
-        <AddHabitForm
-          addNewHabit={addNewHabit}
-          setAddNewHabit={setAddNewHabit}
-          dateValue={dateValue}
-          tags={tags}
-        />
-      )}
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label="Pick date"
-          value={dateValue}
-          onChange={(newDateValue) =>
-            setDateValue(
-              dayjs(newDateValue)
-                .set("hour", 0)
-                .set("minute", 0)
-                .set("second", 0)
-            )
-          }
-        />
-      </LocalizationProvider>
-      <HabitList date={dateValue} />
-      {totalPages ? (
-        <CenterPagination
-          sx={{
-            marginTop: "15px",
-            // "Button.MuiButtonBase-root.MuiPaginationItem-root.Mui-selected": {
-            //   backgroundColor: "#d74742",
-            // },
-          }}
-          count={totalPages}
-          color="primary"
-          page={pageNum}
-          onChange={handlePageChange}
-        />
-      ) : null}
-    </div>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 3,
+      }}
+    >
+      <Container maxWidth="xl">
+        <Stack spacing={3}>
+          <Stack direction="row" justifyContent="space-between" spacing={4}>
+            <Typography variant="h4">Habits</Typography>
+            <Button
+              startIcon={
+                <SvgIcon fontSize="small">
+                  <PlusIcon />
+                </SvgIcon>
+              }
+              variant="contained"
+              onClick={() => setAddNewHabit(true)}
+            >
+              Add Habit
+            </Button>
+            {addNewHabit && (
+              <AddHabitForm
+                addNewHabit={addNewHabit}
+                setAddNewHabit={setAddNewHabit}
+                dateValue={dateValue}
+                tags={tags}
+              />
+            )}
+          </Stack>
+
+          <Stack direction="row" justifyContent="space-between" spacing={4}>
+            <SearchBox />
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Pick date"
+                value={dateValue}
+                onChange={(newDateValue) =>
+                  setDateValue(
+                    dayjs(newDateValue)
+                      .set("hour", 0)
+                      .set("minute", 0)
+                      .set("second", 0)
+                  )
+                }
+              />
+            </LocalizationProvider>
+          </Stack>
+
+          <HabitList date={dateValue} />
+          {totalPages ? (
+            <CenterPagination
+              sx={{
+                marginTop: "15px",
+                // "Button.MuiButtonBase-root.MuiPaginationItem-root.Mui-selected": {
+                //   backgroundColor: "#d74742",
+                // },
+              }}
+              count={totalPages}
+              color="primary"
+              page={pageNum}
+              onChange={handlePageChange}
+            />
+          ) : null}
+        </Stack>
+      </Container>
+    </Box>
   );
 }
 

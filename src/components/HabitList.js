@@ -83,9 +83,9 @@ export default function HabitList({ date, isInCalendarPage }) {
     <LoadingScreen />
   ) : !habits.length ? (
     !date ? (
-      <h1>No habit found.</h1>
+      <Typography variant="h4">No habit found.</Typography>
     ) : (
-      <h1>There's no habit on this day.</h1>
+      <Typography variant="h4">There's no habit on this day.</Typography>
     )
   ) : (
     <Box sx={{ flexGrow: 1, overflow: "hidden", px: 3 }}>
