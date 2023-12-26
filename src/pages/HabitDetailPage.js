@@ -2,10 +2,29 @@ import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getHabitById, editHabit } from "../features/habit/habitSlice";
+import {
+  getHabitById,
+  editHabit,
+  deleteHabit,
+} from "../features/habit/habitSlice";
 
 import AddReminderForm from "../components/AddReminderForm";
 import EditHabitForm from "../components/EditHabitForm";
+import DeleteHabitConfirm from "../components/DeleteHabitConfirm";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Container,
+  Divider,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const weekdaysByIndex = {
   0: "Sunday",
@@ -17,12 +36,23 @@ const weekdaysByIndex = {
   6: "Saturday",
 };
 
+const weekdays = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 const getWeekdays = (weekdays) =>
   weekdays.map((weekday) => weekdaysByIndex[weekday]).join(", ");
 
 function HabitDetailPage() {
   const [isAddNewReminder, setIsAddNewReminder] = useState(false);
   const [isHabitEdit, setIsHabitEdit] = useState(false);
+  const [isHabitDelete, setIsHabitDelete] = useState(false);
   const { habitId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,8 +63,17 @@ function HabitDetailPage() {
 
   const { habitDetail } = useSelector((state) => state.habit);
 
-  const { name, goal, startDate, duration, onWeekdays, reminders } =
-    habitDetail;
+  const {
+    name,
+    description,
+    goal,
+    startDate,
+    duration,
+    onWeekdays,
+    reminders,
+  } = habitDetail;
+
+  console.log("onWeekdays:", onWeekdays);
 
   const handleHabitEdit = async ({
     habitId,
@@ -60,55 +99,265 @@ function HabitDetailPage() {
     );
   };
 
+  const handleHabitDelete = async (habitId) => {
+    setIsHabitDelete(false);
+    dispatch(deleteHabit({ habitId }));
+    navigate("/", { replace: true });
+  };
+
+  // const newDate = dayjs()
+  //   .set("hour", 0)
+  //   .set("minute", 0)
+  //   .set("second", 0)
+  //   .set("millisecond", 0);
+  // const [dateValue, setDateValue] = useState(newDate);
+
+  // return (
+  //   <div>
+  //     <h1>Habit Detail</h1>
+  //     <div>Name: {name}</div>
+  //     <div>Goal: {goal}</div>
+  //     <div>Start date: {new Date(startDate).toDateString()}</div>
+  //     <div>Duration: {duration}h</div>
+  //     <div>On weekdays: {getWeekdays(onWeekdays)}</div>
+  //     <div>
+  //       Reminders:{" "}
+  //       {!reminders.length
+  //         ? "No reminder"
+  //         : reminders.map((reminder) => (
+  //             <button
+  //               key={reminder._id}
+  //               onClick={() =>
+  //                 navigate(`/habit/${habitId}/reminder/${reminder._id}`)
+  //               }
+  //             >
+  //               {dayjs(reminder.time).format("LT")}
+  //             </button>
+  //           ))}
+  //     </div>
+  //     <div>
+  //       <button onClick={() => setIsHabitEdit(true)}>Edit</button>
+  //       {isHabitEdit && (
+  //         <EditHabitForm
+  //           isHabitEdit={isHabitEdit}
+  //           setIsHabitEdit={setIsHabitEdit}
+  //           habitId={habitId}
+  //           handleHabitEdit={handleHabitEdit}
+  //         />
+  //       )}
+  //       <button onClick={() => setIsAddNewReminder(true)}>Add reminders</button>
+  //       {isAddNewReminder && (
+  //         <AddReminderForm
+  //           isAddNewReminder={isAddNewReminder}
+  //           setIsAddNewReminder={setIsAddNewReminder}
+  //           habitId={habitId}
+  //         />
+  //       )}
+  //       <button onClick={() => navigate(-1)}>Cancel</button>
+  //     </div>
+  //   </div>
+  // );
   return (
-    <div>
-      <h1>Habit Detail</h1>
-      <div>Name: {name}</div>
-      <div>Goal: {goal}</div>
-      <div>Start date: {new Date(startDate).toDateString()}</div>
-      <div>Duration: {duration}h</div>
-      <div>On weekdays: {getWeekdays(onWeekdays)}</div>
-      {/* <div>Name: </div>
-      <div>Goal: </div>
-      <div>Start date: </div>
-      <div>Duration: </div>
-      <div>On weekdays: </div> */}
-      <div>
-        Reminders:{" "}
-        {!reminders.length
-          ? "No reminder"
-          : reminders.map((reminder) => (
-              <button
-                key={reminder._id}
-                onClick={() =>
-                  navigate(`/habit/${habitId}/reminder/${reminder._id}`)
-                }
-              >
-                {dayjs(reminder.time).format("LT")}
-              </button>
-            ))}
-      </div>
-      <div>
-        <button onClick={() => setIsHabitEdit(true)}>Edit</button>
-        {isHabitEdit && (
-          <EditHabitForm
-            isHabitEdit={isHabitEdit}
-            setIsHabitEdit={setIsHabitEdit}
-            habitId={habitId}
-            handleHabitEdit={handleHabitEdit}
-          />
-        )}
-        <button onClick={() => setIsAddNewReminder(true)}>Add reminders</button>
-        {isAddNewReminder && (
-          <AddReminderForm
-            isAddNewReminder={isAddNewReminder}
-            setIsAddNewReminder={setIsAddNewReminder}
-            habitId={habitId}
-          />
-        )}
-        <button onClick={() => navigate(-1)}>Cancel</button>
-      </div>
-    </div>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 8,
+      }}
+    >
+      <Container maxWidth="lg">
+        <Stack spacing={4}>
+          <div>
+            <Typography variant="h4">Habit detail</Typography>
+          </div>
+          <div>
+            <Grid container spacing={3}>
+              <Grid xs={12} md={6} lg={8}>
+                <Card>
+                  {/* <CardHeader title="Habit detail" /> */}
+                  <CardContent sx={{ pt: 0 }}>
+                    <Box sx={{ m: 2 }}>
+                      <Stack>
+                        <Grid spacing={3}>
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="Name"
+                              name="name"
+                              required
+                              value={name || "Name"}
+                            />
+                          </Grid>
+
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="Description"
+                              name="description"
+                              value={description || "No description"}
+                            />
+                          </Grid>
+
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="Goal"
+                              name="goal"
+                              required
+                              value={goal || "Goal"}
+                            />
+                          </Grid>
+
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="Start date"
+                              name="startDate"
+                              required
+                              value={new Date(startDate).toDateString()}
+                            />
+                          </Grid>
+
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="Duration"
+                              name="duration"
+                              required
+                              value={duration || "Duration"}
+                            />
+                          </Grid>
+
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="On weekdays"
+                              name="onWeekdays"
+                              required
+                              value={
+                                onWeekdays.length
+                                  ? getWeekdays(onWeekdays)
+                                  : "No weekdays"
+                              }
+                            />
+                          </Grid>
+
+                          <Grid sx={{ my: 2 }}>
+                            <Typography
+                              variant="inherit"
+                              sx={{ fontWeight: "bold" }}
+                            >
+                              Reminders:{" "}
+                            </Typography>
+                            <Stack direction="row" spacing={2}>
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "flex-start",
+                                  flexWrap: "wrap",
+                                }}
+                              >
+                                {!reminders.length ? (
+                                  <Typography>No reminder</Typography>
+                                ) : (
+                                  reminders.map((reminder) => (
+                                    <Button
+                                      variant="contained"
+                                      key={reminder._id}
+                                      size="small"
+                                      sx={{ mr: 1, mt: 1 }}
+                                      onClick={() =>
+                                        navigate(
+                                          `/habit/${habitId}/reminder/${reminder._id}`
+                                        )
+                                      }
+                                    >
+                                      {dayjs(reminder.time).format("LT")}
+                                    </Button>
+                                  ))
+                                )}
+                              </Box>
+                            </Stack>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+
+                                // justifyContent: "flex-end",
+
+                                mt: 1,
+                              }}
+                            >
+                              <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={() => setIsAddNewReminder(true)}
+                              >
+                                Add new reminder
+                              </Button>
+                            </Box>
+                          </Grid>
+                        </Grid>
+                      </Stack>
+                    </Box>
+                  </CardContent>
+
+                  <Divider />
+                  <CardActions sx={{ justifyContent: "flex-end" }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => setIsHabitEdit(true)}
+                    >
+                      Edit habit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => setIsHabitDelete(true)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      color="secondary"
+                      variant="outlined"
+                      onClick={() => navigate(-1)}
+                    >
+                      Cancel
+                    </Button>
+
+                    {isHabitEdit && (
+                      <EditHabitForm
+                        isHabitEdit={isHabitEdit}
+                        setIsHabitEdit={setIsHabitEdit}
+                        handleHabitEdit={handleHabitEdit}
+                        habitId={habitId}
+                      />
+                    )}
+
+                    {isHabitDelete && (
+                      <DeleteHabitConfirm
+                        habitId={habitId}
+                        setIsHabitDelete={setIsHabitDelete}
+                        handleHabitDelete={handleHabitDelete}
+                      />
+                    )}
+
+                    {isAddNewReminder && (
+                      <AddReminderForm
+                        isAddNewReminder={isAddNewReminder}
+                        setIsAddNewReminder={setIsAddNewReminder}
+                        habitId={habitId}
+                      />
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            </Grid>
+          </div>
+        </Stack>
+      </Container>
+    </Box>
   );
 }
 

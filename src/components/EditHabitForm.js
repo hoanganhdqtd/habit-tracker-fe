@@ -154,7 +154,7 @@ function EditHabitForm({
                   },
                 }}
               /> */}
-              {"Name"}
+              <Typography variant="inherit">Habit name:</Typography>
               <FTextField
                 name="name"
                 fullWidth
@@ -169,7 +169,7 @@ function EditHabitForm({
                   },
                 }}
               />
-              {"Description"}
+              <Typography variant="inherit">Description:</Typography>
               <FTextField
                 name="description"
                 fullWidth
@@ -184,7 +184,8 @@ function EditHabitForm({
                   },
                 }}
               />
-              {"Goal"}
+
+              <Typography variant="inherit">Goal:</Typography>
               <FTextField
                 name="goal"
                 fullWidth
@@ -200,13 +201,14 @@ function EditHabitForm({
                 }}
               />
 
+              <Typography variant="inherit">Start date:</Typography>
               <FDatePicker
                 dateValue={dayjs(startDate)}
                 setDateValue={setDateValue}
               />
               {/* <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} /> */}
 
-              {"Duration (hours/day)"}
+              <Typography variant="inherit">Duration (hours/day):</Typography>
               <FTextField
                 name="duration"
                 fullWidth
@@ -221,7 +223,10 @@ function EditHabitForm({
                   },
                 }}
               />
-              {"On weekdays:"}
+
+              <Typography variant="inherit">
+                On weekdays (pick some values to edit):
+              </Typography>
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
 
               {/* <FMultiCheckbox name="tags" options={tags} /> */}

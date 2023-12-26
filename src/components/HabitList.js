@@ -33,51 +33,11 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 export default function HabitList({ date, isInCalendarPage }) {
-  const [isHabitEdit, setIsHabitEdit] = useState(false);
-  const [isHabitDelete, setIsHabitDelete] = useState(false);
-
-  const dispatch = useDispatch();
-  const handleHabitDelete = async (habitId) => {
-    setIsHabitDelete(false);
-    dispatch(deleteHabit({ habitId }));
-  };
-
-  const handleHabitEdit = async ({
-    habitId,
-    name,
-    goal,
-    startDate,
-    duration,
-    onWeekdays,
-  }) => {
-    console.log(
-      "habitId, name, goal, startDate, duration, onWeekdays:",
-      habitId,
-      name,
-      goal,
-      startDate,
-      duration,
-      onWeekdays
-    );
-    setIsHabitEdit(false);
-    dispatch(
-      editHabit({ habitId, name, goal, startDate, duration, onWeekdays })
-    );
-  };
-
   const { currentPageHabits, habitsById, isLoading, search } = useSelector(
     (state) => state.habit
   );
 
   const habits = currentPageHabits.map((habitId) => habitsById[habitId]);
-
-  console.log("HabitList habits:", habits);
-
-  const navigate = useNavigate();
-
-  const handleChangePage = () => {
-    dispatch(changePage());
-  };
 
   return isLoading ? (
     <LoadingScreen />
@@ -90,61 +50,6 @@ export default function HabitList({ date, isInCalendarPage }) {
   ) : (
     <Box sx={{ flexGrow: 1, overflow: "hidden", px: 3 }}>
       {habits.map((habit) => {
-        {
-          /* <Item
-            key={habit._id}
-            sx={{
-              my: 1,
-              mx: "auto",
-              p: 2,
-              cursor: "pointer",
-            }}
-          >
-            <Stack spacing={2} direction="row" alignItems="center">
-              <Avatar onClick={() => navigate("/account")}>A</Avatar>
-              <Typography
-                noWrap
-                onClick={() => {
-                  console.log("habit._id:", habit._id);
-                  navigate(`/habit/${habit._id}`);
-                }}
-              >
-                {habit.name}
-              </Typography>
-              <Typography>{"tags"}</Typography>
-              <Button
-                variant="contained"
-                onClick={() => {
-                  console.log("Edit form");
-                  setIsHabitEdit(true);
-                }}
-              >
-                Edit
-              </Button>
-              {isHabitEdit && (
-                <EditHabitForm
-                  isHabitEdit={isHabitEdit}
-                  setIsHabitEdit={setIsHabitEdit}
-                  handleHabitEdit={handleHabitEdit}
-                  habitId={habit._id}
-                />
-              )}
-              <Button
-                variant="contained"
-                onClick={() => setIsHabitDelete(true)}
-              >
-                Delete
-              </Button>
-              {isHabitDelete && (
-                <DeleteHabitConfirm
-                  handleHabitDelete={handleHabitDelete}
-                  setIsHabitDelete={setIsHabitDelete}
-                  habitId={habit._id}
-                />
-              )}
-            </Stack>
-          </Item> */
-        }
         return (
           <HabitCard
             key={habit._id}

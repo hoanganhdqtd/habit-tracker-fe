@@ -22,7 +22,7 @@ export const progressSlice = createSlice({
       state.error = action.payload;
     },
 
-    getHabitProgressListSuccess(state, action) {
+    getSingleHabitProgressListSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
 
@@ -57,12 +57,14 @@ export const progressSlice = createSlice({
   },
 });
 
-export const getHabitProgressList = (habitId) => async (dispatch) => {
+export const getSingleHabitProgressList = (habitId) => async (dispatch) => {
   dispatch(progressSlice.actions.startLoading());
 
   try {
     const response = await apiService.get(`progress/habit/${habitId}`);
-    dispatch(progressSlice.actions.getHabitProgressListSuccess(response.data));
+    dispatch(
+      progressSlice.actions.getSingleHabitProgressListSuccess(response.data)
+    );
   } catch (error) {
     console.log("Error:", error);
     dispatch(progressSlice.actions.hasError(error));

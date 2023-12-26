@@ -13,6 +13,19 @@ import {
   editHabitSingleReminder,
   getHabitSingleReminder,
 } from "../features/habit/habitSlice";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  Container,
+  Divider,
+  Grid,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const weekdaysByIndex = {
   0: "Sunday",
@@ -108,38 +121,115 @@ function ReminderDetailPage() {
   // console.log(time, startDate, onWeekdays, status);
 
   return (
-    <div>
-      <h1>Reminder detail</h1>
-      {/* <div>Frequency: {reminder.reminderFrequency}</div> */}
-      {/* <div>Frequency: {reminderFrequency}</div> */}
-      {/* <div>On: {getWeekdays(reminder.onWeekdays)}</div> */}
-      {/* <div>Start date: {new Date(reminder.startDate).toDateString()}</div>
-      <div>At: {dayjs(reminder.time).format("LT")}</div>
-      <div>Status: {reminder.status}</div> */}
-      <div>On: {getWeekdays(onWeekdays)}</div>
-      <div>Start date: {new Date(startDate).toDateString()}</div>
-      <div>At: {dayjs(time).format("LT")}</div>
-      <div>Status: {status}</div>
-      <button onClick={() => setIsReminderEdit(true)}>Edit</button>
-      <button onClick={() => setIsReminderDelete(true)}>Delete</button>
-      <button onClick={() => navigate(-1)}>Cancel</button>
-      {isReminderEdit && (
-        <EditReminderForm
-          isReminderEdit={isReminderEdit}
-          setIsReminderEdit={setIsReminderEdit}
-          reminderId={reminderId}
-          handleReminderEdit={handleReminderEdit}
-          // reminder={reminder}
-        />
-      )}
-      {isReminderDelete && (
-        <DeleteReminderConfirm
-          setIsReminderDelete={setIsReminderDelete}
-          habitId={habitId}
-          reminderId={reminderId}
-        />
-      )}
-    </div>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 8,
+      }}
+    >
+      <Container maxWidth="lg">
+        <Stack spacing={4}>
+          <div>
+            <Typography variant="h4">Reminder detail</Typography>
+          </div>
+          <div>
+            <Grid container spacing={3}>
+              <Grid xs={12} md={6} lg={8}>
+                <Card>
+                  {/* <CardHeader title="Habit detail" /> */}
+                  <CardContent sx={{ pt: 0 }}>
+                    <Box sx={{ m: 2 }}>
+                      <Stack>
+                        <Grid spacing={3}>
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="On weekdays"
+                              name="onWeekdays"
+                              required
+                              value={getWeekdays(onWeekdays)}
+                            />
+                          </Grid>
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="Start date"
+                              name="startDate"
+                              required
+                              value={new Date(startDate).toDateString()}
+                            />
+                          </Grid>
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="At time"
+                              name="time"
+                              required
+                              value={dayjs(time).format("LT")}
+                            />
+                          </Grid>
+                          <Grid sx={{ my: 2 }}>
+                            <TextField
+                              fullWidth
+                              label="Status"
+                              name="status"
+                              required
+                              value={status}
+                            />
+                          </Grid>
+                        </Grid>
+                      </Stack>
+                    </Box>
+                  </CardContent>
+
+                  <Divider />
+                  <CardActions sx={{ justifyContent: "flex-end" }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => setIsReminderEdit(true)}
+                    >
+                      Edit reminder
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => setIsReminderDelete(true)}
+                    >
+                      Delete
+                    </Button>
+                    <Button
+                      color="secondary"
+                      variant="outlined"
+                      onClick={() => navigate(-1)}
+                    >
+                      Cancel
+                    </Button>
+
+                    {isReminderEdit && (
+                      <EditReminderForm
+                        isReminderEdit={isReminderEdit}
+                        setIsReminderEdit={setIsReminderEdit}
+                        reminderId={reminderId}
+                        handleReminderEdit={handleReminderEdit}
+                      />
+                    )}
+
+                    {isReminderDelete && (
+                      <DeleteReminderConfirm
+                        setIsReminderDelete={setIsReminderDelete}
+                        habitId={habitId}
+                        reminderId={reminderId}
+                      />
+                    )}
+                  </CardActions>
+                </Card>
+              </Grid>
+            </Grid>
+          </div>
+        </Stack>
+      </Container>
+    </Box>
   );
 }
 

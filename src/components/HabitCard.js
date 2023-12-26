@@ -1,14 +1,18 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import { styled } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { FormProvider } from "./form";
+import { red } from "@mui/material/colors";
 
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { FSwitch, FormProvider } from "./form";
+import { useForm } from "react-hook-form";
+
 import {
   deleteHabit,
   editHabit,
@@ -20,8 +24,6 @@ import {
 } from "../features/progress/progressSlice";
 import EditHabitForm from "./EditHabitForm";
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
-import { FSwitch } from "./form";
-import { useForm } from "react-hook-form";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -137,7 +139,7 @@ function HabitCard({ key, habit, isInCalendarPage, date }) {
           </FormProvider>
         )}
 
-        <Button
+        {/* <Button
           variant="contained"
           onClick={() => {
             console.log("Habit edit form");
@@ -153,8 +155,12 @@ function HabitCard({ key, habit, isInCalendarPage, date }) {
             handleHabitEdit={handleHabitEdit}
             habitId={habit._id}
           />
-        )}
-        <Button variant="contained" onClick={() => setIsHabitDelete(true)}>
+        )} */}
+        <Button
+          variant="contained"
+          color="error"
+          onClick={() => setIsHabitDelete(true)}
+        >
           Delete
         </Button>
         {isHabitDelete && (

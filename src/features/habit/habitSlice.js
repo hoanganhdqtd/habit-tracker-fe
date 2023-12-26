@@ -285,11 +285,11 @@ export const getHabitSingleProgress = createAsyncThunk(
   }
 );
 
-export const getHabitProgressList = createAsyncThunk(
-  "habits/getHabitProgressList",
+export const getSingleHabitProgressList = createAsyncThunk(
+  "habits/getSingleHabitProgressList",
   async (habitId, { rejectWithValue, dispatch }) => {
     try {
-      const response = await apiService.get(`/habit/${habitId}`);
+      const response = await apiService.get(`/habits/${habitId}`);
       console.log("response.data:", response.data);
       return response.data;
     } catch (err) {
@@ -379,7 +379,7 @@ export const habitSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    [getHabitProgressList.pending]: (state) => {
+    [getSingleHabitProgressList.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
     },
@@ -537,7 +537,7 @@ export const habitSlice = createSlice({
       state.isLoading = false;
       state.currentProgress = action.payload;
     },
-    [getHabitProgressList.fulfilled]: (state, action) => {
+    [getSingleHabitProgressList.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.habitDetail.progressList = action.payload.progressList;
     },
@@ -646,7 +646,7 @@ export const habitSlice = createSlice({
         state.error = action.error;
       }
     },
-    [getHabitProgressList.rejected]: (state, action) => {
+    [getSingleHabitProgressList.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
         state.error = action.payload;

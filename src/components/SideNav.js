@@ -133,9 +133,10 @@ const SideNav = (props) => {
           display: "flex",
           flexDirection: "column",
           height: "100%",
+          pt: 5,
         }}
       >
-        <Box sx={{ p: 3 }}>
+        {/* <Box sx={{ p: 3 }}>
           <Box
             component={NavLink}
             href="/"
@@ -172,7 +173,7 @@ const SideNav = (props) => {
             </SvgIcon>
           </Box>
         </Box>
-        <Divider sx={{ borderColor: "neutral.700" }} />
+        <Divider sx={{ borderColor: "neutral.700" }} /> */}
         <Box
           component="nav"
           sx={{
