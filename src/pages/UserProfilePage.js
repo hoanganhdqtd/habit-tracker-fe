@@ -1,14 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserProfile } from "../features/user/userSlice";
 import LoadingScreen from "../components/LoadingScreen";
 import EditProfileForm from "../components/EditProfileForm";
+import UploadAvatar from "../components/UploadAvatar";
+
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
+  TextField,
+  Unstable_Grid2 as Grid,
+  Avatar,
+  Typography,
+  Container,
+  Stack,
+} from "@mui/material";
 
 function UserProfilePage() {
   const [isProfileEdit, setIsProfileEdit] = useState(false);
 
   const { currentUser, isLoading } = useSelector((state) => state.user);
-  let name, email, avatarUrl;
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -16,32 +32,122 @@ function UserProfilePage() {
   }, [dispatch]);
 
   // console.log("currentUser:", currentUser);
+  let name, email, avatarUrl;
   if (currentUser) {
     name = currentUser.name;
     email = currentUser.email;
     avatarUrl = currentUser.avatarUrl;
   }
 
+  // const { name, email, avatarUrl } = currentUser;
+
   // to save for refresh
 
   return isLoading ? (
     <LoadingScreen />
   ) : (
-    <div>
-      UserProfilePage
-      <div>Name: {name}</div>
-      <div>Email: {email}</div>
-      <div>Avatar: {avatarUrl}</div>
-      <div>
-        <button onClick={() => setIsProfileEdit(true)}>Edit</button>
-        {isProfileEdit && (
-          <EditProfileForm
-            isProfileEdit={isProfileEdit}
-            setIsProfileEdit={setIsProfileEdit}
-          />
-        )}
-      </div>
-    </div>
+    <>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          py: 8,
+        }}
+      >
+        <Container maxWidth="lg">
+          <Stack spacing={3}>
+            <div>
+              <Typography variant="h4">Account</Typography>
+            </div>
+            <div>
+              <Grid container spacing={3}>
+                <Grid xs={12} md={6} lg={4}>
+                  <Card>
+                    <CardContent>
+                      <Box
+                        sx={{
+                          alignItems: "center",
+                          display: "flex",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <Avatar
+                          src={avatarUrl}
+                          sx={{
+                            height: 80,
+                            mb: 2,
+                            width: 80,
+                          }}
+                        />
+                        <Typography gutterBottom variant="h5">
+                          {name}
+                        </Typography>
+                        <Typography color="text.secondary" variant="body2">
+                          {email}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+                <Grid xs={12} md={6} lg={8}>
+                  <Card>
+                    <CardHeader title="Profile" />
+                    <CardContent sx={{ pt: 0 }}>
+                      <Box sx={{ m: -1.5 }}>
+                        <Grid container spacing={3}>
+                          <Grid>
+                            <TextField
+                              fullWidth
+                              label="Name"
+                              name="name"
+                              required
+                              value={name}
+                            />
+                          </Grid>
+                          <Grid>
+                            <TextField
+                              fullWidth
+                              label="Email"
+                              name="email"
+                              required
+                              value={email}
+                            />
+                          </Grid>
+                          <Grid>
+                            <TextField
+                              fullWidth
+                              label="Avatar"
+                              name="avatarUrl"
+                              required
+                              value={avatarUrl}
+                            />
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </CardContent>
+                    <Divider />
+                    <CardActions sx={{ justifyContent: "flex-end" }}>
+                      <Button
+                        variant="contained"
+                        onClick={() => setIsProfileEdit(true)}
+                      >
+                        Edit Profile
+                      </Button>
+                      {isProfileEdit && (
+                        <EditProfileForm
+                          isProfileEdit={isProfileEdit}
+                          setIsProfileEdit={setIsProfileEdit}
+                        />
+                      )}
+                    </CardActions>
+                  </Card>
+                </Grid>
+              </Grid>
+            </div>
+          </Stack>
+        </Container>
+      </Box>
+    </>
   );
 }
 

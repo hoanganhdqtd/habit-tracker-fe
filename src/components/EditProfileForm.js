@@ -41,7 +41,11 @@ const style = {
 function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-  const { name, password, avatarUrl } = currentUser;
+  const { name, email, avatarUrl } = currentUser;
+
+  defaultValues.name = name;
+  defaultValues.email = email;
+  defaultValues.avatarUrl = avatarUrl;
 
   const methods = useForm({ defaultValues });
   const {
@@ -85,7 +89,7 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
                 fullWidth
                 rows={4}
                 // placeholder="Name"
-                value={name}
+                // value={name}
                 required={true}
                 sx={{
                   "& fieldset": {

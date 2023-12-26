@@ -6,9 +6,9 @@ import { cloudinaryUpload } from "../../utils/cloudinary";
 const initialState = {
   isLoading: false,
   error: null,
-  updatedProfile: null,
-  selectedUser: null,
-  currentUser: null,
+  updatedProfile: {},
+  selectedUser: {},
+  currentUser: {},
 };
 
 export const userSlice = createSlice({
@@ -48,7 +48,7 @@ export const userSlice = createSlice({
       state.selectedUser = action.payload;
     },
 
-    getCurrentUserSuccess(state, action) {
+    getCurrentUserProfileSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
 
@@ -135,7 +135,7 @@ export const getCurrentUserProfile = () => async (dispatch) => {
   dispatch(userSlice.actions.startLoading());
   try {
     const response = await apiService.get("/users/me");
-    dispatch(userSlice.actions.getCurrentUserSuccess(response.data));
+    dispatch(userSlice.actions.getCurrentUserProfileSuccess(response.data));
     return response.data;
   } catch (error) {
     dispatch(userSlice.actions.hasError(error));
