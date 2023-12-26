@@ -112,51 +112,6 @@ function HabitDetailPage() {
   //   .set("millisecond", 0);
   // const [dateValue, setDateValue] = useState(newDate);
 
-  // return (
-  //   <div>
-  //     <h1>Habit Detail</h1>
-  //     <div>Name: {name}</div>
-  //     <div>Goal: {goal}</div>
-  //     <div>Start date: {new Date(startDate).toDateString()}</div>
-  //     <div>Duration: {duration}h</div>
-  //     <div>On weekdays: {getWeekdays(onWeekdays)}</div>
-  //     <div>
-  //       Reminders:{" "}
-  //       {!reminders.length
-  //         ? "No reminder"
-  //         : reminders.map((reminder) => (
-  //             <button
-  //               key={reminder._id}
-  //               onClick={() =>
-  //                 navigate(`/habit/${habitId}/reminder/${reminder._id}`)
-  //               }
-  //             >
-  //               {dayjs(reminder.time).format("LT")}
-  //             </button>
-  //           ))}
-  //     </div>
-  //     <div>
-  //       <button onClick={() => setIsHabitEdit(true)}>Edit</button>
-  //       {isHabitEdit && (
-  //         <EditHabitForm
-  //           isHabitEdit={isHabitEdit}
-  //           setIsHabitEdit={setIsHabitEdit}
-  //           habitId={habitId}
-  //           handleHabitEdit={handleHabitEdit}
-  //         />
-  //       )}
-  //       <button onClick={() => setIsAddNewReminder(true)}>Add reminders</button>
-  //       {isAddNewReminder && (
-  //         <AddReminderForm
-  //           isAddNewReminder={isAddNewReminder}
-  //           setIsAddNewReminder={setIsAddNewReminder}
-  //           habitId={habitId}
-  //         />
-  //       )}
-  //       <button onClick={() => navigate(-1)}>Cancel</button>
-  //     </div>
-  //   </div>
-  // );
   return (
     <Box
       component="main"
