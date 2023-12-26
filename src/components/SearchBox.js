@@ -1,11 +1,11 @@
-// import { SearchOutlined } from "@mui/icons-material";
-// import { Stack, Container, Grid, Typography } from "@mui/material";
-// import { Box } from "@mui/system";
-// import React from "react";
+import React, { useState } from "react";
 // import { useForm } from "react-hook-form";
-// import { useDispatch } from "react-redux";
-// import { changePage, searchQuery } from "../features/habit/habitSlice";
+import { useDispatch } from "react-redux";
+import { changePage, searchQuery } from "../features/habit/habitSlice";
 // import { FormProvider, FTextField } from "./form";
+
+import { Card, InputAdornment, OutlinedInput, SvgIcon } from "@mui/material";
+import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 
 // const styles = {
 //   container: {
@@ -53,73 +53,29 @@
 //   search: "",
 // };
 
-// export const SearchBox = () => {
-//   const methods = useForm(defaultValues);
-//   const { handleSubmit } = methods;
-//   const dispatch = useDispatch();
-
-//   const onSubmit = (data) => {
-//     console.log(data);
-//     dispatch(searchQuery(data.search));
-//     dispatch(changePage(1));
-//   };
-
-//   return (
-//     <Container maxWidth="lg" sx={styles.container}>
-//       <Grid
-//         container
-//         maxWidth="md"
-//         sx={{ paddingY: "2rem" }}
-//         spacing={{ xs: 2, md: 4 }}
-//         columns={{ xs: 12, sm: 12, md: 12 }}
-//       >
-//         <Grid item xs={12} sm={12} md={6} sx={styles.center}>
-//           <Stack sx={{ width: { xs: "90%", md: "100%" } }}>
-//             <Typography variant="h5">Search habits</Typography>
-//             <FormProvider
-//               methods={methods}
-//               onSubmit={handleSubmit(onSubmit)}
-//               placeholder="Search habits by name or tags"
-//             >
-//               <Stack direction="row" alignItems="center" spacing={2}>
-//                 <FTextField name="search" sx={styles.inputText} />
-//                 <SearchOutlined sx={styles.icon} />
-//               </Stack>
-//             </FormProvider>
-//             <Typography></Typography>
-//           </Stack>
-//         </Grid>
-//       </Grid>
-//     </Container>
-//   );
-// };
-
-import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
-import { Card, InputAdornment, OutlinedInput, SvgIcon } from "@mui/material";
-import { FormProvider, useForm } from "react-hook-form";
-import { changePage, searchQuery } from "../features/habit/habitSlice";
-import { useDispatch } from "react-redux";
-import { useState } from "react";
-
-const defaultValues = {
-  search: "",
-};
-
 export const SearchBox = () => {
   const [query, setQuery] = useState("");
 
+  // const methods = useForm(defaultValues);
+  // const { handleSubmit } = methods;
   const dispatch = useDispatch();
 
+  // const onSubmit = (data) => {
+  //   console.log(data);
+  //   dispatch(searchQuery(data.search));
+  //   dispatch(changePage(1));
+  // };
+
   const onChange = (e) => {
+    console.log(e.target.value);
     setQuery(e.target.value);
-    dispatch(searchQuery(query));
+    dispatch(searchQuery(e.target.value));
     dispatch(changePage(1));
   };
 
   return (
     <OutlinedInput
       defaultValue=""
-      onChange={onChange}
       fullWidth
       placeholder="Search habits"
       startAdornment={
@@ -130,6 +86,7 @@ export const SearchBox = () => {
         </InputAdornment>
       }
       sx={{ maxWidth: 500, px: 2 }}
+      onChange={onChange}
     />
   );
 };

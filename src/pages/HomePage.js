@@ -70,7 +70,7 @@ function HomePage() {
       component="main"
       sx={{
         flexGrow: 1,
-        py: 3,
+        py: 4,
       }}
     >
       <Container maxWidth="xl">

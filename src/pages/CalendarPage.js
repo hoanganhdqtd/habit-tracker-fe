@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Box, Tabs, Tab, Typography } from "@mui/material";
+import { Box, Tabs, Tab, Typography, Container, Stack } from "@mui/material";
 
 import dayjs from "dayjs";
 import { eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
@@ -100,52 +100,60 @@ function CalendarPage() {
   // console.log("dateValue:", dateValue);
 
   return (
-    <div>
-      {/* <h1>Calendar</h1> */}
-      <Typography variant="h4">Calendar</Typography>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label="Pick date"
-          value={dayjs(dateValue)
-            .set("hour", 0)
-            .set("minute", 0)
-            .set("second", 0)
-            .set("millisecond", 0)}
-          // onChange={(newDateValue) => {
-          //   setDateValue(newDateValue);
-          //   weekDate = getWeekFromDate(dateValue);
-          //   dispatch(getHabits({ date: newDateValue }));
-          // }}
-          onChange={handleDateChange}
-        />
-      </LocalizationProvider>
-      <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs value={currentTabIndex} onChange={handleTabChange} centered>
-            {/* {weekday.map((day) => (
-                <Tab key={day} label={`${weekDate[day]}`.slice(0, 15)}>
+    <Box
+      component="main"
+      sx={{
+        flexGrow: 1,
+        py: 6,
+      }}
+    >
+      <Container maxWidth="xl">
+        <Stack spacing={3} mb={2}>
+          <Stack direction="row" justifyContent="space-between" spacing={4}>
+            <Stack spacing={1}>
+              <Typography variant="h4">Calendar</Typography>
+            </Stack>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DatePicker
+                label="Pick date"
+                value={dayjs(dateValue)
+                  .set("hour", 0)
+                  .set("minute", 0)
+                  .set("second", 0)
+                  .set("millisecond", 0)}
+                // onChange={(newDateValue) => {
+                //   setDateValue(newDateValue);
+                //   weekDate = getWeekFromDate(dateValue);
+                //   dispatch(getHabits({ date: newDateValue }));
+                // }}
+                onChange={handleDateChange}
+              />
+            </LocalizationProvider>
+          </Stack>
+        </Stack>
+        <Box sx={{ width: "100%" }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Tabs value={currentTabIndex} onChange={handleTabChange} centered>
+              {weekday.map((day) => (
+                <Tab
+                  key={day}
+                  wrapped
+                  label={`${weekDate[day]}`.slice(0, 10)}
+                  onClick={() => {
+                    // setDateValue(dayjs(weekDate[day]));
+                    setDateValue(weekDate[day]);
+                    dispatch(getHabits({ date: weekDate[day] }));
+                  }}
+                >
                   {`${weekDate[day]}`.slice(0, 15)}
                 </Tab>
-              ))} */}
-            {weekday.map((day) => (
-              <Tab
-                key={day}
-                wrapped
-                label={`${weekDate[day]}`.slice(0, 10)}
-                onClick={() => {
-                  // setDateValue(dayjs(weekDate[day]));
-                  setDateValue(weekDate[day]);
-                  dispatch(getHabits({ date: weekDate[day] }));
-                }}
-              >
-                {`${weekDate[day]}`.slice(0, 15)}
-              </Tab>
-            ))}
-          </Tabs>
+              ))}
+            </Tabs>
+          </Box>
         </Box>
-      </Box>
-      <HabitList date={dateValue} isInCalendarPage={true} />
-    </div>
+        <HabitList date={dateValue} isInCalendarPage={true} />
+      </Container>
+    </Box>
   );
 }
 
