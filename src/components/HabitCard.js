@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -24,6 +24,7 @@ import {
 } from "../features/progress/progressSlice";
 import EditHabitForm from "./EditHabitForm";
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
+import dayjs from "dayjs";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -34,17 +35,52 @@ const Item = styled(Paper)(({ theme }) => ({
   maxWidth: 500,
 }));
 
-function HabitCard({ key, habit, isInCalendarPage, date }) {
+function HabitCard({ habit, isInCalendarPage, date }) {
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { progress } = useSelector((state) => state.progress);
-  const { status } = progress;
+  // const { progress } = useSelector((state) => state.progress);
+  // const { status } = progress;
 
-  const defaultValues = { isCompleted: false };
+  const { habitsById } = useSelector((state) => state.habit);
+
+  const { progressList } = habitsById[habit._id];
+
+  // find progress with {date, habit._id}
+  const progressToFind = progressList.find(
+    (progress) =>
+      dayjs(progress.date).isSame(date) && progress.habit === habit._id
+  );
+  // progressList.forEach((progress) => {
+  //   console.log("progress:", progress);
+  //   console.log("typeof date:", typeof date);
+  //   console.log("date:", date);
+  //   console.log("typeof progress.date:", typeof progress.date);
+  //   const newDate = new Date(progress.date);
+  //   console.log("typeof newDate:", typeof newDate);
+  //   console.log("newDate:", newDate);
+  //   console.log(
+  //     "dayjs(progress.date).isSame(date):",
+  //     dayjs(progress.date).isSame(date)
+  //   );
+  // });
+
+  console.log("progressToFind:", progressToFind);
+  let status;
+  if (progressToFind) {
+    status = progressToFind.status;
+  }
+
+  // const { status } = progressList;
+
+  const [isCompleted, setIsCompleted] = useState(
+    status === "completed" ? true : false
+  );
+
+  const defaultValues = { isCompleted };
   const methods = useForm({ defaultValues });
   const {
     handleSubmit,
@@ -95,18 +131,9 @@ function HabitCard({ key, habit, isInCalendarPage, date }) {
     );
   };
 
-  // const handleHabitStatusChange = async ({ habitId, status }) => {
-  //   console.log("handleHabitStatusChange");
-  //   console.log("status:", status);
-  //   console.log("habitId:", habitId);
-  //   // edit progress
-  //   dispatch(updateSingleProgress({ habitId, date, status }));
-  //   dispatch(getHabitById(habitId));
-  // };
-
   return (
     <Item
-      key={key}
+      // key={habit._id}
       sx={{
         my: 1,
         mx: "auto",
@@ -133,7 +160,7 @@ function HabitCard({ key, habit, isInCalendarPage, date }) {
               name="isCompleted"
               label="Completed"
               habitId={habit._id}
-              // status={status}
+              value={isCompleted}
               date={date}
             />
           </FormProvider>

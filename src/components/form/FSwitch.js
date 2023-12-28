@@ -33,8 +33,6 @@ function FSwitch({ name, habitId, date, ...other }) {
                   const status = !field.value ? "completed" : "incomplete";
                   console.log("status:", status);
                   dispatch(updateSingleProgress({ habitId, date, status }));
-                  // dispatch(getHabitById(habitId));
-                  dispatch(getSingleProgress(progress._id));
                 }}
               />
             );
