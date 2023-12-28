@@ -6,6 +6,7 @@ import {
   getHabitById,
   editHabit,
   deleteHabit,
+  getSingleHabitProgressList,
 } from "../features/habit/habitSlice";
 
 import AddReminderForm from "../components/AddReminderForm";
@@ -25,6 +26,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { PieChart } from "@mui/x-charts/PieChart";
 
 const weekdaysByIndex = {
   0: "Sunday",
@@ -59,6 +61,7 @@ function HabitDetailPage() {
 
   useEffect(() => {
     dispatch(getHabitById(habitId));
+    dispatch(getSingleHabitProgressList(habitId));
   }, [habitId, dispatch]);
 
   const { habitDetail } = useSelector((state) => state.habit);
@@ -125,191 +128,190 @@ function HabitDetailPage() {
           <div>
             <Typography variant="h4">Habit detail</Typography>
           </div>
-          <div>
-            <Grid container spacing={3}>
-              <Grid xs={12} md={6} lg={8}>
-                <Card>
-                  {/* <CardHeader title="Habit detail" /> */}
-                  <CardContent sx={{ pt: 0 }}>
-                    <Box sx={{ m: 2 }}>
-                      <Stack>
-                        <Grid spacing={3}>
-                          <Grid sx={{ my: 2 }}>
-                            <TextField
-                              fullWidth
-                              label="Name"
-                              name="name"
-                              required
-                              value={name || "Name"}
-                            />
-                          </Grid>
 
-                          <Grid sx={{ my: 2 }}>
-                            <TextField
-                              fullWidth
-                              label="Description"
-                              name="description"
-                              value={description || "No description"}
-                            />
-                          </Grid>
+          <Grid container spacing={3}>
+            <Grid xs={12} md={6} lg={8}>
+              <Card>
+                {/* <CardHeader title="Habit detail" /> */}
+                <CardContent sx={{ pt: 0 }}>
+                  <Box sx={{ m: 2 }}>
+                    <Stack>
+                      <Grid spacing={3}>
+                        <Grid sx={{ my: 2 }}>
+                          <TextField
+                            fullWidth
+                            label="Name"
+                            name="name"
+                            required
+                            value={name || "Name"}
+                          />
+                        </Grid>
 
-                          <Grid sx={{ my: 2 }}>
-                            <TextField
-                              fullWidth
-                              label="Goal"
-                              name="goal"
-                              required
-                              value={goal || "Goal"}
-                            />
-                          </Grid>
+                        <Grid sx={{ my: 2 }}>
+                          <TextField
+                            fullWidth
+                            label="Description"
+                            name="description"
+                            value={description || "No description"}
+                          />
+                        </Grid>
 
-                          <Grid sx={{ my: 2 }}>
-                            <TextField
-                              fullWidth
-                              label="Start date"
-                              name="startDate"
-                              required
-                              value={new Date(startDate).toDateString()}
-                            />
-                          </Grid>
+                        <Grid sx={{ my: 2 }}>
+                          <TextField
+                            fullWidth
+                            label="Goal"
+                            name="goal"
+                            required
+                            value={goal || "Goal"}
+                          />
+                        </Grid>
 
-                          <Grid sx={{ my: 2 }}>
-                            <TextField
-                              fullWidth
-                              label="Duration"
-                              name="duration"
-                              required
-                              value={duration || "Duration"}
-                            />
-                          </Grid>
+                        <Grid sx={{ my: 2 }}>
+                          <TextField
+                            fullWidth
+                            label="Start date"
+                            name="startDate"
+                            required
+                            value={new Date(startDate).toDateString()}
+                          />
+                        </Grid>
 
-                          <Grid sx={{ my: 2 }}>
-                            <TextField
-                              fullWidth
-                              label="On weekdays"
-                              name="onWeekdays"
-                              required
-                              value={
-                                onWeekdays.length
-                                  ? getWeekdays(onWeekdays)
-                                  : "No weekdays"
-                              }
-                            />
-                          </Grid>
+                        <Grid sx={{ my: 2 }}>
+                          <TextField
+                            fullWidth
+                            label="Duration"
+                            name="duration"
+                            required
+                            value={duration || "Duration"}
+                          />
+                        </Grid>
 
-                          <Grid sx={{ my: 2 }}>
-                            <Typography
-                              variant="inherit"
-                              sx={{ fontWeight: "bold" }}
-                            >
-                              Reminders:{" "}
-                            </Typography>
-                            <Stack direction="row" spacing={2}>
-                              <Box
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  justifyContent: "flex-start",
-                                  flexWrap: "wrap",
-                                }}
-                              >
-                                {!reminders.length ? (
-                                  <Typography>No reminder</Typography>
-                                ) : (
-                                  reminders.map((reminder) => (
-                                    <Button
-                                      variant="contained"
-                                      key={reminder._id}
-                                      size="small"
-                                      sx={{ mr: 1, mt: 1 }}
-                                      onClick={() =>
-                                        navigate(
-                                          `/habit/${habitId}/reminder/${reminder._id}`
-                                        )
-                                      }
-                                    >
-                                      {dayjs(reminder.time).format("LT")}
-                                    </Button>
-                                  ))
-                                )}
-                              </Box>
-                            </Stack>
+                        <Grid sx={{ my: 2 }}>
+                          <TextField
+                            fullWidth
+                            label="On weekdays"
+                            name="onWeekdays"
+                            required
+                            value={
+                              onWeekdays.length
+                                ? getWeekdays(onWeekdays)
+                                : "No weekdays"
+                            }
+                          />
+                        </Grid>
+
+                        <Grid sx={{ my: 2 }}>
+                          <Typography
+                            variant="inherit"
+                            sx={{ fontWeight: "bold" }}
+                          >
+                            Reminders:{" "}
+                          </Typography>
+                          <Stack direction="row" spacing={2}>
                             <Box
                               sx={{
                                 display: "flex",
                                 alignItems: "center",
-
-                                // justifyContent: "flex-end",
-
-                                mt: 1,
+                                justifyContent: "flex-start",
+                                flexWrap: "wrap",
                               }}
                             >
-                              <Button
-                                variant="contained"
-                                color="secondary"
-                                onClick={() => setIsAddNewReminder(true)}
-                              >
-                                Add new reminder
-                              </Button>
+                              {!reminders.length ? (
+                                <Typography>No reminder</Typography>
+                              ) : (
+                                reminders.map((reminder) => (
+                                  <Button
+                                    variant="contained"
+                                    key={reminder._id}
+                                    size="small"
+                                    sx={{ mr: 1, mt: 1 }}
+                                    onClick={() =>
+                                      navigate(
+                                        `/habit/${habitId}/reminder/${reminder._id}`
+                                      )
+                                    }
+                                  >
+                                    {dayjs(reminder.time).format("LT")}
+                                  </Button>
+                                ))
+                              )}
                             </Box>
-                          </Grid>
+                          </Stack>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+
+                              // justifyContent: "flex-end",
+
+                              mt: 1,
+                            }}
+                          >
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              onClick={() => setIsAddNewReminder(true)}
+                            >
+                              Add new reminder
+                            </Button>
+                          </Box>
                         </Grid>
-                      </Stack>
-                    </Box>
-                  </CardContent>
+                      </Grid>
+                    </Stack>
+                  </Box>
+                </CardContent>
 
-                  <Divider />
-                  <CardActions sx={{ justifyContent: "flex-end" }}>
-                    <Button
-                      variant="contained"
-                      onClick={() => setIsHabitEdit(true)}
-                    >
-                      Edit habit
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={() => setIsHabitDelete(true)}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      color="secondary"
-                      variant="outlined"
-                      onClick={() => navigate(-1)}
-                    >
-                      Cancel
-                    </Button>
+                <Divider />
+                <CardActions sx={{ justifyContent: "flex-end" }}>
+                  <Button
+                    variant="contained"
+                    onClick={() => setIsHabitEdit(true)}
+                  >
+                    Edit habit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    onClick={() => setIsHabitDelete(true)}
+                  >
+                    Delete
+                  </Button>
+                  <Button
+                    color="secondary"
+                    variant="outlined"
+                    onClick={() => navigate(-1)}
+                  >
+                    Cancel
+                  </Button>
 
-                    {isHabitEdit && (
-                      <EditHabitForm
-                        isHabitEdit={isHabitEdit}
-                        setIsHabitEdit={setIsHabitEdit}
-                        handleHabitEdit={handleHabitEdit}
-                        habitId={habitId}
-                      />
-                    )}
+                  {isHabitEdit && (
+                    <EditHabitForm
+                      isHabitEdit={isHabitEdit}
+                      setIsHabitEdit={setIsHabitEdit}
+                      handleHabitEdit={handleHabitEdit}
+                      habitId={habitId}
+                    />
+                  )}
 
-                    {isHabitDelete && (
-                      <DeleteHabitConfirm
-                        habitId={habitId}
-                        setIsHabitDelete={setIsHabitDelete}
-                        handleHabitDelete={handleHabitDelete}
-                      />
-                    )}
+                  {isHabitDelete && (
+                    <DeleteHabitConfirm
+                      habitId={habitId}
+                      setIsHabitDelete={setIsHabitDelete}
+                      handleHabitDelete={handleHabitDelete}
+                    />
+                  )}
 
-                    {isAddNewReminder && (
-                      <AddReminderForm
-                        isAddNewReminder={isAddNewReminder}
-                        setIsAddNewReminder={setIsAddNewReminder}
-                        habitId={habitId}
-                      />
-                    )}
-                  </CardActions>
-                </Card>
-              </Grid>
+                  {isAddNewReminder && (
+                    <AddReminderForm
+                      isAddNewReminder={isAddNewReminder}
+                      setIsAddNewReminder={setIsAddNewReminder}
+                      habitId={habitId}
+                    />
+                  )}
+                </CardActions>
+              </Card>
             </Grid>
-          </div>
+          </Grid>
         </Stack>
       </Container>
     </Box>

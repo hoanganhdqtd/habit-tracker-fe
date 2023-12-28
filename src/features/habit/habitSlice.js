@@ -3,6 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { HABITS_PER_PAGE } from "../../app/config";
 import dayjs from "dayjs";
+import { startOfWeek } from "date-fns";
 
 const initialState = {
   isLoading: false,
@@ -389,6 +390,7 @@ export const habitSlice = createSlice({
     },
 
     [getHabits.fulfilled]: (state, action) => {
+      console.log("action.payload:", action.payload);
       state.isLoading = false;
       state.totalHabits = action.payload.count;
       state.totalPages = action.payload.totalPages;
@@ -539,7 +541,9 @@ export const habitSlice = createSlice({
     },
     [getSingleHabitProgressList.fulfilled]: (state, action) => {
       state.isLoading = false;
+      // console.log("action.payload:", action.payload);
       state.habitDetail.progressList = action.payload.progressList;
+      state.habitDetail = action.payload;
     },
     [updateSingleProgress.fulfilled]: (state, action) => {
       state.isLoading = false;

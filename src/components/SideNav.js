@@ -19,7 +19,8 @@ import { Scrollbar } from "../components/Scrollbar";
 import { SideNavItem } from "./SideNavItem";
 
 import ChartBarIcon from "@heroicons/react/24/solid/ChartBarIcon";
-import CharPieIcon from "@heroicons/react/24/solid/ChartPieIcon";
+// import CharPieIcon from "@heroicons/react/24/solid/ChartPieIcon";
+import ListBulletIcon from "@heroicons/react/24/solid/ListBulletIcon";
 import LockClosedIcon from "@heroicons/react/24/solid/LockClosedIcon";
 
 import UserIcon from "@heroicons/react/24/solid/UserIcon";
@@ -31,13 +32,24 @@ import useAuth from "../hooks/useAuth";
 
 const items = [
   {
-    // title: "Overview",
-    title: "Habits",
-    path: "/",
+    title: "Overview",
+    // title: "Habits",
+    path: "/overview",
     authRequired: true,
     icon: (
       <SvgIcon fontSize="small">
         <ChartBarIcon />
+      </SvgIcon>
+    ),
+  },
+  {
+    title: "Habits",
+    // title: "Habits",
+    path: "/",
+    authRequired: true,
+    icon: (
+      <SvgIcon fontSize="small">
+        <ListBulletIcon />
       </SvgIcon>
     ),
   },
@@ -51,16 +63,17 @@ const items = [
       </SvgIcon>
     ),
   },
-  {
-    title: "Statistics",
-    path: "/statistics",
-    authRequired: true,
-    icon: (
-      <SvgIcon fontSize="small">
-        <CharPieIcon />
-      </SvgIcon>
-    ),
-  },
+  // {
+  //   title: "Statistics",
+  //   path: "/statistics",
+  //   authRequired: true,
+  //   icon: (
+  //     <SvgIcon fontSize="small">
+  //       <CharPieIcon />
+  //     </SvgIcon>
+  //   ),
+  // },
+
   {
     title: "Account",
     path: "/account",

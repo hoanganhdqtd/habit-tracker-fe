@@ -12,6 +12,7 @@ import UserProfilePage from "../pages/UserProfilePage";
 import CalendarPage from "../pages/CalendarPage";
 import HabitDetailPage from "../pages/HabitDetailPage";
 import ReminderDetailPage from "../pages/ReminderDetailPage";
+import OverviewPage from "../pages/OverviewPage";
 import StatisticsPage from "../pages/StatisticsPage";
 
 function Router() {
@@ -37,7 +38,8 @@ function Router() {
           path="/habit/:habitId/reminder/:reminderId"
           element={<ReminderDetailPage />}
         />
-        <Route path="/statistics" element={<StatisticsPage />} />
+        <Route path="/overview" element={<OverviewPage />} />
+        <Route path="/statistics/:habitId" element={<StatisticsPage />} />
       </Route>
 
       <Route element={<MainLayout />}>

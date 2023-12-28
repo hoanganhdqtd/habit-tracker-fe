@@ -8,7 +8,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import { red } from "@mui/material/colors";
+// import { red } from "@mui/material/colors";
 
 import { FSwitch, FormProvider } from "./form";
 import { useForm } from "react-hook-form";
@@ -156,6 +156,14 @@ function HabitCard({ key, habit, isInCalendarPage, date }) {
             habitId={habit._id}
           />
         )} */}
+        <Button
+          variant="contained"
+          onClick={() => {
+            navigate(`statistics/${habit._id}`);
+          }}
+        >
+          Statistics
+        </Button>
         <Button
           variant="contained"
           color="error"
