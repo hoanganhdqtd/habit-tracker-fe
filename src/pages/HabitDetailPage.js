@@ -7,6 +7,7 @@ import {
   editHabit,
   deleteHabit,
   getSingleHabitProgressList,
+  getTagsByHabitId,
 } from "../features/habit/habitSlice";
 
 import AddReminderForm from "../components/AddReminderForm";
@@ -27,6 +28,8 @@ import {
   Typography,
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
+import CreateTagForm from "../components/CreateTagForm";
+// import AddTagForm from "../components/AddTagForm";
 
 const weekdaysByIndex = {
   0: "Sunday",
@@ -53,6 +56,7 @@ const getWeekdays = (weekdays) =>
 
 function HabitDetailPage() {
   const [isAddNewReminder, setIsAddNewReminder] = useState(false);
+  const [addNewTag, setAddNewTag] = useState(false);
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
   const { habitId } = useParams();
@@ -62,6 +66,7 @@ function HabitDetailPage() {
   useEffect(() => {
     dispatch(getHabitById(habitId));
     dispatch(getSingleHabitProgressList(habitId));
+    dispatch(getTagsByHabitId(habitId));
   }, [habitId, dispatch]);
 
   const { habitDetail } = useSelector((state) => state.habit);
@@ -74,9 +79,11 @@ function HabitDetailPage() {
     duration,
     onWeekdays,
     reminders,
+    tags,
   } = habitDetail;
 
   console.log("onWeekdays:", onWeekdays);
+  console.log("tags:", tags);
 
   const handleHabitEdit = async ({
     habitId,
@@ -256,6 +263,64 @@ function HabitDetailPage() {
                             </Button>
                           </Box>
                         </Grid>
+
+                        <Grid sx={{ my: 2 }}>
+                          <Typography
+                            variant="inherit"
+                            sx={{ fontWeight: "bold" }}
+                          >
+                            Tags:{" "}
+                          </Typography>
+                          <Stack direction="row" spacing={2}>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "flex-start",
+                                flexWrap: "wrap",
+                              }}
+                            >
+                              {!tags?.length ? (
+                                <Typography>No tag</Typography>
+                              ) : (
+                                tags?.map((tag) => (
+                                  <Button
+                                    variant="contained"
+                                    key={tag._id}
+                                    size="small"
+                                    sx={{ mr: 1, mt: 1 }}
+                                    onClick={() => {
+                                      // navigate(
+                                      //   `/habit/${habitId}/reminder/${reminder._id}`
+                                      // )}
+                                    }}
+                                  >
+                                    {/* {dayjs(reminder.time).format("LT")} */}
+                                    {`#${tag.title}`}
+                                  </Button>
+                                ))
+                              )}
+                            </Box>
+                          </Stack>
+                          <Box
+                            sx={{
+                              display: "flex",
+                              alignItems: "center",
+
+                              // justifyContent: "flex-end",
+
+                              mt: 1,
+                            }}
+                          >
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              onClick={() => setAddNewTag(true)}
+                            >
+                              Add new tag
+                            </Button>
+                          </Box>
+                        </Grid>
                       </Grid>
                     </Stack>
                   </Box>
@@ -306,6 +371,14 @@ function HabitDetailPage() {
                       isAddNewReminder={isAddNewReminder}
                       setIsAddNewReminder={setIsAddNewReminder}
                       habitId={habitId}
+                    />
+                  )}
+
+                  {addNewTag && (
+                    <CreateTagForm
+                      habitId={habitId}
+                      createNewTag={addNewTag}
+                      setCreateNewTag={setAddNewTag}
                     />
                   )}
                 </CardActions>

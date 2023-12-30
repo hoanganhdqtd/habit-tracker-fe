@@ -190,7 +190,8 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
                 }}
               >
                 <Button
-                  color="primary"
+                  // color="primary"
+                  color="secondary"
                   variant="contained"
                   size="small"
                   onClick={handleClose}

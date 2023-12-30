@@ -59,7 +59,7 @@ export const createTag =
 
       const response = await apiService.post(`/tags`, data);
 
-      dispatch(tagSlice.actions.createUserSuccess(response.data));
+      dispatch(tagSlice.actions.createTagSuccess(response.data));
     } catch (error) {
       console.log("Error:", error);
       dispatch(tagSlice.actions.hasError(error.message));

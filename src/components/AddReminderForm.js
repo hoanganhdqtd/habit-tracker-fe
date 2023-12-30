@@ -153,7 +153,7 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
                 }}
               >
                 <Button
-                  color="primary"
+                  color="secondary"
                   variant="contained"
                   size="small"
                   onClick={handleClose}

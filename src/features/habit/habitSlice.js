@@ -13,6 +13,7 @@ const initialState = {
     onWeekdays: [],
     reminders: [],
     progressList: [],
+    tags: [],
   },
   currentPageHabits: [],
   totalHabits: 0,
@@ -27,15 +28,19 @@ const initialState = {
 
 export const getHabits = createAsyncThunk(
   "habits/getHabits",
-  async ({ page, search, date }, { rejectWithValue, getState }) => {
+  async ({ page, search, date, tag }, { rejectWithValue, getState }) => {
     try {
       let url = `/habits?page=${page}&limit=${HABITS_PER_PAGE}`;
       if (search) url += `&search=${search}`;
       if (date) {
         url += `&date=${date}`;
       }
+      if (tag) {
+        url += `&tag=${tag}`;
+      }
       console.log("search:", search);
       console.log("date:", date);
+      console.log("tag:", tag);
       const response = await apiService.get(url);
       console.log("response:", response);
       // console.log("getState:", getState());
@@ -66,10 +71,12 @@ export const getHabitsByUserId = createAsyncThunk(
 
 export const getHabitById = createAsyncThunk(
   "habits/getHabitById",
-  async (id, { rejectWithValue }) => {
+  async (id, { rejectWithValue, getState }) => {
     try {
       let url = `/habits/${id}`;
       const response = await apiService.get(url);
+
+      console.log("getHabitById getState:", getState());
 
       console.log("getHabitById response:", response);
 
@@ -89,7 +96,7 @@ export const addHabit = createAsyncThunk(
       description,
       goal,
       startDate,
-      progress,
+      // progress,
       duration,
       onWeekdays,
       // reminders,
@@ -103,7 +110,7 @@ export const addHabit = createAsyncThunk(
         description,
         goal,
         startDate,
-        progress,
+        // progress,
         duration,
         onWeekdays,
         // reminders,
@@ -124,10 +131,10 @@ export const editHabit = createAsyncThunk(
       description,
       goal,
       startDate,
-      progress,
+      // progress,
       duration,
       onWeekdays,
-      reminders,
+      // reminders,
       habitId,
     },
     { rejectWithValue }
@@ -140,10 +147,10 @@ export const editHabit = createAsyncThunk(
         description,
         goal,
         startDate,
-        progress,
+        // progress,
         duration,
         onWeekdays,
-        reminders,
+        // reminders,
       });
       // return;
       console.log("response.data:", response.data);
@@ -316,6 +323,34 @@ export const updateSingleProgress = createAsyncThunk(
   }
 );
 
+export const addHabitTag = createAsyncThunk(
+  "habits/addHabitTag",
+  async ({ habitId, title }, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await apiService.post(`tags/habit/${habitId}`, {
+        title,
+      });
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
+export const getTagsByHabitId = createAsyncThunk(
+  "habits/getTagsByHabitId",
+  async (habitId, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await apiService.get(`tags/habit/${habitId}`);
+      console.log("response.data:", response.data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err);
+    }
+  }
+);
+
 export const habitSlice = createSlice({
   name: "habit",
   initialState,
@@ -386,6 +421,14 @@ export const habitSlice = createSlice({
       state.error = null;
     },
     [updateSingleProgress.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [addHabitTag.pending]: (state) => {
+      state.isLoading = true;
+      state.error = null;
+    },
+    [getTagsByHabitId.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
     },
@@ -551,6 +594,16 @@ export const habitSlice = createSlice({
       state.isLoading = false;
       state.currentProgress = action.payload;
     },
+    [addHabitTag.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      // console.log("addHabitTag action.payload:", action.payload);
+      // state.habitDetail.tags.push(action.payload._id);
+      state.habitDetail.tags.push(action.payload);
+    },
+    [getTagsByHabitId.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.habitDetail.tags = action.payload;
+    },
 
     [getHabits.rejected]: (state, action) => {
       state.isLoading = false;
@@ -661,6 +714,22 @@ export const habitSlice = createSlice({
       }
     },
     [updateSingleProgress.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
+    [addHabitTag.rejected]: (state, action) => {
+      state.isLoading = false;
+      if (action.payload) {
+        state.error = action.payload;
+      } else {
+        state.error = action.error;
+      }
+    },
+    [getTagsByHabitId.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
         state.error = action.payload;

@@ -19,6 +19,7 @@ import { getTags } from "../features/tag/tagSlice";
 import HabitList from "../components/HabitList";
 import { SearchBox } from "../components/SearchBox";
 import AddHabitForm from "../components/AddHabitForm";
+import CreateTagForm from "../components/CreateTagForm";
 
 const CenterPagination = styled(Pagination)(({ theme }) => ({
   ul: {
@@ -37,6 +38,7 @@ const CenterPagination = styled(Pagination)(({ theme }) => ({
 
 function HomePage() {
   const [addNewHabit, setAddNewHabit] = useState(false);
+  const [createNewTag, setCreateNewTag] = useState(false);
   const [dateValue, setDateValue] = useState(null);
 
   const [pageNum, setPageNum] = useState(1);
@@ -51,7 +53,7 @@ function HomePage() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getHabits({ page, search, date: dateValue }));
-    // dispatch(getTags());
+    dispatch(getTags());
   }, [page, search, dateValue, dispatch]);
 
   useEffect(() => {
@@ -70,25 +72,48 @@ function HomePage() {
         <Stack spacing={3}>
           <Stack direction="row" justifyContent="space-between" spacing={4}>
             <Typography variant="h4">Habits</Typography>
-            <Button
-              startIcon={
-                <SvgIcon fontSize="small">
-                  <PlusIcon />
-                </SvgIcon>
-              }
-              variant="contained"
-              onClick={() => setAddNewHabit(true)}
-            >
-              Add Habit
-            </Button>
-            {addNewHabit && (
-              <AddHabitForm
-                addNewHabit={addNewHabit}
-                setAddNewHabit={setAddNewHabit}
-                dateValue={dateValue}
-                tags={tags}
-              />
-            )}
+            <Stack direction="row" justifyContent="flex-end" spacing={2}>
+              <Button
+                startIcon={
+                  <SvgIcon fontSize="small">
+                    <PlusIcon />
+                  </SvgIcon>
+                }
+                variant="contained"
+                color="secondary"
+                onClick={() => setCreateNewTag(true)}
+              >
+                Create new tag
+              </Button>
+
+              <Button
+                startIcon={
+                  <SvgIcon fontSize="small">
+                    <PlusIcon />
+                  </SvgIcon>
+                }
+                variant="contained"
+                onClick={() => setAddNewHabit(true)}
+              >
+                Add Habit
+              </Button>
+
+              {createNewTag && (
+                <CreateTagForm
+                  createNewTag={createNewTag}
+                  setCreateNewTag={setCreateNewTag}
+                />
+              )}
+
+              {addNewHabit && (
+                <AddHabitForm
+                  addNewHabit={addNewHabit}
+                  setAddNewHabit={setAddNewHabit}
+                  dateValue={dateValue}
+                  tags={tags}
+                />
+              )}
+            </Stack>
           </Stack>
 
           <Stack direction="row" justifyContent="space-between" spacing={4}>
@@ -107,6 +132,39 @@ function HomePage() {
                 }
               />
             </LocalizationProvider>
+          </Stack>
+
+          <Stack direction="row" spacing={2}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                flexWrap: "wrap",
+              }}
+            >
+              {!tags.length ? (
+                <Typography>No tag</Typography>
+              ) : (
+                tags.map((tag) => (
+                  <Button
+                    variant="contained"
+                    color="success"
+                    key={tag._id}
+                    size="small"
+                    sx={{ mr: 1, mt: 1 }}
+                    // onClick={() =>
+                    //   navigate(`/habit/${habitId}/reminder/${reminder._id}`)
+                    // }
+                    onClick={() => {
+                      dispatch(getHabits({ tag: tag.title }));
+                    }}
+                  >
+                    {`#${tag.title}`}
+                  </Button>
+                ))
+              )}
+            </Box>
           </Stack>
 
           <HabitList date={dateValue} />

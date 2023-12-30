@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { deleteHabit, editHabit } from "../features/habit/habitSlice";
 
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
+import EditHabitForm from "./EditHabitForm";
 import dayjs from "dayjs";
 
 function HabitCard({ habit, isInCalendarPage, date }) {
@@ -130,7 +131,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         >
           {habit.name}
         </Typography>
-        <Typography>{"tags"}</Typography>
+        {!isInCalendarPage && <Typography>{"tags"}</Typography>}
 
         {isInCalendarPage && (
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -145,23 +146,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
           </FormProvider>
         )}
 
-        {/* <Button
-          variant="contained"
-          onClick={() => {
-            console.log("Habit edit form");
-            setIsHabitEdit(true);
-          }}
-        >
-          Edit
-        </Button>
-        {isHabitEdit && (
-          <EditHabitForm
-            isHabitEdit={isHabitEdit}
-            setIsHabitEdit={setIsHabitEdit}
-            handleHabitEdit={handleHabitEdit}
-            habitId={habit._id}
-          />
-        )} */}
         <Button
           variant="contained"
           onClick={() => {
@@ -170,6 +154,27 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         >
           Statistics
         </Button>
+
+        {!isInCalendarPage && (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => {
+              setIsHabitEdit(true);
+            }}
+          >
+            Edit
+          </Button>
+        )}
+        {isHabitEdit && (
+          <EditHabitForm
+            isHabitEdit={isHabitEdit}
+            setIsHabitEdit={setIsHabitEdit}
+            handleHabitEdit={handleHabitEdit}
+            habitId={habit._id}
+          />
+        )}
+
         <Button
           variant="contained"
           color="error"
