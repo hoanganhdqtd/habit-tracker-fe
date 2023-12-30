@@ -391,7 +391,7 @@ export const habitSlice = createSlice({
     },
 
     [getHabits.fulfilled]: (state, action) => {
-      console.log("action.payload:", action.payload);
+      // console.log("action.payload:", action.payload);
       state.isLoading = false;
       state.totalHabits = action.payload.count;
       state.totalPages = action.payload.totalPages;
