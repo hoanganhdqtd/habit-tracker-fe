@@ -52,10 +52,14 @@ function CreateTagForm({ createNewTag, setCreateNewTag, habitId }) {
   const onSubmit = (data) => {
     console.log("data:", data);
     const { title } = data;
-    dispatch(createTag({ title }));
+    // dispatch(createTag({ title }));
+    if (habitId) {
+      dispatch(addHabitTag({ habitId, title }));
+    } else {
+      dispatch(createTag({ title }));
+    }
     handleClose();
     dispatch(getTags());
-    dispatch(addHabitTag({ habitId, title }));
   };
 
   const handleClose = () => setCreateNewTag(false);

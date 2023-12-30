@@ -28,7 +28,8 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     padding: theme.spacing(1),
     textAlign: "center",
     color: theme.palette.text.secondary,
-    maxWidth: isInCalendarPage ? 600 : 500,
+    // maxWidth: isInCalendarPage ? 600 : 500,
+    maxWidth: 600,
   }));
   const theme = useTheme();
   const [isHabitEdit, setIsHabitEdit] = useState(false);
@@ -121,18 +122,24 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         cursor: "pointer",
       }}
     >
-      <Stack spacing={2} direction="row" alignItems="center">
-        <Avatar onClick={() => navigate("/account")}>A</Avatar>
-        <Typography
-          noWrap
-          onClick={() => {
-            navigate(`/habit/${habit._id}`);
-          }}
-        >
-          {habit.name}
-        </Typography>
-        {!isInCalendarPage && <Typography>{"tags"}</Typography>}
+      <Stack
+        spacing={1}
+        sx={{ justifyContent: "space-between" }}
+        direction="row"
+        alignItems="center"
+      >
+        <Stack direction="row" spacing={2} alignItems="center">
+          <Avatar onClick={() => navigate("/account")}>A</Avatar>
 
+          <Typography
+            noWrap
+            onClick={() => {
+              navigate(`/habit/${habit._id}`);
+            }}
+          >
+            {habit.name}
+          </Typography>
+        </Stack>
         {isInCalendarPage && (
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <FSwitch
@@ -146,49 +153,51 @@ function HabitCard({ habit, isInCalendarPage, date }) {
           </FormProvider>
         )}
 
-        <Button
-          variant="contained"
-          onClick={() => {
-            navigate(`statistics/${habit._id}`);
-          }}
-        >
-          Statistics
-        </Button>
-
-        {!isInCalendarPage && (
+        <Stack direction="row" spacing={1} alignItems="center">
           <Button
             variant="contained"
-            color="secondary"
             onClick={() => {
-              setIsHabitEdit(true);
+              navigate(`statistics/${habit._id}`);
             }}
           >
-            Edit
+            Statistics
           </Button>
-        )}
-        {isHabitEdit && (
-          <EditHabitForm
-            isHabitEdit={isHabitEdit}
-            setIsHabitEdit={setIsHabitEdit}
-            handleHabitEdit={handleHabitEdit}
-            habitId={habit._id}
-          />
-        )}
 
-        <Button
-          variant="contained"
-          color="error"
-          onClick={() => setIsHabitDelete(true)}
-        >
-          Delete
-        </Button>
-        {isHabitDelete && (
-          <DeleteHabitConfirm
-            handleHabitDelete={handleHabitDelete}
-            setIsHabitDelete={setIsHabitDelete}
-            habitId={habit._id}
-          />
-        )}
+          {!isInCalendarPage && (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                setIsHabitEdit(true);
+              }}
+            >
+              Edit
+            </Button>
+          )}
+          {isHabitEdit && (
+            <EditHabitForm
+              isHabitEdit={isHabitEdit}
+              setIsHabitEdit={setIsHabitEdit}
+              handleHabitEdit={handleHabitEdit}
+              habitId={habit._id}
+            />
+          )}
+
+          <Button
+            variant="contained"
+            color="error"
+            onClick={() => setIsHabitDelete(true)}
+          >
+            Delete
+          </Button>
+          {isHabitDelete && (
+            <DeleteHabitConfirm
+              handleHabitDelete={handleHabitDelete}
+              setIsHabitDelete={setIsHabitDelete}
+              habitId={habit._id}
+            />
+          )}
+        </Stack>
       </Stack>
     </Item>
   );

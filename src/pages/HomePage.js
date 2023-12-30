@@ -48,7 +48,7 @@ function HomePage() {
   };
 
   const { search, page, totalPages } = useSelector((state) => state.habit);
-  const { tags } = useSelector((state) => state.tag);
+  const { tags } = useSelector((state) => state.habit.habitDetail);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -115,7 +115,6 @@ function HomePage() {
               )}
             </Stack>
           </Stack>
-
           <Stack direction="row" justifyContent="space-between" spacing={4}>
             <SearchBox />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -133,20 +132,17 @@ function HomePage() {
               />
             </LocalizationProvider>
           </Stack>
-
-          <Stack direction="row" spacing={2}>
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "flex-start",
-                flexWrap: "wrap",
-              }}
-            >
-              {!tags.length ? (
-                <Typography>No tag</Typography>
-              ) : (
-                tags.map((tag) => (
+          {tags.length !== 0 && (
+            <Stack direction="row" spacing={2}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "flex-start",
+                  flexWrap: "wrap",
+                }}
+              >
+                {tags.map((tag) => (
                   <Button
                     variant="contained"
                     color="success"
@@ -162,11 +158,10 @@ function HomePage() {
                   >
                     {`#${tag.title}`}
                   </Button>
-                ))
-              )}
-            </Box>
-          </Stack>
-
+                ))}
+              </Box>
+            </Stack>
+          )}
           <HabitList date={dateValue} />
           {totalPages ? (
             <CenterPagination

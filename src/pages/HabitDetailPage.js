@@ -66,7 +66,7 @@ function HabitDetailPage() {
   useEffect(() => {
     dispatch(getHabitById(habitId));
     dispatch(getSingleHabitProgressList(habitId));
-    dispatch(getTagsByHabitId(habitId));
+    // dispatch(getTagsByHabitId(habitId));
   }, [habitId, dispatch]);
 
   const { habitDetail } = useSelector((state) => state.habit);
