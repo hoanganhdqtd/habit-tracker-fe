@@ -3,39 +3,33 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { styled } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import Avatar from "@mui/material/Avatar";
 import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import useMediaQuery from "@mui/material/useMediaQuery";
 // import { red } from "@mui/material/colors";
 
 import { FSwitch, FormProvider } from "./form";
 import { useForm } from "react-hook-form";
 
-import {
-  deleteHabit,
-  editHabit,
-  getHabitById,
-} from "../features/habit/habitSlice";
-import {
-  getSingleProgress,
-  updateSingleProgress,
-} from "../features/progress/progressSlice";
-import EditHabitForm from "./EditHabitForm";
+import { deleteHabit, editHabit } from "../features/habit/habitSlice";
+
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
 import dayjs from "dayjs";
 
-const Item = styled(Paper)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
-  ...theme.typography.body2,
-  padding: theme.spacing(1),
-  textAlign: "center",
-  color: theme.palette.text.secondary,
-  maxWidth: 500,
-}));
-
 function HabitCard({ habit, isInCalendarPage, date }) {
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: "center",
+    color: theme.palette.text.secondary,
+    maxWidth: isInCalendarPage ? 600 : 500,
+  }));
+  const theme = useTheme();
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
 
@@ -56,10 +50,11 @@ function HabitCard({ habit, isInCalendarPage, date }) {
   );
 
   // console.log("progressToFind:", progressToFind);
-  let status;
-  if (progressToFind) {
-    status = progressToFind.status;
-  }
+  // let status;
+  // if (progressToFind) {
+  //   status = progressToFind.status;
+  // }
+  const status = progressToFind?.status;
 
   // const { status } = progressToFind;
 
@@ -107,6 +102,14 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     );
   };
 
+  // const switchLabel = useMediaQuery(theme.breakpoints.up("sm"))
+  //   ? "Completed"
+  //   : "";
+
+  const switchLabel = useMediaQuery(theme.breakpoints.up("md"))
+    ? "Completed"
+    : "";
+
   return (
     <Item
       // key={habit._id}
@@ -122,7 +125,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         <Typography
           noWrap
           onClick={() => {
-            console.log("habit._id:", habit._id);
             navigate(`/habit/${habit._id}`);
           }}
         >
@@ -134,7 +136,8 @@ function HabitCard({ habit, isInCalendarPage, date }) {
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <FSwitch
               name="isCompleted"
-              label="Completed"
+              // label="Completed"
+              label={switchLabel}
               habitId={habit._id}
               value={isCompleted}
               date={date}
