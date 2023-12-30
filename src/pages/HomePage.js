@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Typography,
-  Button,
-  SvgIcon,
-  Box,
-  Container,
-  Card,
-} from "@mui/material";
+import { Typography, Button, SvgIcon, Box, Container } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";

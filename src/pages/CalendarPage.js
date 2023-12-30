@@ -4,13 +4,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { Box, Tabs, Tab, Typography, Container, Stack } from "@mui/material";
+import {
+  Box,
+  Tabs,
+  Tab,
+  Typography,
+  Container,
+  Stack,
+  useMediaQuery,
+} from "@mui/material";
 
 import dayjs from "dayjs";
-import { eachDayOfInterval, startOfWeek, endOfWeek } from "date-fns";
+import { startOfWeek } from "date-fns";
 
 import HabitList from "../components/HabitList";
 import { getHabits } from "../features/habit/habitSlice";
+import { useTheme } from "@emotion/react";
 
 const weekday = [
   "Sunday",
@@ -51,6 +60,8 @@ const getWeekFromDate = (date) => {
 };
 
 function CalendarPage() {
+  const theme = useTheme();
+  const mdScreen = useMediaQuery(theme.breakpoints.up("md"));
   const { date } = useSelector((state) => state.habit);
   const newDate = dayjs()
     .set("hour", 0)
@@ -138,7 +149,11 @@ function CalendarPage() {
                 <Tab
                   key={day}
                   wrapped
-                  label={`${weekDate[day]}`.slice(0, 10)}
+                  label={
+                    mdScreen
+                      ? `${weekDate[day]}`.slice(0, 10)
+                      : `${weekDate[day]}`.slice(4, 10)
+                  }
                   onClick={() => {
                     // setDateValue(dayjs(weekDate[day]));
                     setDateValue(weekDate[day]);
