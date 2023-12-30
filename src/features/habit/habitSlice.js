@@ -22,6 +22,7 @@ const initialState = {
   // remindersByHabitId: [],
   currentReminder: {},
   currentProgress: {},
+  date: "",
 };
 
 export const getHabits = createAsyncThunk(
@@ -394,7 +395,7 @@ export const habitSlice = createSlice({
       state.isLoading = false;
       state.totalHabits = action.payload.count;
       state.totalPages = action.payload.totalPages;
-      const { search } = state;
+      // const { search } = state;
 
       // if (search && state.page === 1) {
       //   state.currentPageHabits = action.payload.habits;
@@ -404,6 +405,7 @@ export const habitSlice = createSlice({
       //     ...action.payload.habits,
       //   ];
       // }
+      state.date = action.payload.date;
       state.currentPageHabits = [];
       action.payload.habits.forEach((habit) => {
         state.habitsById[habit._id] = habit;

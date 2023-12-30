@@ -54,31 +54,16 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     (progress) =>
       dayjs(progress.date).isSame(date) && progress.habit === habit._id
   );
-  // progressList.forEach((progress) => {
-  //   console.log("progress:", progress);
-  //   console.log("typeof date:", typeof date);
-  //   console.log("date:", date);
-  //   console.log("typeof progress.date:", typeof progress.date);
-  //   const newDate = new Date(progress.date);
-  //   console.log("typeof newDate:", typeof newDate);
-  //   console.log("newDate:", newDate);
-  //   console.log(
-  //     "dayjs(progress.date).isSame(date):",
-  //     dayjs(progress.date).isSame(date)
-  //   );
-  // });
 
-  console.log("progressToFind:", progressToFind);
+  // console.log("progressToFind:", progressToFind);
   let status;
   if (progressToFind) {
     status = progressToFind.status;
   }
 
-  // const { status } = progressList;
+  // const { status } = progressToFind;
 
-  const [isCompleted, setIsCompleted] = useState(
-    status === "completed" ? true : false
-  );
+  const isCompleted = status === "completed" ? true : false;
 
   const defaultValues = { isCompleted };
   const methods = useForm({ defaultValues });
@@ -92,15 +77,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     const { completed } = data;
 
     console.log("completed:", completed);
-
-    // dispatch(
-    //   editHabit({ name, goal, startDate: startDateValue, duration, onWeekdays })
-    // );
-
-    // dispatch(getHabits({ date: dateValue }));
-
-    // edit progress
-    // dispatch(updateSingleProgress({ habitId, date, status }));
   };
 
   const handleHabitDelete = async (habitId) => {

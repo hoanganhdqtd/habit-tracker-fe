@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -51,6 +51,7 @@ const getWeekFromDate = (date) => {
 };
 
 function CalendarPage() {
+  const { date } = useSelector((state) => state.habit);
   const newDate = dayjs()
     .set("hour", 0)
     .set("minute", 0)
@@ -59,7 +60,7 @@ function CalendarPage() {
   // console.log("newDate:", newDate);
 
   // const [dateValue, setDateValue] = useState(dayjs(new Date()));
-  const [dateValue, setDateValue] = useState(newDate);
+  const [dateValue, setDateValue] = useState(date ? dayjs(date) : newDate);
 
   const [currentTabIndex, setCurrentTabIndex] = useState(
     dayjs(dateValue).get("day")
