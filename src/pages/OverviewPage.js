@@ -82,7 +82,7 @@ function OverviewPage() {
             </LocalizationProvider>
           </Stack>
           <Card>
-            <CardHeader title={`Tasks' status overview by date`} />
+            <CardHeader title={`Habits' status overview by date`} />
             <CardContent>
               <PieChart
                 series={[
