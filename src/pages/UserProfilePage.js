@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserProfile } from "../features/user/userSlice";
 import LoadingScreen from "../components/LoadingScreen";
@@ -19,12 +20,15 @@ import {
   Typography,
   Container,
   Stack,
+  Tooltip,
 } from "@mui/material";
 
 function UserProfilePage() {
   const [isProfileEdit, setIsProfileEdit] = useState(false);
 
   const { currentUser, isLoading } = useSelector((state) => state.user);
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -127,12 +131,26 @@ function UserProfilePage() {
                     </CardContent>
                     <Divider />
                     <CardActions sx={{ justifyContent: "flex-end" }}>
-                      <Button
-                        variant="contained"
-                        onClick={() => setIsProfileEdit(true)}
-                      >
-                        Edit Profile
-                      </Button>
+                      <Tooltip title="Click to edit profile" arrow>
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => setIsProfileEdit(true)}
+                        >
+                          Edit Profile
+                        </Button>
+                      </Tooltip>
+
+                      <Tooltip title="Back to the previous page" arrow>
+                        <Button
+                          color="success"
+                          variant="outlined"
+                          onClick={() => navigate(-1)}
+                        >
+                          Cancel
+                        </Button>
+                      </Tooltip>
+
                       {isProfileEdit && (
                         <EditProfileForm
                           isProfileEdit={isProfileEdit}

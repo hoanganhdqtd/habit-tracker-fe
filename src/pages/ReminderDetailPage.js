@@ -24,6 +24,7 @@ import {
   Grid,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -185,26 +186,33 @@ function ReminderDetailPage() {
 
                   <Divider />
                   <CardActions sx={{ justifyContent: "flex-end" }}>
-                    <Button
-                      variant="contained"
-                      onClick={() => setIsReminderEdit(true)}
-                    >
-                      Edit reminder
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="error"
-                      onClick={() => setIsReminderDelete(true)}
-                    >
-                      Delete
-                    </Button>
-                    <Button
-                      color="secondary"
-                      variant="outlined"
-                      onClick={() => navigate(-1)}
-                    >
-                      Cancel
-                    </Button>
+                    <Tooltip title="Click to edit reminder" arrow>
+                      <Button
+                        variant="contained"
+                        onClick={() => setIsReminderEdit(true)}
+                      >
+                        Edit reminder
+                      </Button>
+                    </Tooltip>
+                    <Tooltip title="Click to delete reminder" arrow>
+                      <Button
+                        variant="contained"
+                        color="error"
+                        onClick={() => setIsReminderDelete(true)}
+                      >
+                        Delete
+                      </Button>
+                    </Tooltip>
+
+                    <Tooltip title="Click to back to the previous page" arrow>
+                      <Button
+                        color="secondary"
+                        variant="outlined"
+                        onClick={() => navigate(-1)}
+                      >
+                        Cancel
+                      </Button>
+                    </Tooltip>
 
                     {isReminderEdit && (
                       <EditReminderForm

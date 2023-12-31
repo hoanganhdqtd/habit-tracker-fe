@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getHabits } from "../features/habit/habitSlice";
 
@@ -8,10 +9,13 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   Container,
+  Divider,
   Stack,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -33,6 +37,7 @@ function OverviewPage() {
   const [dateValue, setDateValue] = useState(date ? dayjs(date) : newDate);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getHabits({ page, search, date: dateValue }));
@@ -121,6 +126,18 @@ function OverviewPage() {
                 height={200}
               />
             </CardContent>
+            <Divider />
+            <CardActions sx={{ justifyContent: "flex-end" }}>
+              <Tooltip title="Back to the previous page" arrow>
+                <Button
+                  color="success"
+                  variant="outlined"
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
+                </Button>
+              </Tooltip>
+            </CardActions>
           </Card>
         </Stack>
       </Container>

@@ -2,14 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { styled } from "@mui/material/styles";
-import { useTheme } from "@mui/material/styles";
-import Avatar from "@mui/material/Avatar";
-import Paper from "@mui/material/Paper";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import { styled, useTheme } from "@mui/material/styles";
+
+import {
+  Avatar,
+  Paper,
+  Stack,
+  Button,
+  Typography,
+  useMediaQuery,
+  Tooltip,
+} from "@mui/material";
 // import { red } from "@mui/material/colors";
 
 import { FSwitch, FormProvider } from "./form";
@@ -129,16 +132,23 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         alignItems="center"
       >
         <Stack direction="row" spacing={2} alignItems="center">
-          <Avatar onClick={() => navigate("/account")}>A</Avatar>
+          <Tooltip title="Click on the avatar to view the user's profile" arrow>
+            <Avatar onClick={() => navigate("/account")}>A</Avatar>
+          </Tooltip>
 
-          <Typography
-            noWrap
-            onClick={() => {
-              navigate(`/habit/${habit._id}`);
-            }}
+          <Tooltip
+            title="Click on the habit's name to view the habit's detail"
+            arrow
           >
-            {habit.name}
-          </Typography>
+            <Typography
+              noWrap
+              onClick={() => {
+                navigate(`/habit/${habit._id}`);
+              }}
+            >
+              {habit.name}
+            </Typography>
+          </Tooltip>
         </Stack>
         {isInCalendarPage && (
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -154,25 +164,42 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         )}
 
         <Stack direction="row" spacing={1} alignItems="center">
-          <Button
-            variant="contained"
-            onClick={() => {
-              navigate(`statistics/${habit._id}`);
-            }}
+          <Tooltip
+            title="Click to view the habit's count of being completed"
+            arrow
           >
-            Statistics
-          </Button>
-
-          {!isInCalendarPage && (
             <Button
               variant="contained"
-              color="secondary"
               onClick={() => {
-                setIsHabitEdit(true);
+                navigate(`statistics/${habit._id}`);
               }}
             >
-              Edit
+              Statistics
             </Button>
+          </Tooltip>
+          {!isInCalendarPage && (
+            <Tooltip title="Click to edit the habit" arrow>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  setIsHabitEdit(true);
+                }}
+              >
+                Edit
+              </Button>
+            </Tooltip>
+          )}
+          {!isInCalendarPage && (
+            <Tooltip title="Click to delete the habit" arrow>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => setIsHabitDelete(true)}
+              >
+                Delete
+              </Button>
+            </Tooltip>
           )}
           {isHabitEdit && (
             <EditHabitForm
@@ -182,14 +209,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
               habitId={habit._id}
             />
           )}
-
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => setIsHabitDelete(true)}
-          >
-            Delete
-          </Button>
           {isHabitDelete && (
             <DeleteHabitConfirm
               handleHabitDelete={handleHabitDelete}

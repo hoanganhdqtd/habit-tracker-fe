@@ -43,7 +43,7 @@ export const tagSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      state.tags = action.payload;
+      state.tags = state.tags.filter((tags) => tags._id !== action.payload._id);
     },
   },
 });

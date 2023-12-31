@@ -25,6 +25,7 @@ import {
   Grid,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
@@ -227,19 +228,24 @@ function HabitDetailPage() {
                                 <Typography>No reminder</Typography>
                               ) : (
                                 reminders.map((reminder) => (
-                                  <Button
-                                    variant="contained"
-                                    key={reminder._id}
-                                    size="small"
-                                    sx={{ mr: 1, mt: 1 }}
-                                    onClick={() =>
-                                      navigate(
-                                        `/habit/${habitId}/reminder/${reminder._id}`
-                                      )
-                                    }
+                                  <Tooltip
+                                    title="Click to view the reminder's detail"
+                                    arrow
                                   >
-                                    {dayjs(reminder.time).format("LT")}
-                                  </Button>
+                                    <Button
+                                      variant="contained"
+                                      key={reminder._id}
+                                      size="small"
+                                      sx={{ mr: 1, mt: 1 }}
+                                      onClick={() =>
+                                        navigate(
+                                          `/habit/${habitId}/reminder/${reminder._id}`
+                                        )
+                                      }
+                                    >
+                                      {dayjs(reminder.time).format("LT")}
+                                    </Button>
+                                  </Tooltip>
                                 ))
                               )}
                             </Box>
@@ -254,13 +260,21 @@ function HabitDetailPage() {
                               mt: 1,
                             }}
                           >
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              onClick={() => setIsAddNewReminder(true)}
-                            >
-                              Add new reminder
-                            </Button>
+                            <Tooltip title="Click to add a new reminder" arrow>
+                              {" "}
+                              <Button
+                                variant="contained"
+                                onClick={() => setIsAddNewReminder(true)}
+                                sx={{
+                                  backgroundColor: "#ffc107",
+                                  "&:hover": {
+                                    backgroundColor: "#ffa000",
+                                  },
+                                }}
+                              >
+                                Add new reminder
+                              </Button>
+                            </Tooltip>
                           </Box>
                         </Grid>
 
@@ -284,20 +298,18 @@ function HabitDetailPage() {
                                 <Typography>No tag</Typography>
                               ) : (
                                 tags?.map((tag) => (
-                                  <Button
-                                    variant="contained"
-                                    key={tag._id}
-                                    size="small"
-                                    sx={{ mr: 1, mt: 1 }}
-                                    onClick={() => {
-                                      // navigate(
-                                      //   `/habit/${habitId}/reminder/${reminder._id}`
-                                      // )}
-                                    }}
-                                  >
-                                    {/* {dayjs(reminder.time).format("LT")} */}
-                                    {`#${tag.title}`}
-                                  </Button>
+                                  <Tooltip title="Click to find by tag" arrow>
+                                    <Button
+                                      variant="contained"
+                                      key={tag._id}
+                                      size="small"
+                                      sx={{ mr: 1, mt: 1 }}
+                                      onClick={() => {}}
+                                    >
+                                      {/* {dayjs(reminder.time).format("LT")} */}
+                                      {`#${tag.title}`}
+                                    </Button>
+                                  </Tooltip>
                                 ))
                               )}
                             </Box>
@@ -312,13 +324,24 @@ function HabitDetailPage() {
                               mt: 1,
                             }}
                           >
-                            <Button
-                              variant="contained"
-                              color="secondary"
-                              onClick={() => setAddNewTag(true)}
+                            <Tooltip
+                              title="Click to add a new tag to the habit"
+                              arrow
                             >
-                              Add new tag
-                            </Button>
+                              <Button
+                                variant="contained"
+                                // color="secondary"
+                                onClick={() => setAddNewTag(true)}
+                                sx={{
+                                  backgroundColor: "#009688",
+                                  "&:hover": {
+                                    backgroundColor: "#00796b",
+                                  },
+                                }}
+                              >
+                                Add new tag
+                              </Button>
+                            </Tooltip>
                           </Box>
                         </Grid>
                       </Grid>
@@ -328,26 +351,34 @@ function HabitDetailPage() {
 
                 <Divider />
                 <CardActions sx={{ justifyContent: "flex-end" }}>
-                  <Button
-                    variant="contained"
-                    onClick={() => setIsHabitEdit(true)}
-                  >
-                    Edit habit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    onClick={() => setIsHabitDelete(true)}
-                  >
-                    Delete
-                  </Button>
-                  <Button
-                    color="secondary"
-                    variant="outlined"
-                    onClick={() => navigate(-1)}
-                  >
-                    Cancel
-                  </Button>
+                  <Tooltip title="Click to edit the habit" arrow>
+                    <Button
+                      variant="contained"
+                      color="secondary"
+                      onClick={() => setIsHabitEdit(true)}
+                    >
+                      Edit habit
+                    </Button>
+                  </Tooltip>
+                  <Tooltip title="Click to delete the habit" arrow>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => setIsHabitDelete(true)}
+                    >
+                      Delete
+                    </Button>
+                  </Tooltip>
+
+                  <Tooltip title="Back to the previous page" arrow>
+                    <Button
+                      color="success"
+                      variant="outlined"
+                      onClick={() => navigate(-1)}
+                    >
+                      Cancel
+                    </Button>
+                  </Tooltip>
 
                   {isHabitEdit && (
                     <EditHabitForm

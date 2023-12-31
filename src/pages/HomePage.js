@@ -4,6 +4,7 @@ import { Typography, Button, SvgIcon, Box, Container } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import Tooltip from "@mui/material/Tooltip";
 
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 
@@ -20,6 +21,7 @@ import HabitList from "../components/HabitList";
 import { SearchBox } from "../components/SearchBox";
 import AddHabitForm from "../components/AddHabitForm";
 import CreateTagForm from "../components/CreateTagForm";
+import TagButton from "../components/TagButton";
 
 const CenterPagination = styled(Pagination)(({ theme }) => ({
   ul: {
@@ -48,17 +50,14 @@ function HomePage() {
   };
 
   const { search, page, totalPages } = useSelector((state) => state.habit);
-  const { tags } = useSelector((state) => state.habit.habitDetail);
+  // const { tags: habitTags } = useSelector((state) => state.habit.habitDetail);
+  const { tags } = useSelector((state) => state.tag);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getHabits({ page, search, date: dateValue }));
     dispatch(getTags());
   }, [page, search, dateValue, dispatch]);
-
-  useEffect(() => {
-    dispatch(getTags());
-  }, [dispatch]);
 
   return (
     <Box
@@ -73,30 +72,34 @@ function HomePage() {
           <Stack direction="row" justifyContent="space-between" spacing={4}>
             <Typography variant="h4">Habits</Typography>
             <Stack direction="row" justifyContent="flex-end" spacing={2}>
-              <Button
-                startIcon={
-                  <SvgIcon fontSize="small">
-                    <PlusIcon />
-                  </SvgIcon>
-                }
-                variant="contained"
-                color="secondary"
-                onClick={() => setCreateNewTag(true)}
-              >
-                Create new tag
-              </Button>
+              <Tooltip title="Create a new tag" arrow>
+                <Button
+                  startIcon={
+                    <SvgIcon fontSize="small">
+                      <PlusIcon />
+                    </SvgIcon>
+                  }
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => setCreateNewTag(true)}
+                >
+                  Create new tag
+                </Button>
+              </Tooltip>
 
-              <Button
-                startIcon={
-                  <SvgIcon fontSize="small">
-                    <PlusIcon />
-                  </SvgIcon>
-                }
-                variant="contained"
-                onClick={() => setAddNewHabit(true)}
-              >
-                Add Habit
-              </Button>
+              <Tooltip title="Create a new habit" arrow>
+                <Button
+                  startIcon={
+                    <SvgIcon fontSize="small">
+                      <PlusIcon />
+                    </SvgIcon>
+                  }
+                  variant="contained"
+                  onClick={() => setAddNewHabit(true)}
+                >
+                  Add Habit
+                </Button>
+              </Tooltip>
 
               {createNewTag && (
                 <CreateTagForm
@@ -115,6 +118,7 @@ function HomePage() {
               )}
             </Stack>
           </Stack>
+
           <Stack direction="row" justifyContent="space-between" spacing={4}>
             <SearchBox />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -132,6 +136,7 @@ function HomePage() {
               />
             </LocalizationProvider>
           </Stack>
+
           {tags.length !== 0 && (
             <Stack direction="row" spacing={2}>
               <Box
@@ -142,7 +147,7 @@ function HomePage() {
                   flexWrap: "wrap",
                 }}
               >
-                {tags.map((tag) => (
+                {/* {tags.map((tag) => (
                   <Button
                     variant="contained"
                     color="success"
@@ -158,6 +163,16 @@ function HomePage() {
                   >
                     {`#${tag.title}`}
                   </Button>
+                ))} */}
+                {tags.map((tag) => (
+                  <TagButton
+                    key={tag._id}
+                    tagId={tag._id}
+                    title={tag.title}
+                    onClick={() => {
+                      dispatch(getHabits({ tag: tag.title }));
+                    }}
+                  />
                 ))}
               </Box>
             </Stack>

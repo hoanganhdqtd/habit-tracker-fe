@@ -249,6 +249,7 @@ function EditHabitForm({
                 </Button>
                 <LoadingButton
                   type="submit"
+                  color="secondary"
                   variant="contained"
                   size="small"
                   loading={
