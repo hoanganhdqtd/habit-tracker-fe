@@ -1,13 +1,12 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams, NavLink, Link } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import {
   getHabitById,
   editHabit,
   deleteHabit,
   getSingleHabitProgressList,
-  getHabits,
 } from "../features/habit/habitSlice";
 
 import AddReminderForm from "../components/AddReminderForm";

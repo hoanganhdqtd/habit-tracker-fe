@@ -26,7 +26,7 @@ export default function TagButton({ title, tagId }) {
         title="Click on the tag's title to search by tag or the 'X' sign to delete the tag"
         arrow
       >
-        <Chip label={title} onDelete={handleDelete} color="success" />
+        <Chip label={`#${title}`} onDelete={handleDelete} color="success" />
       </Tooltip>
 
       {/* <Chip label="Deletable" variant="outlined" onDelete={handleDelete} /> */}
