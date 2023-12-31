@@ -1,13 +1,13 @@
 import dayjs from "dayjs";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, NavLink, Link } from "react-router-dom";
 import {
   getHabitById,
   editHabit,
   deleteHabit,
   getSingleHabitProgressList,
-  getTagsByHabitId,
+  getHabits,
 } from "../features/habit/habitSlice";
 
 import AddReminderForm from "../components/AddReminderForm";
@@ -236,7 +236,14 @@ function HabitDetailPage() {
                                       variant="contained"
                                       key={reminder._id}
                                       size="small"
-                                      sx={{ mr: 1, mt: 1 }}
+                                      sx={{
+                                        mr: 1,
+                                        mt: 1,
+                                        backgroundColor: "#03a9f4",
+                                        "&:hover": {
+                                          backgroundColor: "#0288d1",
+                                        },
+                                      }}
                                       onClick={() =>
                                         navigate(
                                           `/habit/${habitId}/reminder/${reminder._id}`
@@ -265,12 +272,6 @@ function HabitDetailPage() {
                               <Button
                                 variant="contained"
                                 onClick={() => setIsAddNewReminder(true)}
-                                sx={{
-                                  backgroundColor: "#ffc107",
-                                  "&:hover": {
-                                    backgroundColor: "#ffa000",
-                                  },
-                                }}
                               >
                                 Add new reminder
                               </Button>
@@ -301,13 +302,30 @@ function HabitDetailPage() {
                                   <Tooltip title="Click to find by tag" arrow>
                                     <Button
                                       variant="contained"
+                                      color="success"
                                       key={tag._id}
                                       size="small"
-                                      sx={{ mr: 1, mt: 1 }}
-                                      onClick={() => {}}
+                                      sx={{
+                                        mr: 1,
+                                        mt: 1,
+                                      }}
+                                      // onClick={() => {
+                                      //   navigate("/", {
+                                      //     state: { tagToSearch: tag.title },
+                                      //   });
+                                      // }}
                                     >
                                       {/* {dayjs(reminder.time).format("LT")} */}
-                                      {`#${tag.title}`}
+                                      <Link
+                                        to="/"
+                                        style={{
+                                          textDecoration: "none",
+                                          color: "white",
+                                        }}
+                                        state={{ tagToSearch: tag.title }}
+                                      >
+                                        {`#${tag.title}`}
+                                      </Link>
                                     </Button>
                                   </Tooltip>
                                 ))

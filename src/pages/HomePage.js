@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Button, SvgIcon, Box, Container } from "@mui/material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
+import {
+  Typography,
+  Button,
+  SvgIcon,
+  Box,
+  Container,
+  Pagination,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Pagination from "@mui/material/Pagination";
-import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
 
 import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 
@@ -13,7 +21,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-import { useDispatch, useSelector } from "react-redux";
 import { getHabits, changePage } from "../features/habit/habitSlice";
 import { getTags } from "../features/tag/tagSlice";
 
@@ -53,11 +60,22 @@ function HomePage() {
   // const { tags: habitTags } = useSelector((state) => state.habit.habitDetail);
   const { tags } = useSelector((state) => state.tag);
 
+  // const { tagToSearch } = navigate.state;
+  const { state } = useLocation();
+  let tag;
+  if (state) {
+    const { tagToSearch } = state;
+    tag = tagToSearch;
+  }
+
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getHabits({ page, search, date: dateValue }));
+    dispatch(getHabits({ page, search, date: dateValue, tag }));
     dispatch(getTags());
-  }, [page, search, dateValue, dispatch]);
+  }, [page, search, dateValue, tag, dispatch]);
+
+  // clear location state
+  window.history.replaceState({}, document.title);
 
   return (
     <Box

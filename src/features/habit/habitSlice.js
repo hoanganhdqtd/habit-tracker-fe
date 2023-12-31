@@ -35,14 +35,19 @@ export const getHabits = createAsyncThunk(
       if (date) {
         url += `&date=${date}`;
       }
+      // const { tagToSearch } = locationState;
       if (tag) {
         url += `&tag=${tag}`;
       }
-      console.log("search:", search);
-      console.log("date:", date);
-      console.log("tag:", tag);
+      // if (tagToSearch) {
+      //   url += `&tag=${tagToSearch}`;
+      // }
+
+      // console.log("search:", search);
+      // console.log("date:", date);
+      // console.log("tag:", tag);
       const response = await apiService.get(url);
-      console.log("response:", response);
+      // console.log("response:", response);
       // console.log("getState:", getState());
 
       return response.data;
