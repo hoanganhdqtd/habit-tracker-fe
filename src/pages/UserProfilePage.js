@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUserProfile } from "../features/user/userSlice";
 import LoadingScreen from "../components/LoadingScreen";
 import EditProfileForm from "../components/EditProfileForm";
-import UploadAvatar from "../components/UploadAvatar";
 
 import {
   Box,

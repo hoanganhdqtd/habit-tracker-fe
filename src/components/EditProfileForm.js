@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack, Typography } from "@mui/material";
+import { alpha, Button, Card, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 
-import { FormProvider, FTextField } from "./form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { FormProvider, FTextField, FUploadAvatar } from "./form";
+import { fData } from "../utils/numberFormat";
 
 import { updateCurrentUserProfile } from "../features/user/userSlice";
-
-const defaultValues = {
-  name: "",
-  password: "",
-  confirmPassword: "",
-  avatarUrl: "",
-};
 
 const style = {
   position: "absolute",
@@ -32,20 +28,50 @@ const style = {
   p: 4,
 };
 
+const UpdateUserSchema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+});
+
 function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { name, email, avatarUrl } = currentUser;
 
-  defaultValues.name = name;
-  defaultValues.email = email;
-  defaultValues.avatarUrl = avatarUrl;
+  const defaultValues = {
+    name: name || "",
+    email: email || "",
+    password: "",
+    confirmPassword: "",
+    avatarUrl: avatarUrl || "",
+  };
 
-  const methods = useForm({ defaultValues });
+  const methods = useForm({
+    resolver: yupResolver(UpdateUserSchema),
+    defaultValues,
+  });
+
   const {
+    setValue,
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+
+  // to upload avatar by drag-and-drop
+  const handleDrop = useCallback(
+    (acceptedFiles) => {
+      const file = acceptedFiles[0];
+
+      if (file) {
+        setValue(
+          "avatarUrl",
+          Object.assign(file, {
+            preview: URL.createObjectURL(file),
+          })
+        );
+      }
+    },
+    [setValue]
+  );
 
   const onSubmit = (data) => {
     const { name, password, avatarUrl } = data;
@@ -92,6 +118,30 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
                   },
                 }}
               />
+
+              <Card sx={{ py: 10, px: 3, textAlign: "center" }}>
+                <FUploadAvatar
+                  name="avatarUrl"
+                  accept="image/*"
+                  maxSize={3145728}
+                  onDrop={handleDrop}
+                  helperText={
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        mt: 2,
+                        mx: "auto",
+                        display: "block",
+                        textAlign: "center",
+                        color: "text.secondary",
+                      }}
+                    >
+                      Allowed *.jpeg, *.jpg, *.png, *.gif
+                      <br /> max size of {fData(3145728)}
+                    </Typography>
+                  }
+                />
+              </Card>
 
               <Box
                 sx={{

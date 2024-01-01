@@ -90,7 +90,7 @@ export const createUser =
   };
 
 export const updateCurrentUserProfile =
-  ({ userId, name, password, avatarUrl }) =>
+  ({ name, password, avatarUrl }) =>
   async (dispatch) => {
     dispatch(userSlice.actions.startLoading());
     try {

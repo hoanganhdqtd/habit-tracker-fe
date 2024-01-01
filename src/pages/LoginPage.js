@@ -1,19 +1,30 @@
 import { useCallback, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 import {
   Alert,
   Box,
   Button,
   FormHelperText,
+  IconButton,
+  InputAdornment,
+  Link,
   Stack,
   Tab,
   Tabs,
   TextField,
   Typography,
 } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
+import { FCheckbox, FormProvider, FTextField } from "../components/form";
 import useAuth from "../hooks/useAuth";
 
 // router => navigate
@@ -21,34 +32,74 @@ import useAuth from "../hooks/useAuth";
 // next/link => router link
 // MUI link => router link
 
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  password: Yup.string().required("Password is required"),
+});
+
+const defaultValues = {
+  email: "",
+  password: "",
+  remember: true,
+};
+
 const LoginPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [showPassword, setShowPassword] = useState(false);
+
   const auth = useAuth();
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-      submit: null,
-    },
-    validationSchema: Yup.object({
-      email: Yup.string()
-        .email("Must be a valid email")
-        .max(255)
-        .required("Email is required"),
-      password: Yup.string().max(255).required("Password is required"),
-    }),
-    onSubmit: async (values, helpers) => {
-      try {
-        await auth.login(values, () => {
-          navigate("/");
-        });
-      } catch (err) {
-        helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
-        helpers.setSubmitting(false);
-      }
-    },
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     email: "",
+  //     password: "",
+  //     submit: null,
+  //   },
+  //   validationSchema: Yup.object({
+  //     email: Yup.string()
+  //       .email("Must be a valid email")
+  //       .max(255)
+  //       .required("Email is required"),
+  //     password: Yup.string().max(255).required("Password is required"),
+  //   }),
+  //   onSubmit: async (values, helpers) => {
+  //     try {
+  //       await auth.login(values, () => {
+  //         navigate("/");
+  //       });
+  //     } catch (err) {
+  //       helpers.setStatus({ success: false });
+  //       helpers.setErrors({ submit: err.message });
+  //       helpers.setSubmitting(false);
+  //     }
+  //   },
+  // });
+
+  const methods = useForm({
+    resolver: yupResolver(LoginSchema),
+    defaultValues,
   });
+  const {
+    handleSubmit,
+    reset,
+    setError,
+    formState: { errors, isSubmitting },
+  } = methods;
+
+  const onSubmit = async (data) => {
+    const from = location.state?.from?.pathname || "/";
+    let { email, password } = data;
+
+    try {
+      await auth.login({ email, password }, () => {
+        navigate(from, { replace: true });
+      });
+    } catch (error) {
+      reset();
+      setError("responseError", error);
+    }
+  };
 
   return (
     <>
@@ -69,59 +120,68 @@ const LoginPage = () => {
             width: "100%",
           }}
         >
-          <div>
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography variant="h4">Login</Typography>
               <Typography color="text.secondary" variant="body2">
                 Don&apos;t have an account? &nbsp;
-                <Link to="/register" underline="hover" variant="subtitle2">
+                <RouterLink
+                  to="/register"
+                  underline="hover"
+                  variant="subtitle2"
+                >
                   Register
-                </Link>
+                </RouterLink>
               </Typography>
             </Stack>
 
-            <form noValidate onSubmit={formik.handleSubmit}>
-              <Stack spacing={3}>
-                <TextField
-                  error={!!(formik.touched.email && formik.errors.email)}
-                  fullWidth
-                  helperText={formik.touched.email && formik.errors.email}
-                  label="Email Address"
-                  name="email"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  type="email"
-                  value={formik.values.email}
-                />
-                <TextField
-                  error={!!(formik.touched.password && formik.errors.password)}
-                  fullWidth
-                  helperText={formik.touched.password && formik.errors.password}
-                  label="Password"
-                  name="password"
-                  onBlur={formik.handleBlur}
-                  onChange={formik.handleChange}
-                  type="password"
-                  value={formik.values.password}
-                />
-              </Stack>
+            <Stack spacing={3}>
+              <FTextField name="email" label="Email address" />
+              <FTextField
+                name="password"
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? (
+                          <VisibilityIcon />
+                        ) : (
+                          <VisibilityOffIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Stack>
 
-              {formik.errors.submit && (
-                <Typography color="error" sx={{ mt: 3 }} variant="body2">
-                  {formik.errors.submit}
-                </Typography>
-              )}
-              <Button
-                fullWidth
-                size="large"
-                sx={{ mt: 3 }}
-                type="submit"
-                variant="contained"
-              >
-                Continue
-              </Button>
-            </form>
-          </div>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ my: 2 }}
+            >
+              <FCheckbox name="remember" label="Remember me" />
+              <Link component={RouterLink} variant="subtitle2" to="/">
+                Forgot password?
+              </Link>
+            </Stack>
+
+            <LoadingButton
+              fullWidth
+              size="large"
+              sx={{ mt: 3 }}
+              type="submit"
+              variant="contained"
+            >
+              Continue
+            </LoadingButton>
+          </FormProvider>
         </Box>
       </Box>
     </>
