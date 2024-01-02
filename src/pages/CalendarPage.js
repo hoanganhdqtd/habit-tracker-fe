@@ -63,6 +63,7 @@ function CalendarPage() {
   const theme = useTheme();
   const mdScreen = useMediaQuery(theme.breakpoints.up("md"));
   const { date } = useSelector((state) => state.habit);
+  console.log("date:", date);
   const newDate = dayjs()
     .set("hour", 0)
     .set("minute", 0)

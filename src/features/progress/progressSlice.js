@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import dayjs from "dayjs";
+import { getHabits } from "../habit/habitSlice";
 
 const initialState = {
   isLoading: false,
@@ -57,19 +58,27 @@ export const progressSlice = createSlice({
   },
 });
 
-export const getSingleHabitProgressList = (habitId) => async (dispatch) => {
-  dispatch(progressSlice.actions.startLoading());
+export const getSingleHabitProgressList =
+  ({ habitId, date }) =>
+  async (dispatch) => {
+    dispatch(progressSlice.actions.startLoading());
+    let url = `progress/habit/${habitId}`;
+    if (date) {
+      url += `?date=${date}`;
+    }
 
-  try {
-    const response = await apiService.get(`progress/habit/${habitId}`);
-    dispatch(
-      progressSlice.actions.getSingleHabitProgressListSuccess(response.data)
-    );
-  } catch (error) {
-    console.log("Error:", error);
-    dispatch(progressSlice.actions.hasError(error));
-  }
-};
+    try {
+      // const response = await apiService.get(`progress/habit/${habitId}`);
+      const response = await apiService.get(url);
+      console.log("getSingleHabitProgressList response:", response);
+      dispatch(
+        progressSlice.actions.getSingleHabitProgressListSuccess(response.data)
+      );
+    } catch (error) {
+      console.log("Error:", error);
+      dispatch(progressSlice.actions.hasError(error));
+    }
+  };
 
 export const addHabitProgress = (habitId) => async (dispatch) => {
   dispatch(progressSlice.actions.startLoading());
@@ -79,7 +88,7 @@ export const addHabitProgress = (habitId) => async (dispatch) => {
       date: dayjs(new Date()).set("hour", 0).set("minute", 0).set("second", 0),
       habit: habitId,
     });
-    console.log("addHabitProgress response:", response);
+    // console.log("addHabitProgress response:", response);
     dispatch(progressSlice.actions.addHabitProgressSuccess(response.data));
   } catch (error) {
     console.log("Error:", error);
@@ -92,14 +101,15 @@ export const updateSingleProgress =
   async (dispatch) => {
     dispatch(progressSlice.actions.startLoading());
     try {
-      const response = await apiService.put(`/progress/habit/${habitId}`, {
+      let response = await apiService.put(`/progress/habit/${habitId}`, {
         status,
         date,
       });
-      console.log("updateSingleProgress response:", response);
+      // console.log("updateSingleProgress response:", response);
       dispatch(
         progressSlice.actions.updateSingleProgressSuccess(response.data)
       );
+      dispatch(getHabits({ date }));
     } catch (error) {
       console.log("Error:", error);
       dispatch(progressSlice.actions.hasError(error));

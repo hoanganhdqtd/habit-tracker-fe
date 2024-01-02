@@ -29,6 +29,7 @@ import { SearchBox } from "../components/SearchBox";
 import AddHabitForm from "../components/AddHabitForm";
 import CreateTagForm from "../components/CreateTagForm";
 import TagButton from "../components/TagButton";
+import { getCurrentUserProfile } from "../features/user/userSlice";
 
 const CenterPagination = styled(Pagination)(({ theme }) => ({
   ul: {
@@ -70,6 +71,7 @@ function HomePage() {
 
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(getCurrentUserProfile());
     dispatch(getHabits({ page, search, date: dateValue, tag }));
     dispatch(getTags());
   }, [page, search, dateValue, tag, dispatch]);
@@ -98,7 +100,13 @@ function HomePage() {
                     </SvgIcon>
                   }
                   variant="contained"
-                  color="secondary"
+                  // color="success"
+                  sx={{
+                    backgroundColor: "#009688",
+                    "&:hover": {
+                      backgroundColor: "#00796b",
+                    },
+                  }}
                   onClick={() => setCreateNewTag(true)}
                 >
                   Create new tag

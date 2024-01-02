@@ -14,7 +14,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+
 import MoreIcon from "@mui/icons-material/MoreVert";
+
+import ListIcon from "@mui/icons-material/List";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -97,8 +103,21 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      {/* <MenuItem onClick={handleMenuClose}>
+        <BarChartIcon /> Overview
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <ListIcon /> Habits
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <CalendarMonthIcon /> Calendar
+      </MenuItem> */}
+      <MenuItem onClick={handleMenuClose}>
+        <AccountCircle /> Account
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <LogoutIcon /> Logout
+      </MenuItem>
     </Menu>
   );
 
@@ -119,37 +138,21 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
+      <MenuItem onClick={handleMenuClose}>
+        <BarChartIcon /> Overview
       </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
+      <MenuItem onClick={handleMenuClose}>
+        <ListIcon />
+        Habits
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
+      <MenuItem onClick={handleMenuClose}>
+        <CalendarMonthIcon /> Calendar
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <AccountCircle /> Account
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <LogoutIcon /> Logout
       </MenuItem>
     </Menu>
   );
@@ -158,51 +161,25 @@ export default function PrimarySearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            Habit tracker
           </Typography>
-          <Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-              inputProps={{ "aria-label": "search" }}
-            />
-          </Search>
+
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton
-              size="large"
-              aria-label="show 4 new mails"
-              color="inherit"
-            >
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
+            <IconButton size="large" color="inherit">
+              <ListIcon />
             </IconButton>
-            <IconButton
-              size="large"
-              aria-label="show 17 new notifications"
-              color="inherit"
-            >
-              <Badge badgeContent={17} color="error">
-                <NotificationsIcon />
-              </Badge>
+            <IconButton size="large" color="inherit">
+              <BarChartIcon />
+            </IconButton>
+            <IconButton size="large" color="inherit">
+              <CalendarMonthIcon />
             </IconButton>
             <IconButton
               size="large"

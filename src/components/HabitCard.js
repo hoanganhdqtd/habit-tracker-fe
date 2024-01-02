@@ -13,12 +13,17 @@ import {
   useMediaQuery,
   Tooltip,
 } from "@mui/material";
+import { ThumbUp, SentimentVeryDissatisfied } from "@mui/icons-material";
+// import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+
 // import { red } from "@mui/material/colors";
 
 import { FSwitch, FormProvider } from "./form";
 import { useForm } from "react-hook-form";
 
 import { deleteHabit, editHabit } from "../features/habit/habitSlice";
+
+// import { getSingleHabitProgressList } from "../features/progress/progressSlice";
 
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
 import EditHabitForm from "./EditHabitForm";
@@ -168,6 +173,18 @@ function HabitCard({ habit, isInCalendarPage, date }) {
           </FormProvider>
         )}
 
+        {isInCalendarPage && isCompleted && (
+          <Tooltip title="Good job! You completed the task." arrow>
+            <ThumbUp color="success" />
+          </Tooltip>
+        )}
+
+        {isInCalendarPage && !isCompleted && dayjs().isAfter(date, "day") && (
+          <Tooltip title="You missed it. Please try your best." arrow>
+            <SentimentVeryDissatisfied color="error" />
+          </Tooltip>
+        )}
+
         <Stack direction="row" spacing={1} alignItems="center">
           <Tooltip
             title="Click to view the habit's count of being completed"
@@ -177,6 +194,12 @@ function HabitCard({ habit, isInCalendarPage, date }) {
               variant="contained"
               onClick={() => {
                 navigate(`/statistics/${habit._id}`);
+              }}
+              sx={{
+                backgroundColor: "#00bcd4",
+                "&:hover": {
+                  backgroundColor: "#0097a7",
+                },
               }}
             >
               Statistics

@@ -13,6 +13,7 @@ export default function TagButton({ title, tagId }) {
   const handleDelete = () => {
     console.info("You clicked the delete icon.");
     dispatch(deleteSingleTag(tagId));
+    // dispatch(getHabits());
   };
 
   return (

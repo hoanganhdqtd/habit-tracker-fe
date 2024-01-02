@@ -286,11 +286,27 @@ export const addHabitProgress = createAsyncThunk(
   }
 );
 
+// export const getHabitSingleProgress = createAsyncThunk(
+//   "habits/getHabitSingleProgress",
+//   async (progressId, { rejectWithValue, dispatch }) => {
+//     try {
+//       const response = await apiService.get(`/progress/${progressId}`);
+//       console.log("response.data:", response.data);
+//       return response.data;
+//     } catch (err) {
+//       return rejectWithValue(err);
+//     }
+//   }
+// );
+
+// GET progress/habit/:habitId?date=${date}
 export const getHabitSingleProgress = createAsyncThunk(
   "habits/getHabitSingleProgress",
-  async (progressId, { rejectWithValue, dispatch }) => {
+  async ({ habitId, date }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await apiService.get(`/progress/${progressId}`);
+      const response = await apiService.get(
+        `progress/habit/${habitId}?date=${date}`
+      );
       console.log("response.data:", response.data);
       return response.data;
     } catch (err) {
@@ -592,7 +608,7 @@ export const habitSlice = createSlice({
     },
     [getSingleHabitProgressList.fulfilled]: (state, action) => {
       state.isLoading = false;
-      // console.log("action.payload:", action.payload);
+      console.log("action.payload:", action.payload);
       state.habitDetail.progressList = action.payload.progressList;
       state.habitDetail = action.payload;
     },
