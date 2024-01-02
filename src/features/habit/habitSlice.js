@@ -459,6 +459,7 @@ export const habitSlice = createSlice({
         state.habitsById[habit._id] = habit;
         if (!state.currentPageHabits.includes(habit._id))
           state.currentPageHabits.push(habit._id);
+        // state.currentPageHabits.push(habit._id);
       });
     },
     [getHabitsByUserId.fulfilled]: (state, action) => {

@@ -41,6 +41,9 @@ function HabitCard({ habit, isInCalendarPage, date }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { currentUser } = useSelector((state) => state.user);
+  const { avatarUrl } = currentUser;
+
   // const { progress } = useSelector((state) => state.progress);
   // const { status } = progress;
 
@@ -133,7 +136,9 @@ function HabitCard({ habit, isInCalendarPage, date }) {
       >
         <Stack direction="row" spacing={2} alignItems="center">
           <Tooltip title="Click on the avatar to view the user's profile" arrow>
-            <Avatar onClick={() => navigate("/account")}>A</Avatar>
+            <Avatar src={avatarUrl} onClick={() => navigate("/account")}>
+              A
+            </Avatar>
           </Tooltip>
 
           <Tooltip
@@ -171,7 +176,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
             <Button
               variant="contained"
               onClick={() => {
-                navigate(`statistics/${habit._id}`);
+                navigate(`/statistics/${habit._id}`);
               }}
             >
               Statistics

@@ -23,11 +23,19 @@ export default function HabitList({ date, isInCalendarPage }) {
   return isLoading ? (
     <LoadingScreen />
   ) : !habits.length ? (
-    !date ? (
-      <Typography variant="h4">No habit found.</Typography>
-    ) : (
-      <Typography variant="h4">There's no habit on this day.</Typography>
-    )
+    <Box
+      mt={2}
+      sx={{
+        flex: "1 1 auto",
+        alignItems: "center",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      <Typography variant="h5">
+        {!date ? "No habit found." : "There's no habit on this day."}
+      </Typography>
+    </Box>
   ) : (
     <Box sx={{ flexGrow: 1, overflow: "hidden", px: 3 }}>
       {habits.map((habit) => {

@@ -52,6 +52,10 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
+      console.log(
+        "getCurrentUserProfileSuccess action.payload:",
+        action.payload
+      );
       state.currentUser = action.payload;
     },
 

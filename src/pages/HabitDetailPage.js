@@ -393,7 +393,7 @@ function HabitDetailPage() {
                       variant="outlined"
                       onClick={() => navigate(-1)}
                     >
-                      Cancel
+                      Back
                     </Button>
                   </Tooltip>
 

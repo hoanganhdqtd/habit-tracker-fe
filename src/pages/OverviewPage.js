@@ -26,8 +26,9 @@ import dayjs from "dayjs";
 // import { SearchBox } from "../components/SearchBox";
 
 function OverviewPage() {
-  const { search, page, totalPages, date, habitsById, currentPageHabits } =
-    useSelector((state) => state.habit);
+  const { search, page, date, habitsById, currentPageHabits } = useSelector(
+    (state) => state.habit
+  );
 
   const newDate = dayjs()
     .set("hour", 0)
@@ -86,59 +87,75 @@ function OverviewPage() {
               />
             </LocalizationProvider>
           </Stack>
-          <Card>
-            <CardHeader title={`Habits' status overview by date`} />
-            <CardContent>
-              <PieChart
-                series={[
-                  {
-                    arcLabel: (item) => `${item.value}`,
-                    arcLabelMinAngle: 45,
-                    highlightScope: { faded: "global", highlighted: "item" },
-                    faded: {
-                      innerRadius: 30,
-                      additionalRadius: -30,
-                      color: "gray",
+          {currentPageHabits.length ? (
+            <Card>
+              <CardHeader title={`Habits' status overview by date`} />
+              <CardContent>
+                <PieChart
+                  series={[
+                    {
+                      arcLabel: (item) => `${item.value}`,
+                      arcLabelMinAngle: 45,
+                      highlightScope: { faded: "global", highlighted: "item" },
+                      faded: {
+                        innerRadius: 30,
+                        additionalRadius: -30,
+                        color: "gray",
+                      },
+                      data: [
+                        {
+                          id: 0,
+                          value: completedCount,
+                          label: `Number of \ncompleted habits \non the date`,
+                          color: "rgb(54, 162, 235)",
+                        },
+                        {
+                          id: 1,
+                          value: incompleteCount,
+                          label: `Number of \nincomplete habits \non the date`,
+                          color: "rgb(255, 99, 132)",
+                        },
+                      ],
                     },
-                    data: [
-                      {
-                        id: 0,
-                        value: completedCount,
-                        label: `Number of \ncompleted habits \non the date`,
-                        color: "rgb(54, 162, 235)",
-                      },
-                      {
-                        id: 1,
-                        value: incompleteCount,
-                        label: `Number of \nincomplete habits \non the date`,
-                        color: "rgb(255, 99, 132)",
-                      },
-                    ],
-                  },
-                ]}
-                sx={{
-                  [`& .${pieArcLabelClasses.root}`]: {
-                    fill: "white",
-                    fontWeight: "bold",
-                  },
-                }}
-                width={500}
-                height={200}
-              />
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ justifyContent: "flex-end" }}>
-              <Tooltip title="Back to the previous page" arrow>
-                <Button
-                  color="success"
-                  variant="outlined"
-                  onClick={() => navigate(-1)}
-                >
-                  Cancel
-                </Button>
-              </Tooltip>
-            </CardActions>
-          </Card>
+                  ]}
+                  sx={{
+                    [`& .${pieArcLabelClasses.root}`]: {
+                      fill: "white",
+                      fontWeight: "bold",
+                    },
+                  }}
+                  width={500}
+                  height={200}
+                />
+              </CardContent>
+              <Divider />
+              <CardActions sx={{ justifyContent: "flex-end" }}>
+                <Tooltip title="Back to the previous page" arrow>
+                  <Button
+                    color="success"
+                    variant="outlined"
+                    onClick={() => navigate(-1)}
+                  >
+                    Back
+                  </Button>
+                </Tooltip>
+              </CardActions>
+            </Card>
+          ) : (
+            <Box
+              mt={2}
+              sx={{
+                flex: "1 1 auto",
+                alignItems: "center",
+                display: "flex",
+                justifyContent: "center",
+              }}
+            >
+              <Typography variant="h5">
+                {!date ? "No habit found." : "There's no habit on this day."}
+              </Typography>
+            </Box>
+          )}
         </Stack>
       </Container>
     </Box>

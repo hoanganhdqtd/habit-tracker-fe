@@ -177,7 +177,10 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
                   },
                 }}
               />
-              {"On weekdays (all selected without any being checked):"}
+
+              <Typography variant="inherit">
+                On weekdays (all selected without any being checked):
+              </Typography>
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
 
               {/* <FMultiCheckbox name="tags" options={tags} /> */}
@@ -218,37 +221,5 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
     </div>
   );
 }
-
-// <form>
-//   <label for="name">Name:</label>
-//   <input id="name" type="text" />
-//   <br />
-//   <label for="description">Description:</label>
-//   <input type="text" />
-//   <br />
-//   <label>Goal:</label>
-//   <input type="text" />
-//   <br />
-//   <label>Start date:</label>
-//   <input type="date" />
-//   <br />
-//   <label>Time:</label>
-//   <input type="time" />
-//   <br />
-//   <label>Duration:</label>
-//   <input type="number" />
-//   <br />
-//   <label for="weekdays">On weekdays:</label>
-//   <select name="weekdays" id="weekdays" multiple>
-//     <option value="monday">Monday</option>
-//     <option value="tuesday">Tuesday</option>
-//     <option value="wednesday">Wednesday</option>
-//     <option value="thursday">Thursday</option>
-//     <option value="friday">Friday</option>
-//     <option value="saturday">Saturday</option>
-//     <option value="sunday">Sunday</option>
-//   </select>
-//   <input type="submit" value="Submit" />
-// </form>;
 
 export default AddHabitForm;

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
 import { BarChart } from "@mui/x-charts/BarChart";
@@ -7,15 +7,20 @@ import Typography from "@mui/material/Typography";
 import { getSingleHabitProgressList } from "../features/habit/habitSlice";
 import {
   Box,
+  Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
   Container,
+  Divider,
   Stack,
+  Tooltip,
 } from "@mui/material";
 
 function StatisticsPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { habitId } = useParams();
   const { name, progressList } = useSelector(
     (state) => state.habit.habitDetail
@@ -90,6 +95,18 @@ function StatisticsPage() {
                 height={200}
               />
             </CardContent>
+            <Divider />
+            <CardActions sx={{ justifyContent: "flex-end" }}>
+              <Tooltip title="Back to the previous page" arrow>
+                <Button
+                  color="success"
+                  variant="outlined"
+                  onClick={() => navigate(-1)}
+                >
+                  Back
+                </Button>
+              </Tooltip>
+            </CardActions>
           </Card>
         </Stack>
       </Container>

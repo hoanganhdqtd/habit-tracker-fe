@@ -1,15 +1,21 @@
-import React, { useCallback, useEffect, useState } from "react";
-import dayjs from "dayjs";
+import React, { useCallback } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Card, Stack, Typography } from "@mui/material";
+import {
+  alpha,
+  Button,
+  Card,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 // import { useNavigate } from "react-router-dom";
 
-import * as yup from "yup";
+import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { FormProvider, FTextField, FUploadAvatar } from "./form";
 import { fData } from "../utils/numberFormat";
@@ -28,11 +34,29 @@ const style = {
   p: 4,
 };
 
-const UpdateUserSchema = yup.object().shape({
-  name: yup.string().required("Name is required"),
+const UpdateUserSchema = Yup.object().shape({
+  name: Yup.string().required("Name is required"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(4, "Password length should be at least 4 characters"),
+  confirmPassword: Yup.string()
+    .required("ConfirmPassword is required")
+    .min(4, "Password length should be at least 4 characters")
+    .oneOf([Yup.ref("password")], "Passwords must match"),
 });
 
-function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
+const UpdateAvatarSchema = Yup.object().shape({
+  // avatarUrl: Yup.string().required("Avatar is required"),
+});
+
+function EditProfileForm({
+  isProfileEdit,
+  setIsProfileEdit,
+  isUploadAvatar,
+  setIsUploadAvatar,
+}) {
+  console.log("isProfileEdit:", isProfileEdit);
+  console.log("isUploadAvatar:", isUploadAvatar);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { name, email, avatarUrl } = currentUser;
@@ -40,19 +64,26 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
   const defaultValues = {
     name: name || "",
     email: email || "",
-    password: "",
-    confirmPassword: "",
+    // password: password || "",
+    // confirmPassword: password || "",
     avatarUrl: avatarUrl || "",
   };
 
   const methods = useForm({
-    resolver: yupResolver(UpdateUserSchema),
+    resolver: yupResolver(
+      isUploadAvatar ? UpdateAvatarSchema : UpdateUserSchema
+    ),
     defaultValues,
   });
 
   const {
     setValue,
     handleSubmit,
+    // register,
+    // watch,
+    // errors,
+    // control,
+    // formState: { isSubmitting , errors},
     formState: { isSubmitting },
   } = methods;
 
@@ -87,7 +118,10 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
     dispatch(updateCurrentUserProfile({ name, password, avatarUrl }));
   };
 
-  const handleClose = () => setIsProfileEdit(false);
+  const handleClose = () => {
+    setIsProfileEdit(false);
+    setIsUploadAvatar(false);
+  };
 
   return (
     <div>
@@ -103,21 +137,63 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
           </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              <Typography variant="inherit">Name:</Typography>
-              <FTextField
-                name="name"
-                fullWidth
-                rows={4}
-                // placeholder="Name"
-                // value={name}
-                required={true}
-                sx={{
-                  "& fieldset": {
-                    borderWidth: `1px !important`,
-                    borderColor: alpha("#919EAB", 0.32),
-                  },
-                }}
-              />
+              {!isUploadAvatar && (
+                <FTextField
+                  name="name"
+                  label="Name"
+                  fullWidth
+                  rows={4}
+                  // placeholder="Name"
+                  // value={name}
+                  required={!isUploadAvatar ? true : false}
+                  sx={{
+                    "& fieldset": {
+                      borderWidth: `1px !important`,
+                      borderColor: alpha("#919EAB", 0.32),
+                    },
+                  }}
+                />
+              )}
+
+              {!isUploadAvatar && (
+                <FTextField
+                  name="password"
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  rows={4}
+                  // placeholder="Name"
+                  // value={password}
+                  // required={true}
+                  required={!isUploadAvatar ? true : false}
+                  sx={{
+                    "& fieldset": {
+                      borderWidth: `1px !important`,
+                      borderColor: alpha("#919EAB", 0.32),
+                    },
+                  }}
+                />
+              )}
+
+              {!isUploadAvatar && (
+                <FTextField
+                  name="confirmPassword"
+                  label="Confirm password"
+                  type="password"
+                  fullWidth
+                  rows={4}
+                  // placeholder="Name"
+                  // value={confirmPassword}
+                  // required={true}
+                  required={!isUploadAvatar ? true : false}
+                  sx={{
+                    "& fieldset": {
+                      borderWidth: `1px !important`,
+                      borderColor: alpha("#919EAB", 0.32),
+                    },
+                  }}
+                />
+              )}
 
               <Card sx={{ py: 10, px: 3, textAlign: "center" }}>
                 <FUploadAvatar
@@ -151,8 +227,8 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
                 }}
               >
                 <Button
-                  color="primary"
-                  variant="contained"
+                  color="success"
+                  variant="outlined"
                   size="small"
                   sx={{ mr: 2 }}
                   onClick={handleClose}
@@ -162,6 +238,7 @@ function EditProfileForm({ isProfileEdit, setIsProfileEdit }) {
                 <LoadingButton
                   type="submit"
                   variant="contained"
+                  color="secondary"
                   size="small"
                   loading={
                     isSubmitting

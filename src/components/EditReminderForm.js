@@ -185,7 +185,9 @@ function EditReminderForm({
               />
               <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} />
 
-              {"On weekdays:"}
+              <Typography variant="inherit">
+                On weekdays (pick some days to edit):
+              </Typography>
               <FMultiCheckbox
                 name="onWeekdays"
                 options={weekdays}
@@ -193,7 +195,7 @@ function EditReminderForm({
               />
 
               {/* <FMultiCheckbox name="tags" options={tags} /> */}
-              {"Status:"}
+              <Typography variant="inherit">Status:</Typography>
               <FRadioGroup
                 name="status"
                 options={["ongoing", "pause"]}

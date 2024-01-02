@@ -154,9 +154,10 @@ function EditHabitForm({
                   },
                 }}
               /> */}
-              <Typography variant="inherit">Habit name:</Typography>
+
               <FTextField
                 name="name"
+                label="Name"
                 fullWidth
                 rows={4}
                 // placeholder="Name"
@@ -169,9 +170,10 @@ function EditHabitForm({
                   },
                 }}
               />
-              <Typography variant="inherit">Description:</Typography>
+
               <FTextField
                 name="description"
+                label="Description"
                 fullWidth
                 rows={4}
                 // placeholder="Description"
@@ -185,9 +187,9 @@ function EditHabitForm({
                 }}
               />
 
-              <Typography variant="inherit">Goal:</Typography>
               <FTextField
                 name="goal"
+                label="Goal"
                 fullWidth
                 rows={4}
                 // placeholder="Goal"
@@ -201,16 +203,15 @@ function EditHabitForm({
                 }}
               />
 
-              <Typography variant="inherit">Start date:</Typography>
               <FDatePicker
                 dateValue={dayjs(startDate)}
                 setDateValue={setDateValue}
               />
               {/* <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} /> */}
 
-              <Typography variant="inherit">Duration (hours/day):</Typography>
               <FTextField
                 name="duration"
+                label="Duration (hours/day)"
                 fullWidth
                 rows={4}
                 // placeholder="Duration (hours/day)"

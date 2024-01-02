@@ -24,6 +24,7 @@ import {
 
 function UserProfilePage() {
   const [isProfileEdit, setIsProfileEdit] = useState(false);
+  const [isUploadAvatar, setIsUploadAvatar] = useState(false);
 
   const { currentUser, isLoading } = useSelector((state) => state.user);
 
@@ -35,12 +36,10 @@ function UserProfilePage() {
   }, [dispatch]);
 
   // console.log("currentUser:", currentUser);
-  let name, email, avatarUrl;
-  if (currentUser) {
-    name = currentUser.name;
-    email = currentUser.email;
-    avatarUrl = currentUser.avatarUrl;
-  }
+  const name = currentUser.name || "";
+  const email = currentUser.email || "";
+  const avatarUrl = currentUser.avatarUrl || "";
+  const password = currentUser.password || "";
 
   // const { name, email, avatarUrl } = currentUser;
 
@@ -74,14 +73,21 @@ function UserProfilePage() {
                           flexDirection: "column",
                         }}
                       >
-                        <Avatar
-                          src={avatarUrl}
-                          sx={{
-                            height: 80,
-                            mb: 2,
-                            width: 80,
-                          }}
-                        />
+                        <Tooltip title="Click to change avatar" arrow>
+                          <Avatar
+                            src={avatarUrl}
+                            sx={{
+                              height: 80,
+                              mb: 2,
+                              width: 80,
+                            }}
+                            onClick={() => {
+                              setIsUploadAvatar(true);
+                              setIsProfileEdit(true);
+                            }}
+                          />
+                        </Tooltip>
+
                         <Typography gutterBottom variant="h5">
                           {name}
                         </Typography>
@@ -119,6 +125,16 @@ function UserProfilePage() {
                           <Grid>
                             <TextField
                               fullWidth
+                              label="Password"
+                              name="password"
+                              type="password"
+                              required
+                              value={password}
+                            />
+                          </Grid>
+                          <Grid>
+                            <TextField
+                              fullWidth
                               label="Avatar"
                               name="avatarUrl"
                               required
@@ -146,14 +162,16 @@ function UserProfilePage() {
                           variant="outlined"
                           onClick={() => navigate(-1)}
                         >
-                          Cancel
+                          Back
                         </Button>
                       </Tooltip>
 
-                      {isProfileEdit && (
+                      {(isProfileEdit || isUploadAvatar) && (
                         <EditProfileForm
                           isProfileEdit={isProfileEdit}
                           setIsProfileEdit={setIsProfileEdit}
+                          isUploadAvatar={isUploadAvatar}
+                          setIsUploadAvatar={setIsUploadAvatar}
                         />
                       )}
                     </CardActions>

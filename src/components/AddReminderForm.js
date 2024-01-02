@@ -135,10 +135,12 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
                 setDateValue={setDateValue}
               />
 
-              {"On weekdays (all selected without any being checked):"}
+              <Typography variant="inherit">
+                On weekdays (all selected without any being checked):
+              </Typography>
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
 
-              {"Status:"}
+              <Typography variant="inherit">Status:</Typography>
               <FRadioGroup
                 name="status"
                 options={["ongoing", "pause"]}
