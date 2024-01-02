@@ -55,8 +55,6 @@ function EditProfileForm({
   isUploadAvatar,
   setIsUploadAvatar,
 }) {
-  console.log("isProfileEdit:", isProfileEdit);
-  console.log("isUploadAvatar:", isUploadAvatar);
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
   const { name, email, avatarUrl } = currentUser;
@@ -133,7 +131,7 @@ function EditProfileForm({
       >
         <Box sx={style}>
           <Typography variant="h6" sx={{ mb: 2 }}>
-            Edit profile
+            {isUploadAvatar ? "Change avatar" : "Edit profile"}
           </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
