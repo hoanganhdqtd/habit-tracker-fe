@@ -84,16 +84,24 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const { name, goal, duration, onWeekdays } = data;
+    const { name, description, goal, duration, onWeekdays } = data;
 
-    console.log("name:", name);
-    console.log("goal:", goal);
+    // console.log("name:", name);
+    // console.log("description:", description);
+    // console.log("goal:", goal);
+    // console.log("duration:", duration);
 
-    console.log("duration:", duration);
     // console.log("time:", time);
     // dispatch(addHabit({ name, goal, startDate: dateValue, time: timeValue, duration }));
     dispatch(
-      addHabit({ name, goal, startDate: startDateValue, duration, onWeekdays })
+      addHabit({
+        name,
+        description,
+        goal,
+        startDate: startDateValue,
+        duration,
+        onWeekdays,
+      })
     );
 
     handleClose();

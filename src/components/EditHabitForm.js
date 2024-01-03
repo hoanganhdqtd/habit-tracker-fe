@@ -104,16 +104,18 @@ function EditHabitForm({
   const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    const { name, goal, duration, onWeekdays } = data;
+    const { name, goal, duration, onWeekdays, description } = data;
 
     handleHabitEdit({
       habitId,
       name,
+      description,
       goal,
       startDate: dateValue,
       duration,
       onWeekdays,
     });
+
     handleClose();
     // navigate("/");
     // navigate(`/habit/${habitId}`);

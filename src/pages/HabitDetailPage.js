@@ -88,16 +88,19 @@ function HabitDetailPage() {
   const handleHabitEdit = async ({
     habitId,
     name,
+    description,
     goal,
+
     startDate,
     duration,
     onWeekdays,
   }) => {
     console.log("handleHabitEdit:");
     console.log(
-      "habitId, name, goal, startDate, duration, onWeekdays:",
+      "habitId, name, description, goal, startDate, duration, onWeekdays:",
       habitId,
       name,
+      description,
       goal,
       startDate,
       duration,
@@ -105,7 +108,15 @@ function HabitDetailPage() {
     );
     setIsHabitEdit(false);
     dispatch(
-      editHabit({ habitId, name, goal, startDate, duration, onWeekdays })
+      editHabit({
+        habitId,
+        name,
+        description,
+        goal,
+        startDate,
+        duration,
+        onWeekdays,
+      })
     );
   };
 
