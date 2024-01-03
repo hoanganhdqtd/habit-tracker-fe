@@ -22,19 +22,40 @@ function StatisticsPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { habitId } = useParams();
-  const { name, progressList } = useSelector(
+  const { name, progressList, startDate, onWeekdays } = useSelector(
     (state) => state.habit.habitDetail
   );
   const completedCount = progressList.filter(
     (progress) => progress.status === "completed"
   ).length;
-  const incompleteCount = progressList.length - completedCount;
+
+  // const incompleteCount = progressList.length - completedCount;
 
   // const lastWeekStatuses = progressList.slice(-7);
 
   useEffect(() => {
     dispatch(getSingleHabitProgressList(habitId));
   }, [dispatch, habitId]);
+
+  const countWeekdaysBetween = (startDate, endDate, onWeekdays) => {
+    let count = 0;
+    const currentDate = new Date(startDate.getTime());
+    while (currentDate < endDate) {
+      const dayOfWeek = currentDate.getDay();
+      if (onWeekdays.includes(dayOfWeek)) {
+        count++;
+      }
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return count;
+  };
+
+  const numberOfWeekdaysBetween = countWeekdaysBetween(
+    new Date(startDate),
+    new Date().setHours(0, 0, 0, 0),
+    onWeekdays
+  );
+  const incompleteCount = numberOfWeekdaysBetween - completedCount;
 
   return (
     <Box
