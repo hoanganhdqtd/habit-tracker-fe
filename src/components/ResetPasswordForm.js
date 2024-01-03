@@ -67,14 +67,11 @@ function ResetPasswordForm({ setIsResetPassword }) {
 
   const onSubmit = async (data) => {
     const from = location.state?.from?.pathname || "/";
-    let { email, password } = data;
-
-    console.log("ResetPassword submit");
-    console.log("email:", email);
-    console.log("password:", password);
+    let { email, newPassword } = data;
+    console.log("newPassword:", newPassword);
 
     try {
-      await resetPassword({ email, password }, () => {
+      await resetPassword({ email, newPassword }, () => {
         navigate(from, { replace: true });
         setIsResetPassword(false);
       });

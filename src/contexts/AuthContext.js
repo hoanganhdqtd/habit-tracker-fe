@@ -195,13 +195,11 @@ function AuthProvider({ children }) {
     callback();
   };
 
-  const resetPassword = async ({ email, password }, callback) => {
+  const resetPassword = async ({ email, newPassword }, callback) => {
     const response = await apiService.put("/users", {
       email,
-      password,
+      newPassword,
     });
-
-    console.log("resetPassword responses:", response);
 
     const { user, accessToken } = response.data;
     setSession(accessToken);
