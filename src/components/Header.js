@@ -227,7 +227,8 @@ export default function PrimarySearchAppBar() {
           </Typography>
 
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+
+          <Box sx={{ display: { xs: "none", lg: "none", md: "flex" } }}>
             <Tooltip title="Go to Habits page" arrow>
               <IconButton size="large" color="inherit">
                 <ListIcon onClick={() => navigate("/")} />
@@ -243,7 +244,6 @@ export default function PrimarySearchAppBar() {
                 <CalendarMonthIcon onClick={() => navigate("/calendar")} />
               </IconButton>
             </Tooltip>
-
             <IconButton
               size="large"
               edge="end"
@@ -256,6 +256,7 @@ export default function PrimarySearchAppBar() {
               <AccountCircle />
             </IconButton>
           </Box>
+
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
