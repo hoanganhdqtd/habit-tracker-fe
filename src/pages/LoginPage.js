@@ -25,6 +25,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import { FCheckbox, FormProvider, FTextField } from "../components/form";
+import ResetPasswordForm from "../components/ResetPasswordForm";
 import useAuth from "../hooks/useAuth";
 
 const LoginSchema = Yup.object().shape({
@@ -42,6 +43,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
+  const [isResetPassword, setIsResetPassword] = useState(false);
 
   const auth = useAuth();
 
@@ -98,7 +100,7 @@ const LoginPage = () => {
 
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
           backgroundColor: "background.paper",
           flex: "1 1 auto",
@@ -106,15 +108,16 @@ const LoginPage = () => {
           display: "flex",
           justifyContent: "center",
         }}
+      ></Box> */}
+      <Box
+        sx={{
+          maxWidth: 450,
+          px: 3,
+          py: "100px",
+          width: "100%",
+        }}
       >
-        <Box
-          sx={{
-            maxWidth: 550,
-            px: 3,
-            py: "100px",
-            width: "100%",
-          }}
-        >
+        {!isResetPassword && (
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={1} sx={{ mb: 3 }}>
               <Typography variant="h4">Login</Typography>
@@ -169,7 +172,14 @@ const LoginPage = () => {
                     <Alert severity="error">
                       {errors.responseError.message}
                     </Alert>
-                    <Link component={RouterLink} variant="subtitle2" to="/">
+                    {/* <Link component={RouterLink} variant="subtitle2" to="/">
+                      Forgot password?
+                    </Link> */}
+                    <Link
+                      component={RouterLink}
+                      variant="subtitle2"
+                      onClick={() => setIsResetPassword(true)}
+                    >
                       Forgot password?
                     </Link>
                   </Stack>
@@ -188,7 +198,13 @@ const LoginPage = () => {
               Continue
             </LoadingButton>
           </FormProvider>
-        </Box>
+        )}
+        {isResetPassword && (
+          <ResetPasswordForm
+            isResetPassword={isResetPassword}
+            setIsResetPassword={setIsResetPassword}
+          />
+        )}
       </Box>
     </>
   );

@@ -25,6 +25,7 @@ const LOGIN_SUCCESS = "AUTH.LOGIN_SUCCESS";
 const REGISTER_SUCCESS = "AUTH.REGISTER_SUCCESS";
 const LOGOUT = "AUTH.LOGOUT";
 const UPDATE_PROFILE = "AUTH.UPDATE_PROFILE";
+const RESET_PASSWORD_SUCCESS = "AUTH.RESET_PASSWORD_SUCCESS";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -64,6 +65,12 @@ const reducer = (state, action) => {
           avatarUrl,
           password,
         },
+      };
+    case RESET_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
       };
     default:
       return state;
@@ -188,6 +195,24 @@ function AuthProvider({ children }) {
     callback();
   };
 
+  const resetPassword = async ({ email, password }, callback) => {
+    const response = await apiService.put("/users", {
+      email,
+      password,
+    });
+
+    console.log("resetPassword responses:", response);
+
+    const { user, accessToken } = response.data;
+    setSession(accessToken);
+    dispatch({
+      type: RESET_PASSWORD_SUCCESS,
+      payload: { user },
+    });
+
+    callback();
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -195,6 +220,7 @@ function AuthProvider({ children }) {
         login,
         register,
         logout,
+        resetPassword,
       }}
     >
       {children}

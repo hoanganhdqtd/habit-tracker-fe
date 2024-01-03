@@ -83,7 +83,7 @@ function RegisterPage() {
 
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
           backgroundColor: "background.paper",
           flex: "1 1 auto",
@@ -91,116 +91,114 @@ function RegisterPage() {
           display: "flex",
           justifyContent: "center",
         }}
+      ></Box> */}
+      <Box
+        sx={{
+          maxWidth: 450,
+          px: 3,
+          py: "100px",
+          // py: "50px",
+          width: "100%",
+        }}
       >
-        <Box
-          sx={{
-            maxWidth: 550,
-            px: 3,
-            py: "100px",
-            width: "100%",
-          }}
-        >
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <Stack spacing={1} sx={{ mb: 3 }}>
-              <Typography variant="h4">Register</Typography>
+        <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+          <Stack spacing={1} sx={{ mb: 3 }}>
+            <Typography variant="h4">Register</Typography>
 
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                {!!errors.responseError && (
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="flex-end"
-                    sx={{ my: 1 }}
-                  >
-                    <Alert severity="error">
-                      {errors.responseError.message}
-                    </Alert>
-                    <Typography color="text.secondary" variant="body2">
-                      Already have an account? &nbsp;
-                      <Link
-                        component={RouterLink}
-                        to="/login"
-                        underline="hover"
-                        variant="subtitle2"
-                      >
-                        Login
-                      </Link>
-                    </Typography>
-                  </Stack>
-                )}
-                {/* <FCheckbox name="remember" label="Remember me" /> */}
-              </Stack>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              {!!errors.responseError && (
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="flex-end"
+                  sx={{ my: 1 }}
+                >
+                  <Alert severity="error">{errors.responseError.message}</Alert>
+                  <Typography color="text.secondary" variant="body2">
+                    Already have an account? &nbsp;
+                    <Link
+                      component={RouterLink}
+                      to="/login"
+                      underline="hover"
+                      variant="subtitle2"
+                    >
+                      Login
+                    </Link>
+                  </Typography>
+                </Stack>
+              )}
+              {/* <FCheckbox name="remember" label="Remember me" /> */}
             </Stack>
+          </Stack>
 
-            <Stack spacing={3}>
-              <FTextField name="name" label="Name" />
-              <FTextField name="email" label="Email address" />
-              <FTextField
-                name="password"
-                label="Password"
-                type={showPassword ? "text" : "password"}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
-                        {showPassword ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <FTextField
-                name="confirmPassword"
-                label="Confirm password"
-                type={showPassword ? "text" : "password"}
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
-                        {showPassword ? (
-                          <VisibilityIcon />
-                        ) : (
-                          <VisibilityOffIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              {/* <Stack
+          <Stack spacing={3}>
+            <FTextField name="name" label="Name" />
+            <FTextField name="email" label="Email address" />
+            <FTextField
+              name="password"
+              label="Password"
+              type={showPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <FTextField
+              name="confirmPassword"
+              label="Confirm password"
+              type={showPassword ? "text" : "password"}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? (
+                        <VisibilityIcon />
+                      ) : (
+                        <VisibilityOffIcon />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            {/* <Stack
                 direction="row"
                 alignItems="center"
                 justifyContent="flex-end"
               >
                 <FCheckbox name="remember" label="Remember me" />
               </Stack> */}
-            </Stack>
+          </Stack>
 
-            <LoadingButton
-              fullWidth
-              size="large"
-              sx={{ mt: 2 }}
-              type="submit"
-              variant="contained"
-            >
-              Continue
-            </LoadingButton>
-          </FormProvider>
-        </Box>
+          <LoadingButton
+            fullWidth
+            size="large"
+            sx={{ mt: 2 }}
+            type="submit"
+            variant="contained"
+          >
+            Continue
+          </LoadingButton>
+        </FormProvider>
       </Box>
     </>
   );
