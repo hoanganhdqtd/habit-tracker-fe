@@ -40,12 +40,12 @@ function Router() {
         />
         <Route path="/overview" element={<OverviewPage />} />
         <Route path="/statistics/:habitId" element={<StatisticsPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
 
-      <Route element={<MainLayout />}>
+      <Route element={<BlankLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   );

@@ -1,14 +1,20 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import { styled, alpha } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import InputBase from "@mui/material/InputBase";
-import Badge from "@mui/material/Badge";
-import MenuItem from "@mui/material/MenuItem";
-import Menu from "@mui/material/Menu";
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  Typography,
+  InputBase,
+  Badge,
+  MenuItem,
+  Menu,
+  Tooltip,
+  Stack,
+} from "@mui/material";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -21,6 +27,8 @@ import ListIcon from "@mui/icons-material/List";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LogoutIcon from "@mui/icons-material/Logout";
+
+import useAuth from "../hooks/useAuth";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -63,6 +71,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -103,20 +113,27 @@ export default function PrimarySearchAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      {/* <MenuItem onClick={handleMenuClose}>
-        <BarChartIcon /> Overview
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          navigate("/account");
+        }}
+      >
+        <Stack direction="row" spacing={1}>
+          <AccountCircle />
+          <Typography variant="inherit">Account</Typography>
+        </Stack>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <ListIcon /> Habits
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <CalendarMonthIcon /> Calendar
-      </MenuItem> */}
-      <MenuItem onClick={handleMenuClose}>
-        <AccountCircle /> Account
-      </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <LogoutIcon /> Logout
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          logout(() => navigate("/"));
+        }}
+      >
+        <Stack direction="row" spacing={1}>
+          <LogoutIcon />
+          <Typography variant="inherit">Logout</Typography>
+        </Stack>
       </MenuItem>
     </Menu>
   );
@@ -138,21 +155,60 @@ export default function PrimarySearchAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>
-        <BarChartIcon /> Overview
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          navigate("/overview");
+        }}
+      >
+        <Stack direction="row" spacing={1}>
+          <BarChartIcon />
+          <Typography variant="inherit">Overview</Typography>
+        </Stack>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <ListIcon />
-        Habits
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          navigate("/");
+        }}
+      >
+        <Stack direction="row" spacing={1}>
+          <ListIcon />
+          <Typography variant="inherit">Habits</Typography>
+        </Stack>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <CalendarMonthIcon /> Calendar
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          navigate("/calendar");
+        }}
+      >
+        <Stack direction="row" spacing={1}>
+          <CalendarMonthIcon />
+          <Typography variant="inherit">Calendar</Typography>
+        </Stack>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <AccountCircle /> Account
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          navigate("/account");
+        }}
+      >
+        <Stack direction="row" spacing={1}>
+          <AccountCircle />
+          <Typography variant="inherit">Account</Typography>
+        </Stack>
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
-        <LogoutIcon /> Logout
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          logout(() => navigate("/"));
+        }}
+      >
+        <Stack direction="row" spacing={1}>
+          <LogoutIcon />
+          <Typography variant="inherit">Logout</Typography>
+        </Stack>
       </MenuItem>
     </Menu>
   );
@@ -172,15 +228,22 @@ export default function PrimarySearchAppBar() {
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
-            <IconButton size="large" color="inherit">
-              <ListIcon />
-            </IconButton>
-            <IconButton size="large" color="inherit">
-              <BarChartIcon />
-            </IconButton>
-            <IconButton size="large" color="inherit">
-              <CalendarMonthIcon />
-            </IconButton>
+            <Tooltip title="Go to Habits page" arrow>
+              <IconButton size="large" color="inherit">
+                <ListIcon onClick={() => navigate("/")} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Go to Overview page" arrow>
+              <IconButton size="large" color="inherit">
+                <BarChartIcon onClick={() => navigate("/overview")} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Go to Overview page" arrow>
+              <IconButton size="large" color="inherit">
+                <CalendarMonthIcon onClick={() => navigate("/calendar")} />
+              </IconButton>
+            </Tooltip>
+
             <IconButton
               size="large"
               edge="end"
