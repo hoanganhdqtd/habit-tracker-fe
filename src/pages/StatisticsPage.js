@@ -40,7 +40,7 @@ function StatisticsPage() {
   const countWeekdaysBetween = (startDate, endDate, onWeekdays) => {
     let count = 0;
     const currentDate = new Date(startDate.getTime());
-    while (currentDate < endDate) {
+    while (currentDate <= endDate) {
       const dayOfWeek = currentDate.getDay();
       if (onWeekdays.includes(dayOfWeek)) {
         count++;
