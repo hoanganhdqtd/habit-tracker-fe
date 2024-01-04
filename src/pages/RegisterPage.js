@@ -118,21 +118,22 @@ function RegisterPage() {
                   sx={{ my: 1 }}
                 >
                   <Alert severity="error">{errors.responseError.message}</Alert>
-                  <Typography color="text.secondary" variant="body2">
-                    Already have an account? &nbsp;
-                    <Link
-                      component={RouterLink}
-                      to="/login"
-                      underline="hover"
-                      variant="subtitle2"
-                    >
-                      Login
-                    </Link>
-                  </Typography>
                 </Stack>
               )}
+              <Typography color="text.secondary" variant="body2">
+                Already have an account? &nbsp;
+                <Link
+                  component={RouterLink}
+                  to="/login"
+                  underline="hover"
+                  variant="subtitle2"
+                >
+                  Login
+                </Link>
+              </Typography>
               {/* <FCheckbox name="remember" label="Remember me" /> */}
             </Stack>
+            {/* <FCheckbox name="remember" label="Remember me" /> */}
           </Stack>
 
           <Stack spacing={3}>
