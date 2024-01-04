@@ -138,7 +138,7 @@ function HabitDetailPage() {
       component="main"
       sx={{
         flexGrow: 1,
-        py: 8,
+        py: 4,
       }}
     >
       <Container maxWidth="lg">
@@ -147,11 +147,17 @@ function HabitDetailPage() {
             <Typography variant="h4">Habit detail</Typography>
           </div>
 
-          <Grid container spacing={3}>
+          <Grid
+            container
+            spacing={3}
+            justifyContent="center"
+            alignContent="center"
+            alignItems="center"
+          >
             <Grid xs={12} md={6} lg={8}>
               <Card>
-                {/* <CardHeader title="Habit detail" /> */}
-                <CardContent sx={{ pt: 0 }}>
+                {/* <CardHeader title="Habit detail" sx={{ pb: 0 }} /> */}
+                <CardContent sx={{ py: 1, px: 2 }}>
                   <Box sx={{ m: 2 }}>
                     <Stack>
                       <Grid spacing={3}>

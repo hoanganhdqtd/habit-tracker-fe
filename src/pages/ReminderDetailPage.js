@@ -126,24 +126,31 @@ function ReminderDetailPage() {
       component="main"
       sx={{
         flexGrow: 1,
-        py: 8,
+        py: 4,
       }}
     >
       <Container maxWidth="lg">
-        <Stack spacing={4}>
+        <Stack spacing={8}>
           <div>
             <Typography variant="h4">Reminder detail</Typography>
           </div>
           <div>
-            <Grid container spacing={3}>
+            <Grid
+              container
+              spacing={3}
+              justifyContent="center"
+              alignContent="center"
+              alignItems="center"
+            >
               <Grid xs={12} md={6} lg={8}>
                 <Card>
                   {/* <CardHeader title="Habit detail" /> */}
-                  <CardContent sx={{ pt: 0 }}>
+                  {/* <CardContent sx={{ pt: 0 }}> */}
+                  <CardContent sx={{ py: 0, px: 1 }}>
                     <Box sx={{ m: 2 }}>
                       <Stack>
                         <Grid spacing={3}>
-                          <Grid sx={{ my: 2 }}>
+                          <Grid sx={{ my: 4 }}>
                             <TextField
                               fullWidth
                               label="On weekdays"
@@ -152,7 +159,7 @@ function ReminderDetailPage() {
                               value={getWeekdays(onWeekdays)}
                             />
                           </Grid>
-                          <Grid sx={{ my: 2 }}>
+                          <Grid sx={{ my: 4 }}>
                             <TextField
                               fullWidth
                               label="Start date"
@@ -161,7 +168,7 @@ function ReminderDetailPage() {
                               value={new Date(startDate).toDateString()}
                             />
                           </Grid>
-                          <Grid sx={{ my: 2 }}>
+                          <Grid sx={{ my: 4 }}>
                             <TextField
                               fullWidth
                               label="At time"
@@ -170,7 +177,7 @@ function ReminderDetailPage() {
                               value={dayjs(time).format("LT")}
                             />
                           </Grid>
-                          <Grid sx={{ my: 2 }}>
+                          <Grid sx={{ my: 4 }}>
                             <TextField
                               fullWidth
                               label="Status"
