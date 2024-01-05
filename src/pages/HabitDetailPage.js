@@ -156,8 +156,9 @@ function HabitDetailPage() {
           >
             <Grid xs={12} md={6} lg={8}>
               <Card>
-                {/* <CardHeader title="Habit detail" sx={{ pb: 0 }} /> */}
-                <CardContent sx={{ py: 1, px: 2 }}>
+                {/* <Typography variant="h4">{name} detail</Typography> */}
+                <CardHeader title={`${name}`} detail sx={{ pb: 0 }} />
+                <CardContent sx={{ py: 0, px: 2 }}>
                   <Box sx={{ m: 2 }}>
                     <Stack>
                       <Grid spacing={3}>
