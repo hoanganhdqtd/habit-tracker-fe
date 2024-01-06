@@ -122,26 +122,15 @@ function CalendarPage() {
   };
 
   useEffect(() => {
-    // dispatch(getHabits({ date: dateValue }));
-    console.log("dateValue:", dateValue);
-
-    // dispatch(getHabits({ search, date: dateValue, tag }));
-    if (dateValue) {
-      if (tag) {
-        dispatch(getHabits({ search, date: dateValue, tag }));
-      } else {
-        dispatch(getHabits({ search, date: dateValue }));
-      }
+    if (tag) {
+      dispatch(getHabits({ search, date: dateValue, tag }));
     } else {
-      if (tag) {
-        dispatch(getHabits({ search, date, tag }));
-      } else {
-        dispatch(getHabits({ search, date }));
-      }
+      dispatch(getHabits({ search, date: dateValue }));
     }
-    dispatch(getTags());
-    // dispatch(getTags());
-  }, [search, dateValue, tag, dispatch]);
+    if (!tags.length) {
+      dispatch(getTags());
+    }
+  }, [search, dateValue, tag, tags, dispatch]);
   // console.log("dateValue instanceof Date:", dateValue instanceof Date);
   // console.log("dateValue:", dateValue);
 

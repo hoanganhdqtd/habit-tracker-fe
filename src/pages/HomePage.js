@@ -74,18 +74,15 @@ function HomePage() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCurrentUserProfile());
-    // if (date) {
-    //   dispatch(getHabits({ page, search, date, tag }));
-    // } else {
-    //   dispatch(getHabits({ page, search, date: dateValue, tag }));
-    // }
     if (dateValue) {
       dispatch(getHabits({ page, search, date: dateValue }));
     } else {
       dispatch(getHabits({ page, search, date: dateValue }));
     }
-    dispatch(getTags());
-  }, [page, search, dateValue, dispatch]);
+    if (!tags.length) {
+      dispatch(getTags());
+    }
+  }, [page, search, dateValue, tags, dispatch]);
 
   // clear location state
   window.history.replaceState({}, document.title);
