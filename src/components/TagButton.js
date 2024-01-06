@@ -7,11 +7,12 @@ import { getHabits } from "../features/habit/habitSlice";
 import { deleteSingleTag } from "../features/tag/tagSlice";
 import Tooltip from "@mui/material/Tooltip";
 
-export default function TagButton({ title, tagId }) {
+export default function TagButton({ title, tagId, date }) {
+  // console.log("TagButton date:", date);
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    console.info("You clicked the delete icon.");
+    // console.info("You clicked the delete icon.");
     dispatch(deleteSingleTag(tagId));
     // dispatch(getHabits());
   };
@@ -21,7 +22,7 @@ export default function TagButton({ title, tagId }) {
       direction="row"
       spacing={1}
       sx={{ mr: 1, mt: 1 }}
-      onClick={() => dispatch(getHabits({ tag: title }))}
+      onClick={() => dispatch(getHabits({ date, tag: title }))}
     >
       <Tooltip
         title="Click on the tag's title to search by tag or the 'X' sign to delete the tag"

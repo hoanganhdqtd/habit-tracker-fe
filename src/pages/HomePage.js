@@ -49,7 +49,7 @@ const CenterPagination = styled(Pagination)(({ theme }) => ({
 function HomePage() {
   const [addNewHabit, setAddNewHabit] = useState(false);
   const [createNewTag, setCreateNewTag] = useState(false);
-  const [dateValue, setDateValue] = useState(null);
+  // const [dateValue, setDateValue] = useState(null);
 
   const [pageNum, setPageNum] = useState(1);
   const handlePageChange = (event, value) => {
@@ -57,24 +57,35 @@ function HomePage() {
     dispatch(changePage(value));
   };
 
-  const { search, page, totalPages } = useSelector((state) => state.habit);
+  const { search, page, date, totalPages } = useSelector(
+    (state) => state.habit
+  );
   // const { tags: habitTags } = useSelector((state) => state.habit.habitDetail);
   const { tags } = useSelector((state) => state.tag);
 
   // const { tagToSearch } = navigate.state;
-  const { state } = useLocation();
-  let tag;
-  if (state) {
-    const { tagToSearch } = state;
-    tag = tagToSearch;
-  }
+  // const { state } = useLocation();
+  // let tag;
+  // if (state) {
+  //   tag = state.tagToSearch;
+  // }
+  const [dateValue, setDateValue] = useState(date ? dayjs(date) : null);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCurrentUserProfile());
-    dispatch(getHabits({ page, search, date: dateValue, tag }));
+    // if (date) {
+    //   dispatch(getHabits({ page, search, date, tag }));
+    // } else {
+    //   dispatch(getHabits({ page, search, date: dateValue, tag }));
+    // }
+    if (dateValue) {
+      dispatch(getHabits({ page, search, date: dateValue }));
+    } else {
+      dispatch(getHabits({ page, search, date: dateValue }));
+    }
     dispatch(getTags());
-  }, [page, search, dateValue, tag, dispatch]);
+  }, [page, search, dateValue, dispatch]);
 
   // clear location state
   window.history.replaceState({}, document.title);
@@ -151,13 +162,22 @@ function HomePage() {
               <DatePicker
                 label="Pick date"
                 value={dateValue}
-                onChange={(newDateValue) =>
-                  setDateValue(
-                    dayjs(newDateValue)
-                      .set("hour", 0)
-                      .set("minute", 0)
-                      .set("second", 0)
-                  )
+                onChange={
+                  (newDateValue) => {
+                    console.log("newDateValue:", newDateValue);
+                    setDateValue(
+                      dayjs(newDateValue)
+                        .set("hour", 0)
+                        .set("minute", 0)
+                        .set("second", 0)
+                    );
+                  }
+                  // setDateValue(
+                  //   dayjs(newDateValue)
+                  //     .set("hour", 0)
+                  //     .set("minute", 0)
+                  //     .set("second", 0)
+                  // )
                 }
               />
             </LocalizationProvider>
@@ -195,9 +215,7 @@ function HomePage() {
                     key={tag._id}
                     tagId={tag._id}
                     title={tag.title}
-                    onClick={() => {
-                      dispatch(getHabits({ tag: tag.title }));
-                    }}
+                    date={dateValue}
                   />
                 ))}
               </Box>

@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import { HABITS_PER_PAGE } from "../../app/config";
 import dayjs from "dayjs";
-import { startOfWeek } from "date-fns";
+// import { startOfWeek } from "date-fns";
 
 const initialState = {
   isLoading: false,
@@ -81,9 +81,9 @@ export const getHabitById = createAsyncThunk(
       let url = `/habits/${id}`;
       const response = await apiService.get(url);
 
-      console.log("getHabitById getState:", getState());
+      // console.log("getHabitById getState:", getState());
 
-      console.log("getHabitById response:", response);
+      // console.log("getHabitById response:", response);
 
       if (!response.data) return rejectWithValue({ message: "No data" });
       return response.data;
@@ -469,6 +469,11 @@ export const habitSlice = createSlice({
       //     ...action.payload.habits,
       //   ];
       // }
+
+      // const { date, tag } = action.payload;
+      // state.date = date ? date : "";
+      // state.tag = tag ? tag : "";
+
       state.date = action.payload.date;
       state.currentPageHabits = [];
       action.payload.habits.forEach((habit) => {

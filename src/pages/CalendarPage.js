@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -20,6 +21,9 @@ import { startOfWeek } from "date-fns";
 import HabitList from "../components/HabitList";
 import { getHabits } from "../features/habit/habitSlice";
 import { useTheme } from "@emotion/react";
+import { getTags } from "../features/tag/tagSlice";
+import { SearchBox } from "../components/SearchBox";
+import TagButton from "../components/TagButton";
 
 const weekday = [
   "Sunday",
@@ -60,6 +64,19 @@ const getWeekFromDate = (date) => {
 };
 
 function CalendarPage() {
+  const { tags } = useSelector((state) => state.tag);
+  const { search, tag } = useSelector((state) => state.habit);
+
+  // const { tagToSearch } = navigate.state;
+  const { state } = useLocation();
+  let tagToSearch = state?.tagToSearch;
+  // let tag;
+  // if (state) {
+  //   tag = state.tagToSearch;
+  // }
+
+  console.log("tag:", tag);
+
   const theme = useTheme();
   const mdScreen = useMediaQuery(theme.breakpoints.up("md"));
   const { date } = useSelector((state) => state.habit);
@@ -101,13 +118,30 @@ function CalendarPage() {
     weekDate = getWeekFromDate(dateValue);
     // console.log("weekDate:", weekDate);
     setCurrentTabIndex(dayjs(newDateValue).get("day"));
-    dispatch(getHabits({ date: newDateValue }));
+    // dispatch(getHabits({ date: newDateValue }));
   };
 
   useEffect(() => {
-    dispatch(getHabits({ date: dateValue }));
+    // dispatch(getHabits({ date: dateValue }));
+    console.log("dateValue:", dateValue);
+
+    // dispatch(getHabits({ search, date: dateValue, tag }));
+    if (dateValue) {
+      if (tag) {
+        dispatch(getHabits({ search, date: dateValue, tag }));
+      } else {
+        dispatch(getHabits({ search, date: dateValue }));
+      }
+    } else {
+      if (tag) {
+        dispatch(getHabits({ search, date, tag }));
+      } else {
+        dispatch(getHabits({ search, date }));
+      }
+    }
+    dispatch(getTags());
     // dispatch(getTags());
-  }, [dateValue, dispatch]);
+  }, [search, dateValue, tag, dispatch]);
   // console.log("dateValue instanceof Date:", dateValue instanceof Date);
   // console.log("dateValue:", dateValue);
 
@@ -125,6 +159,9 @@ function CalendarPage() {
             <Stack spacing={1}>
               <Typography variant="h4">Calendar</Typography>
             </Stack>
+          </Stack>
+          <Stack direction="row" justifyContent="space-between" spacing={4}>
+            <SearchBox />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DatePicker
                 label="Pick date"
@@ -143,7 +180,48 @@ function CalendarPage() {
             </LocalizationProvider>
           </Stack>
         </Stack>
-        <Box sx={{ width: "100%" }}>
+        {tags.length !== 0 && (
+          <Stack direction="row" spacing={2}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                flexWrap: "wrap",
+              }}
+            >
+              {/* {tags.map((tag) => (
+                  <Button
+                    variant="contained"
+                    color="success"
+                    key={tag._id}
+                    size="small"
+                    sx={{ mr: 1, mt: 1 }}
+                    // onClick={() =>
+                    //   navigate(`/habit/${habitId}/reminder/${reminder._id}`)
+                    // }
+                    onClick={() => {
+                      dispatch(getHabits({ tag: tag.title }));
+                    }}
+                  >
+                    {`#${tag.title}`}
+                  </Button>
+                ))} */}
+              {tags.map((tag) => (
+                <TagButton
+                  key={tag._id}
+                  tagId={tag._id}
+                  title={tag.title}
+                  onClick={() => {
+                    console.log("dateValue:", dateValue);
+                    dispatch(getHabits({ tag: tag.title, date: dateValue }));
+                  }}
+                />
+              ))}
+            </Box>
+          </Stack>
+        )}
+        <Box sx={{ width: "100%", mt: 1 }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
             <Tabs value={currentTabIndex} onChange={handleTabChange} centered>
               {weekday.map((day) => (
