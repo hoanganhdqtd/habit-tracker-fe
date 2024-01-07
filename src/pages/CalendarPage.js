@@ -122,11 +122,7 @@ function CalendarPage() {
   };
 
   useEffect(() => {
-    if (tag) {
-      dispatch(getHabits({ search, date: dateValue, tag }));
-    } else {
-      dispatch(getHabits({ search, date: dateValue }));
-    }
+    dispatch(getHabits({ search, date: dateValue, tag }));
     if (!tags.length) {
       dispatch(getTags());
     }
