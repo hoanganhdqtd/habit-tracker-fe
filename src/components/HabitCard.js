@@ -120,7 +120,9 @@ function HabitCard({ habit, isInCalendarPage, date }) {
   //   : "";
 
   const switchLabel = useMediaQuery(theme.breakpoints.up("md"))
-    ? "Completed"
+    ? isCompleted
+      ? "Completed"
+      : "Incomplete"
     : "";
 
   return (
