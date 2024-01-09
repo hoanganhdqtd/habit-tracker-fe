@@ -11,6 +11,7 @@ import {
   Pagination,
   Stack,
   Tooltip,
+  Grid,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -21,14 +22,16 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-import { getHabits, changePage } from "../features/habit/habitSlice";
-import { getTags } from "../features/tag/tagSlice";
+import { FSelect } from "../components/form";
 
 import HabitList from "../components/HabitList";
 import { SearchBox } from "../components/SearchBox";
 import AddHabitForm from "../components/AddHabitForm";
 import CreateTagForm from "../components/CreateTagForm";
 import TagButton from "../components/TagButton";
+
+import { getHabits, changePage } from "../features/habit/habitSlice";
+import { getTags } from "../features/tag/tagSlice";
 import { getCurrentUserProfile } from "../features/user/userSlice";
 
 const CenterPagination = styled(Pagination)(({ theme }) => ({
@@ -50,6 +53,7 @@ function HomePage() {
   const [addNewHabit, setAddNewHabit] = useState(false);
   const [createNewTag, setCreateNewTag] = useState(false);
   // const [dateValue, setDateValue] = useState(null);
+  const [sort, setSort] = useState("latest");
 
   const [pageNum, setPageNum] = useState(1);
   const handlePageChange = (event, value) => {
@@ -75,9 +79,9 @@ function HomePage() {
   useEffect(() => {
     dispatch(getCurrentUserProfile());
     if (dateValue) {
-      dispatch(getHabits({ page, search, date: dateValue }));
+      dispatch(getHabits({ page, search, date: dateValue, sort }));
     } else {
-      dispatch(getHabits({ page, search, date: dateValue }));
+      dispatch(getHabits({ page, search, sort }));
     }
     if (!tags.length) {
       dispatch(getTags());
@@ -153,31 +157,43 @@ function HomePage() {
             </Stack>
           </Stack>
 
-          <Stack direction="row" justifyContent="space-between" spacing={4}>
-            <SearchBox />
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                label="Pick date"
-                value={dateValue}
-                onChange={
-                  (newDateValue) => {
-                    console.log("newDateValue:", newDateValue);
-                    setDateValue(
-                      dayjs(newDateValue)
-                        .set("hour", 0)
-                        .set("minute", 0)
-                        .set("second", 0)
-                    );
+          <Stack direction="row" spacing={2} justifyContent="space-between">
+            <Grid>
+              <Stack direction="row" spacing={2}>
+                <Grid>
+                  <SearchBox />
+                </Grid>
+                <Grid>
+                  <FSelect sort={sort} setSort={setSort} />
+                </Grid>
+              </Stack>
+            </Grid>
+
+            <Grid>
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Pick date"
+                  value={dateValue}
+                  onChange={
+                    (newDateValue) => {
+                      console.log("newDateValue:", newDateValue);
+                      setDateValue(
+                        dayjs(newDateValue)
+                          .set("hour", 0)
+                          .set("minute", 0)
+                          .set("second", 0)
+                      );
+                    }
+                    // setDateValue(
+                    //   dayjs(newDateValue)
+                    //     .set("hour", 0)
+                    //     .set("minute", 0)
+                    //     .set("second", 0)
+                    // )
                   }
-                  // setDateValue(
-                  //   dayjs(newDateValue)
-                  //     .set("hour", 0)
-                  //     .set("minute", 0)
-                  //     .set("second", 0)
-                  // )
-                }
-              />
-            </LocalizationProvider>
+                />
+              </LocalizationProvider>
+            </Grid>
           </Stack>
 
           {tags.length !== 0 && (

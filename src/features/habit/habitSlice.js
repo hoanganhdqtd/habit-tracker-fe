@@ -28,7 +28,7 @@ const initialState = {
 
 export const getHabits = createAsyncThunk(
   "habits/getHabits",
-  async ({ page, search, date, tag }, { rejectWithValue, getState }) => {
+  async ({ page, search, date, tag, sort }, { rejectWithValue, getState }) => {
     try {
       let url = `/habits?page=${page}&limit=${HABITS_PER_PAGE}`;
       if (search) url += `&search=${search}`;
@@ -42,6 +42,10 @@ export const getHabits = createAsyncThunk(
       // if (tagToSearch) {
       //   url += `&tag=${tagToSearch}`;
       // }
+
+      if (sort) {
+        url += `&sort=${sort}`;
+      }
 
       // console.log("search:", search);
       // console.log("date:", date);
