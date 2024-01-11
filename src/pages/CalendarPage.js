@@ -20,7 +20,6 @@ import { startOfWeek } from "date-fns";
 
 import HabitList from "../components/HabitList";
 import { getHabits } from "../features/habit/habitSlice";
-import { useTheme } from "@emotion/react";
 import { getTags } from "../features/tag/tagSlice";
 import { SearchBox } from "../components/SearchBox";
 import TagButton from "../components/TagButton";
@@ -77,8 +76,7 @@ function CalendarPage() {
   //   tag = state.tagToSearch;
   // }
 
-  const theme = useTheme();
-  const mdScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const mdScreen = useMediaQuery((theme) => theme.breakpoints.up("md"));
   const { date } = useSelector((state) => state.habit);
   // console.log("date:", date);
   const newDate = dayjs()

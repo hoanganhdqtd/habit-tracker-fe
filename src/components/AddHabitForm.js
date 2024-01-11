@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack, Typography } from "@mui/material";
+import { alpha, Button, Stack, Typography, useMediaQuery } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useNavigate } from "react-router-dom";
@@ -53,11 +53,13 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  // width: 400,
+
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  maxWidth: "300px",
   maxHeight: "600px",
   overflow: "scroll",
 };
@@ -70,6 +72,8 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
     .set("millisecond", 0);
   const [startDateValue, setStartDateValue] = useState(newDate);
   // const [timeValue, setTimeValue] = useState(dayjs(new Date()));
+  const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
+  style.width = smScreenUp ? "400" : "fullWidth";
 
   const methods = useForm({
     resolver: yupResolver(addHabitSchema),
@@ -119,6 +123,7 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        fullWidth
       >
         <Box sx={style}>
           <Typography variant="h6" sx={{ mb: 2 }}>

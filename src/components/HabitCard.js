@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 import {
   Avatar,
@@ -39,7 +39,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     // maxWidth: isInCalendarPage ? 600 : 500,
     maxWidth: 600,
   }));
-  const theme = useTheme();
+
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
 
@@ -119,7 +119,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
   //   ? "Completed"
   //   : "";
 
-  const switchLabel = useMediaQuery(theme.breakpoints.up("md"))
+  const switchLabel = useMediaQuery((theme) => theme.breakpoints.up("md"))
     ? isCompleted
       ? "Completed"
       : "Incomplete"
