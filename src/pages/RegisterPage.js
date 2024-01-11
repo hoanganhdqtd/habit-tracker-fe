@@ -98,7 +98,7 @@ function RegisterPage() {
           px: 3,
           py: "100px",
           // py: "50px",
-          width: "100%",
+          width: "90%",
         }}
       >
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
@@ -193,7 +193,7 @@ function RegisterPage() {
           <LoadingButton
             fullWidth
             size="large"
-            sx={{ mt: 2 }}
+            sx={{ mt: 3 }}
             type="submit"
             variant="contained"
           >

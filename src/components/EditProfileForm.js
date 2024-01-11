@@ -104,7 +104,6 @@ function EditProfileForm({
 
   const onSubmit = (data) => {
     const { name, password, avatarUrl } = data;
-    console.log("onSubmit data:", data);
 
     handleProfileEdit({ name, password, avatarUrl });
     handleClose();
@@ -114,7 +113,6 @@ function EditProfileForm({
 
   const handleProfileEdit = async ({ name, password, avatarUrl }) => {
     setIsProfileEdit(false);
-    console.log("EditProfileForm avatarUrl:", avatarUrl);
     dispatch(updateCurrentUserProfile({ name, password, avatarUrl }));
   };
 

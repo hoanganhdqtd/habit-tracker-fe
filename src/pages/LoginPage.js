@@ -119,7 +119,7 @@ const LoginPage = () => {
           maxWidth: 450,
           px: 3,
           py: "100px",
-          width: "100%",
+          width: "90%",
         }}
       >
         {!isResetPassword && (
@@ -194,9 +194,16 @@ const LoginPage = () => {
             </Stack>
 
             <LoadingButton
-              fullWidth
+              // fullWidth
+
               size="large"
-              sx={{ mt: 2 }}
+              sx={{
+                mt: 2,
+                width: "100%",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }}
               type="submit"
               variant="contained"
             >
@@ -205,25 +212,34 @@ const LoginPage = () => {
           </FormProvider>
         )}
 
-        <Divider sx={{ mt: 2 }}>or</Divider>
-        <Button
-          variant="contained"
-          // color="primary"
-          startIcon={<GoogleIcon />}
-          onClick={handleGoogleLogin}
-          fullWidth
-          size="large"
-          sx={{
-            backgroundColor: "#607d8b",
-            color: "white",
-            mt: 2,
-            "&:hover": {
-              backgroundColor: "#455a64",
-            },
-          }}
-        >
-          Login with Google
-        </Button>
+        {!isResetPassword && (
+          <>
+            <Divider sx={{ mt: 2 }}>or</Divider>
+            <Button
+              variant="contained"
+              // color="primary"
+              startIcon={<GoogleIcon />}
+              onClick={handleGoogleLogin}
+              fullWidth
+              size="large"
+              sx={{
+                backgroundColor: "#607d8b",
+                color: "white",
+                mt: 2,
+                // width: "90%",
+                // display: "block",
+                // marginLeft: "auto",
+                marginRight: "auto",
+
+                "&:hover": {
+                  backgroundColor: "#455a64",
+                },
+              }}
+            >
+              Login with Google
+            </Button>
+          </>
+        )}
 
         {isResetPassword && (
           <ResetPasswordForm
