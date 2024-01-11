@@ -9,6 +9,7 @@ import {
   Alert,
   Box,
   Button,
+  Divider,
   FormHelperText,
   IconButton,
   InputAdornment,
@@ -23,6 +24,8 @@ import { LoadingButton } from "@mui/lab";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+
+import GoogleIcon from "@mui/icons-material/Google";
 
 import { FCheckbox, FormProvider, FTextField } from "../components/form";
 import ResetPasswordForm from "../components/ResetPasswordForm";
@@ -97,6 +100,8 @@ const LoginPage = () => {
       setError("responseError", error);
     }
   };
+
+  const handleGoogleLogin = () => {};
 
   return (
     <>
@@ -199,6 +204,27 @@ const LoginPage = () => {
             </LoadingButton>
           </FormProvider>
         )}
+
+        <Divider sx={{ mt: 2 }}>or</Divider>
+        <Button
+          variant="contained"
+          // color="primary"
+          startIcon={<GoogleIcon />}
+          onClick={handleGoogleLogin}
+          fullWidth
+          size="large"
+          sx={{
+            backgroundColor: "#607d8b",
+            color: "white",
+            mt: 2,
+            "&:hover": {
+              backgroundColor: "#455a64",
+            },
+          }}
+        >
+          Login with Google
+        </Button>
+
         {isResetPassword && (
           <ResetPasswordForm
             isResetPassword={isResetPassword}
