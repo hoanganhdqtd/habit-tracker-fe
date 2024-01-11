@@ -52,10 +52,10 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      // console.log(
-      //   "getCurrentUserProfileSuccess action.payload:",
-      //   action.payload
-      // );
+      console.log(
+        "getCurrentUserProfileSuccess action.payload:",
+        action.payload
+      );
       state.currentUser = action.payload;
     },
 
@@ -65,7 +65,10 @@ export const userSlice = createSlice({
 
       // when the profile is updated,
       // dispatch UPDATE_PROFILE action in the AuthContext
-      // console.log("action.payload:", action.payload);
+      console.log("updateUserProfile action.payload:", action.payload);
+      console.log(
+        "old avatarUrl: https://res.cloudinary.com/dlcfdckfl/image/upload/v1704199905/ics1pxuxszx8ikgvt2sy.png"
+      );
       state.updatedProfile = action.payload;
       state.currentUser = action.payload;
     },

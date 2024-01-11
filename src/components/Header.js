@@ -240,7 +240,7 @@ export default function PrimarySearchAppBar() {
                 <BarChartIcon onClick={() => navigate("/overview")} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Go to Overview page" arrow>
+            <Tooltip title="Go to Calendar page" arrow>
               <IconButton size="large" color="inherit">
                 <CalendarMonthIcon onClick={() => navigate("/calendar")} />
               </IconButton>

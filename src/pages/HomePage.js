@@ -78,15 +78,11 @@ function HomePage() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCurrentUserProfile());
-    if (dateValue) {
-      dispatch(getHabits({ page, search, date: dateValue, sort }));
-    } else {
-      dispatch(getHabits({ page, search, sort }));
-    }
+    dispatch(getHabits({ page, search, date: dateValue, sort }));
     if (!tags.length) {
       dispatch(getTags());
     }
-  }, [page, search, dateValue, tags, dispatch]);
+  }, [page, search, dateValue, tags, sort, dispatch]);
 
   // clear location state
   window.history.replaceState({}, document.title);

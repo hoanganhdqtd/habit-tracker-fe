@@ -143,9 +143,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
       >
         <Stack direction="row" spacing={2} alignItems="center">
           <Tooltip title="Click on the avatar to view the user's profile" arrow>
-            <Avatar src={avatarUrl} onClick={() => navigate("/account")}>
-              A
-            </Avatar>
+            <Avatar src={avatarUrl} onClick={() => navigate("/account")} />
           </Tooltip>
 
           <Tooltip

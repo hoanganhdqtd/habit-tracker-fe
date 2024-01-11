@@ -7,14 +7,14 @@ import Box from "@mui/material/Box";
 // import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import LoadingScreen from "./LoadingScreen";
 
 import HabitCard from "./HabitCard";
 
 export default function HabitList({ date, isInCalendarPage }) {
-  const { currentPageHabits, habitsById, isLoading, search } = useSelector(
+  const { currentPageHabits, habitsById, isLoading } = useSelector(
     (state) => state.habit
   );
 

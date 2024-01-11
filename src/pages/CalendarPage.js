@@ -24,6 +24,7 @@ import { useTheme } from "@emotion/react";
 import { getTags } from "../features/tag/tagSlice";
 import { SearchBox } from "../components/SearchBox";
 import TagButton from "../components/TagButton";
+import { getCurrentUserProfile } from "../features/user/userSlice";
 
 const weekday = [
   "Sunday",
@@ -66,6 +67,7 @@ const getWeekFromDate = (date) => {
 function CalendarPage() {
   const { tags } = useSelector((state) => state.tag);
   const { search, tag } = useSelector((state) => state.habit);
+  const { currentUser } = useSelector((state) => state.user);
 
   // const { tagToSearch } = navigate.state;
   const { state } = useLocation();
@@ -75,12 +77,10 @@ function CalendarPage() {
   //   tag = state.tagToSearch;
   // }
 
-  console.log("tag:", tag);
-
   const theme = useTheme();
   const mdScreen = useMediaQuery(theme.breakpoints.up("md"));
   const { date } = useSelector((state) => state.habit);
-  console.log("date:", date);
+  // console.log("date:", date);
   const newDate = dayjs()
     .set("hour", 0)
     .set("minute", 0)
@@ -123,12 +123,21 @@ function CalendarPage() {
 
   useEffect(() => {
     dispatch(getHabits({ search, date: dateValue, tag }));
+
+    if (!currentUser.avatarUrl) {
+      dispatch(getCurrentUserProfile());
+    }
+    // dispatch(getCurrentUserProfile());
+
     if (!tags.length) {
       dispatch(getTags());
     }
-  }, [search, dateValue, tag, tags, dispatch]);
+  }, [search, dateValue, tag, currentUser, tags, dispatch]);
   // console.log("dateValue instanceof Date:", dateValue instanceof Date);
   // console.log("dateValue:", dateValue);
+
+  // clear location state
+  // window.history.replaceState({}, document.title);
 
   return (
     <Box
@@ -197,10 +206,9 @@ function CalendarPage() {
                   key={tag._id}
                   tagId={tag._id}
                   title={tag.title}
-                  onClick={() => {
-                    console.log("dateValue:", dateValue);
-                    dispatch(getHabits({ tag: tag.title, date: dateValue }));
-                  }}
+                  onClick={() =>
+                    dispatch(getHabits({ tag: tag.title, date: dateValue }))
+                  }
                 />
               ))}
             </Box>
