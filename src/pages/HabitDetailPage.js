@@ -248,6 +248,7 @@ function HabitDetailPage() {
                                   <Tooltip
                                     title="Click to view the reminder's detail"
                                     arrow
+                                    key={reminder._id}
                                   >
                                     <Button
                                       variant="contained"
@@ -316,7 +317,11 @@ function HabitDetailPage() {
                                 <Typography>No tag</Typography>
                               ) : (
                                 tags?.map((tag) => (
-                                  <Tooltip title="Click to find by tag" arrow>
+                                  <Tooltip
+                                    key={tag._id}
+                                    title="Click to find by tag"
+                                    arrow
+                                  >
                                     <Button
                                       variant="contained"
                                       color="success"

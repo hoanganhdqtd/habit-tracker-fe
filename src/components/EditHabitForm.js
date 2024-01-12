@@ -206,7 +206,8 @@ function EditHabitForm({
               />
 
               <FDatePicker
-                dateValue={dayjs(startDate)}
+                // dateValue={dayjs(startDate)}
+                dateValue={dayjs(dateValue)}
                 setDateValue={setDateValue}
               />
               {/* <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} /> */}
@@ -242,8 +243,8 @@ function EditHabitForm({
                 }}
               >
                 <Button
-                  color="primary"
-                  variant="contained"
+                  color="success"
+                  variant="outlined"
                   size="small"
                   sx={{ mr: 2 }}
                   onClick={handleClose}

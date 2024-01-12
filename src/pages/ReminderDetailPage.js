@@ -196,6 +196,7 @@ function ReminderDetailPage() {
                     <Tooltip title="Click to edit reminder" arrow>
                       <Button
                         variant="contained"
+                        color="secondary"
                         onClick={() => setIsReminderEdit(true)}
                       >
                         Edit reminder
@@ -213,11 +214,12 @@ function ReminderDetailPage() {
 
                     <Tooltip title="Click to back to the previous page" arrow>
                       <Button
-                        color="secondary"
+                        color="success"
                         variant="outlined"
+                        // variant="contained"
                         onClick={() => navigate(-1)}
                       >
-                        Cancel
+                        Back
                       </Button>
                     </Tooltip>
 

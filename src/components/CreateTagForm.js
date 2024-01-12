@@ -99,8 +99,8 @@ function CreateTagForm({ createNewTag, setCreateNewTag, habitId }) {
               }}
             >
               <Button
-                color="secondary"
-                variant="contained"
+                color="success"
+                variant="outlined"
                 size="small"
                 onClick={handleClose}
                 sx={{ mr: 2 }}

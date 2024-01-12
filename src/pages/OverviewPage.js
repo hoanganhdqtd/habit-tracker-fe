@@ -18,6 +18,7 @@ import {
   Stack,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -27,6 +28,7 @@ import dayjs from "dayjs";
 // import { SearchBox } from "../components/SearchBox";
 
 function OverviewPage() {
+  const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const { search, page, date, habitsById, currentPageHabits } = useSelector(
     (state) => state.habit
   );
@@ -116,13 +118,18 @@ function OverviewPage() {
                           {
                             id: 0,
                             value: completedCount,
-                            label: `Number of \ncompleted habits \non the date`,
+                            label: smScreenUp
+                              ? `Number of \ncompleted habits \non the date`
+                              : "",
+
                             color: "rgb(54, 162, 235)",
                           },
                           {
                             id: 1,
                             value: incompleteCount,
-                            label: `Number of \nincomplete habits \non the date`,
+                            label: smScreenUp
+                              ? `Number of \nincomplete habits \non the date`
+                              : "",
                             color: "rgb(255, 99, 132)",
                           },
                         ],
@@ -134,7 +141,7 @@ function OverviewPage() {
                         fontWeight: "bold",
                       },
                     }}
-                    width={500}
+                    width={smScreenUp ? 500 : 300}
                     height={200}
                   />
                 </CardContent>

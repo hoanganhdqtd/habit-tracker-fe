@@ -14,6 +14,7 @@ export default function FDatePicker({ dateValue, setDateValue }) {
           .set("second", 0)}
         // value={dateValue}
         onChange={(newDateValue) => {
+          console.log("newDateValue:", newDateValue);
           // setDateValue(dayjs(newDateValue));
           setDateValue(newDateValue);
         }}
