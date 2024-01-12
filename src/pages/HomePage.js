@@ -268,7 +268,11 @@ function HomePage() {
             {!smScreenUp && <CustomizedMenus />}
           </Stack>
 
-          <Stack direction="row" spacing={2} justifyContent="space-between">
+          <Stack
+            direction={smScreenUp ? "row" : "column"}
+            spacing={2}
+            justifyContent="space-between"
+          >
             <Grid>
               <Stack direction="row" spacing={2}>
                 <Grid>

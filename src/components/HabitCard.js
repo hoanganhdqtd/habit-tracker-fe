@@ -188,7 +188,16 @@ function HabitCard({ habit, isInCalendarPage, date }) {
                 }
               }}
             >
-              {option}
+              <Stack direction="row" spacing={1}>
+                {option === "Statistics" ? (
+                  <BarChartIcon />
+                ) : option === "Edit" ? (
+                  <EditIcon />
+                ) : (
+                  <DeleteIcon />
+                )}
+                <Typography variant="inherit">{option}</Typography>
+              </Stack>
             </MenuItem>
           ))}
         </Menu>
