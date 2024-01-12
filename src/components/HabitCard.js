@@ -12,22 +12,33 @@ import {
   Typography,
   useMediaQuery,
   Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import { ThumbUp, SentimentVeryDissatisfied } from "@mui/icons-material";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 // import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
 // import { red } from "@mui/material/colors";
+import dayjs from "dayjs";
 
-import { FSwitch, FormProvider } from "./form";
 import { useForm } from "react-hook-form";
-
+import { FSwitch, FormProvider } from "./form";
 import { deleteHabit, editHabit } from "../features/habit/habitSlice";
 
 // import { getSingleHabitProgressList } from "../features/progress/progressSlice";
 
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
 import EditHabitForm from "./EditHabitForm";
-import dayjs from "dayjs";
+
+const options = ["Statistics", "Edit", "Delete"];
+
+const ITEM_HEIGHT = 48;
 
 function HabitCard({ habit, isInCalendarPage, date }) {
   const Item = styled(Paper)(({ theme }) => ({
@@ -39,6 +50,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     // maxWidth: isInCalendarPage ? 600 : 500,
     maxWidth: 600,
   }));
+  const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
@@ -125,6 +137,65 @@ function HabitCard({ habit, isInCalendarPage, date }) {
       : "Incomplete"
     : "";
 
+  const LongMenu = () => {
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+    const handleClick = (event) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+    return (
+      <div>
+        <IconButton
+          aria-label="more"
+          id="long-button"
+          aria-controls={open ? "long-menu" : undefined}
+          aria-expanded={open ? "true" : undefined}
+          aria-haspopup="true"
+          onClick={handleClick}
+        >
+          <MoreVertIcon />
+        </IconButton>
+        <Menu
+          id="long-menu"
+          MenuListProps={{
+            "aria-labelledby": "long-button",
+          }}
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          PaperProps={{
+            style: {
+              maxHeight: ITEM_HEIGHT * 4.5,
+              width: "20ch",
+            },
+          }}
+        >
+          {options.map((option) => (
+            <MenuItem
+              key={option}
+              selected={option === "Pyxis"}
+              onClick={() => {
+                if (option === "Statistics") {
+                  navigate(`/statistics/${habit._id}`);
+                } else if (option === "Edit") {
+                  setIsHabitEdit(true);
+                } else {
+                  setIsHabitDelete(true);
+                }
+              }}
+            >
+              {option}
+            </MenuItem>
+          ))}
+        </Menu>
+      </div>
+    );
+  };
+
   return (
     <Item
       // key={habit._id}
@@ -185,66 +256,70 @@ function HabitCard({ habit, isInCalendarPage, date }) {
           </Tooltip>
         )}
 
-        <Stack direction="row" spacing={1} alignItems="center">
-          <Tooltip
-            title="Click to view the habit's count of being completed"
-            arrow
-          >
-            <Button
-              variant="contained"
-              onClick={() => {
-                navigate(`/statistics/${habit._id}`);
-              }}
-              sx={{
-                backgroundColor: "#00bcd4",
-                "&:hover": {
-                  backgroundColor: "#0097a7",
-                },
-              }}
+        {smScreenUp ? (
+          <Stack direction="row" spacing={1} alignItems="center">
+            <Tooltip
+              title="Click to view the habit's count of being completed"
+              arrow
             >
-              Statistics
-            </Button>
-          </Tooltip>
-          {!isInCalendarPage && (
-            <Tooltip title="Click to edit the habit" arrow>
               <Button
                 variant="contained"
-                color="secondary"
                 onClick={() => {
-                  setIsHabitEdit(true);
+                  navigate(`/statistics/${habit._id}`);
+                }}
+                sx={{
+                  backgroundColor: "#00bcd4",
+                  "&:hover": {
+                    backgroundColor: "#0097a7",
+                  },
                 }}
               >
-                Edit
+                Statistics
               </Button>
             </Tooltip>
-          )}
-          {!isInCalendarPage && (
-            <Tooltip title="Click to delete the habit" arrow>
-              <Button
-                variant="contained"
-                color="error"
-                onClick={() => setIsHabitDelete(true)}
-              >
-                Delete
-              </Button>
-            </Tooltip>
-          )}
-          {isHabitEdit && (
-            <EditHabitForm
-              isHabitEdit={isHabitEdit}
-              setIsHabitEdit={setIsHabitEdit}
-              handleHabitEdit={handleHabitEdit}
-              habitId={habit._id}
-            />
-          )}
-          {isHabitDelete && (
-            <DeleteHabitConfirm
-              handleHabitDelete={handleHabitDelete}
-              setIsHabitDelete={setIsHabitDelete}
-              habitId={habit._id}
-            />
-          )}
-        </Stack>
+            {!isInCalendarPage && (
+              <Tooltip title="Click to edit the habit" arrow>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => {
+                    setIsHabitEdit(true);
+                  }}
+                >
+                  Edit
+                </Button>
+              </Tooltip>
+            )}
+            {!isInCalendarPage && (
+              <Tooltip title="Click to delete the habit" arrow>
+                <Button
+                  variant="contained"
+                  color="error"
+                  onClick={() => setIsHabitDelete(true)}
+                >
+                  Delete
+                </Button>
+              </Tooltip>
+            )}
+            {isHabitEdit && (
+              <EditHabitForm
+                isHabitEdit={isHabitEdit}
+                setIsHabitEdit={setIsHabitEdit}
+                handleHabitEdit={handleHabitEdit}
+                habitId={habit._id}
+              />
+            )}
+            {isHabitDelete && (
+              <DeleteHabitConfirm
+                handleHabitDelete={handleHabitDelete}
+                setIsHabitDelete={setIsHabitDelete}
+                habitId={habit._id}
+              />
+            )}
+          </Stack>
+        ) : (
+          <LongMenu />
+        )}
       </Stack>
     </Item>
   );
