@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useCallback, useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
@@ -101,7 +102,18 @@ const LoginPage = () => {
     }
   };
 
-  const handleGoogleLogin = () => {};
+  const handleGoogleLogin = async () => {
+    try {
+      const backendUrl = process.env.REACT_APP_GOOGLE_LOGIN_API;
+      const response = await axios.get(`${backendUrl}`);
+      console("handleGoogleLogin response:", response);
+      navigate("/", { replace: true });
+      return response.data;
+    } catch (err) {
+      console.log("handleGoogleLogin error:", err);
+    }
+    // window.location.href = process.env.GOOGLE_LOGIN_API;
+  };
 
   return (
     <>

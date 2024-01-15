@@ -89,7 +89,7 @@ function EditHabitForm({
     .set("minute", 0)
     .set("second", 0)
     .set("millisecond", 0);
-  const [dateValue, setDateValue] = useState(newDate);
+  const [dateValue, setDateValue] = useState(startDate || newDate);
   // const [timeValue, setTimeValue] = useState(dayjs(new Date()));
 
   const methods = useForm({
