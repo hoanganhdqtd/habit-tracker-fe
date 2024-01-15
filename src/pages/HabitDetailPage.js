@@ -26,6 +26,7 @@ import {
   TextField,
   Tooltip,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import CreateTagForm from "../components/CreateTagForm";
@@ -133,6 +134,8 @@ function HabitDetailPage() {
   //   .set("millisecond", 0);
   // const [dateValue, setDateValue] = useState(newDate);
 
+  const smScreenDown = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   return (
     <Box
       component="main"
@@ -141,14 +144,14 @@ function HabitDetailPage() {
         py: 4,
       }}
     >
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <Stack spacing={4}>
           <div>
             <Typography variant="h4">Habit detail</Typography>
           </div>
 
           <Grid
-            container
+            // container
             spacing={3}
             justifyContent="center"
             alignContent="center"
@@ -395,15 +398,17 @@ function HabitDetailPage() {
                     <Button
                       variant="contained"
                       color="secondary"
+                      size={smScreenDown ? "small" : "medium"}
                       onClick={() => setIsHabitEdit(true)}
                     >
-                      Edit habit
+                      {smScreenDown ? "Edit" : "Edit habit"}
                     </Button>
                   </Tooltip>
                   <Tooltip title="Click to delete the habit" arrow>
                     <Button
                       variant="contained"
                       color="error"
+                      size={smScreenDown ? "small" : "medium"}
                       onClick={() => setIsHabitDelete(true)}
                     >
                       Delete
@@ -414,6 +419,7 @@ function HabitDetailPage() {
                     <Button
                       color="success"
                       variant="outlined"
+                      size={smScreenDown ? "small" : "medium"}
                       onClick={() => navigate(-1)}
                     >
                       Back

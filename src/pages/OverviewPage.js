@@ -141,10 +141,33 @@ function OverviewPage() {
                         fontWeight: "bold",
                       },
                     }}
-                    width={smScreenUp ? 500 : 300}
+                    width={smScreenUp ? 500 : 250}
                     height={200}
                   />
                 </CardContent>
+                {!smScreenUp && (
+                  <Stack direction="column" spacing={2} sx={{ ml: 4, mb: 4 }}>
+                    <div style={{ display: "flex" }}>
+                      <div
+                        style={{
+                          width: 20,
+                          height: 20,
+                          backgroundColor: "rgb(54, 162, 235)",
+                          display: "inline-block",
+                        }}
+                      />{" "}
+                      Number of completed habits on the date
+                    </div>
+
+                    <div
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "rgb(255, 99, 132)",
+                      }}
+                    />
+                  </Stack>
+                )}
                 <Divider />
                 <CardActions sx={{ justifyContent: "flex-end" }}>
                   <Tooltip title="Back to the previous page" arrow>
