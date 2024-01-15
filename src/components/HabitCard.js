@@ -41,6 +41,7 @@ const options = ["Statistics", "Edit", "Delete"];
 const ITEM_HEIGHT = 48;
 
 function HabitCard({ habit, isInCalendarPage, date }) {
+  const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -50,7 +51,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     // maxWidth: isInCalendarPage ? 600 : 500,
     maxWidth: 600,
   }));
-  const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
@@ -112,15 +112,15 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     duration,
     onWeekdays,
   }) => {
-    console.log(
-      "habitId, name, goal, startDate, duration, onWeekdays:",
-      habitId,
-      name,
-      goal,
-      startDate,
-      duration,
-      onWeekdays
-    );
+    // console.log(
+    //   "habitId, name, goal, startDate, duration, onWeekdays:",
+    //   habitId,
+    //   name,
+    //   goal,
+    //   startDate,
+    //   duration,
+    //   onWeekdays
+    // );
     setIsHabitEdit(false);
     dispatch(
       editHabit({ habitId, name, goal, startDate, duration, onWeekdays })
@@ -211,7 +211,8 @@ function HabitCard({ habit, isInCalendarPage, date }) {
       sx={{
         my: 1,
         mx: "auto",
-        p: 2,
+        px: smScreenUp ? 2 : 0.5,
+        py: 2,
         cursor: "pointer",
       }}
     >
@@ -221,19 +222,26 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         direction="row"
         alignItems="center"
       >
-        <Stack direction="row" spacing={2} alignItems="center">
+        <Stack direction="row" spacing={smScreenUp ? 2 : 1} alignItems="center">
           <Tooltip title="Click on the avatar to view the user's profile" arrow>
             <Avatar src={avatarUrl} onClick={() => navigate("/account")} />
           </Tooltip>
 
           <Tooltip
-            title="Click on the habit's name to view the habit's detail"
+            title={
+              !smScreenUp
+                ? `${habit.name} - Click on the habit's name to view the habit's detail`
+                : "Click on the habit's name to view the habit's detail"
+            }
             arrow
           >
             <Typography
               noWrap
               onClick={() => {
                 navigate(`/habit/${habit._id}`);
+              }}
+              sx={{
+                width: smScreenUp ? "inherit" : "50px",
               }}
             >
               {habit.name}

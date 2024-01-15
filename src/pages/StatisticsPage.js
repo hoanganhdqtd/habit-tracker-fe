@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
-import { BarChart } from "@mui/x-charts/BarChart";
 import Typography from "@mui/material/Typography";
 import { getSingleHabitProgressList } from "../features/habit/habitSlice";
 import {

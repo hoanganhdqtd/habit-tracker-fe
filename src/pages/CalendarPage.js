@@ -76,7 +76,8 @@ function CalendarPage() {
   //   tag = state.tagToSearch;
   // }
 
-  const mdScreen = useMediaQuery((theme) => theme.breakpoints.up("md"));
+  const mdScreenUp = useMediaQuery((theme) => theme.breakpoints.up("md"));
+  const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const { date } = useSelector((state) => state.habit);
   // console.log("date:", date);
   const newDate = dayjs()
@@ -214,13 +215,20 @@ function CalendarPage() {
         )}
         <Box sx={{ width: "100%", mt: 1 }}>
           <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs value={currentTabIndex} onChange={handleTabChange} centered>
+            <Tabs
+              value={currentTabIndex}
+              onChange={handleTabChange}
+              variant={!smScreenUp && "scrollable"}
+              scrollButtons={!smScreenUp && "auto"}
+              allowScrollButtonsMobile={!smScreenUp ? true : false}
+              centered={smScreenUp ? true : false}
+            >
               {weekday.map((day) => (
                 <Tab
                   key={day}
                   wrapped
                   label={
-                    mdScreen
+                    mdScreenUp
                       ? `${weekDate[day]}`.slice(0, 10)
                       : `${weekDate[day]}`.slice(4, 10)
                   }
