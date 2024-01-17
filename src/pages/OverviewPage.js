@@ -93,7 +93,7 @@ function OverviewPage() {
           {currentPageHabits.length ? (
             <Grid
               container
-              direction="row"
+              // direction={smScreenUp ? "row" : "column"}
               justifyContent="space-evenly"
               alignItems="center"
             >
@@ -147,25 +147,32 @@ function OverviewPage() {
                 </CardContent>
                 {!smScreenUp && (
                   <Stack direction="column" spacing={2} sx={{ ml: 4, mb: 4 }}>
-                    <div style={{ display: "flex" }}>
+                    <Stack direction="row" spacing={1}>
                       <div
                         style={{
                           width: 20,
                           height: 20,
                           backgroundColor: "rgb(54, 162, 235)",
-                          display: "inline-block",
+                          // display: "inline-block",
                         }}
-                      />{" "}
-                      Number of completed habits on the date
-                    </div>
+                      />
+                      <Typography>
+                        Number of completed habits on the date
+                      </Typography>
+                    </Stack>
 
-                    <div
-                      style={{
-                        width: 20,
-                        height: 20,
-                        backgroundColor: "rgb(255, 99, 132)",
-                      }}
-                    />
+                    <Stack direction="row" spacing={1}>
+                      <div
+                        style={{
+                          width: 20,
+                          height: 20,
+                          backgroundColor: "rgb(255, 99, 132)",
+                        }}
+                      />
+                      <Typography>
+                        Number of completed habits on the date
+                      </Typography>
+                    </Stack>
                   </Stack>
                 )}
                 <Divider />

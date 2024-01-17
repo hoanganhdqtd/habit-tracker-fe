@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { styled, alpha } from "@mui/material/styles";
 import {
   AppBar,
@@ -13,6 +14,7 @@ import {
   Menu,
   Tooltip,
   Stack,
+  Avatar,
 } from "@mui/material";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -71,6 +73,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function PrimarySearchAppBar() {
+  const { avatarUrl } = useSelector((state) => state.user.currentUser);
   const navigate = useNavigate();
   const { logout } = useAuth();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -245,17 +248,20 @@ export default function PrimarySearchAppBar() {
                 <CalendarMonthIcon onClick={() => navigate("/calendar")} />
               </IconButton>
             </Tooltip>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            <Tooltip title="Click to view user's account or logout" arrow>
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                {/* <AccountCircle /> */}
+                <Avatar src={avatarUrl} />
+              </IconButton>
+            </Tooltip>
           </Box>
 
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
