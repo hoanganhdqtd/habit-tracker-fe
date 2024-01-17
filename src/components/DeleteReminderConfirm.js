@@ -38,11 +38,11 @@ function DeleteReminderConfirm({ habitId, reminderId, setIsReminderDelete }) {
         <Typography>{`Are you sure you want to delete the reminder?`}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button color="primary" variant="contained" onClick={handleClose}>
+        <Button color="success" variant="outlined" onClick={handleClose}>
           Cancel
         </Button>
         <Button
-          color="secondary"
+          color="error"
           variant="contained"
           onClick={() => handleReminderDelete(reminderId, habitId)}
         >

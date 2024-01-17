@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography, useMediaQuery } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
@@ -55,6 +55,9 @@ const style = {
   p: 4,
   maxHeight: "600px",
   overflow: "scroll",
+  "@media (max-width: 600px)": {
+    width: "90%",
+  },
 };
 
 function EditReminderForm({
@@ -66,6 +69,7 @@ function EditReminderForm({
 }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
   // const { reminderFrequency, onWeekdays, startDate, time, status } =
   //   useSelector((state) =>
@@ -165,7 +169,7 @@ function EditReminderForm({
       >
         <Box sx={style}>
           <Typography variant="h6" sx={{ mb: 2 }}>
-            Edit reminder
+            {smScreenUp ? "Edit reminder" : "Edit"}
           </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
@@ -210,8 +214,8 @@ function EditReminderForm({
                 }}
               >
                 <Button
-                  color="primary"
-                  variant="contained"
+                  color="success"
+                  variant="outlined"
                   size="small"
                   sx={{ mr: 2 }}
                   onClick={handleClose}
@@ -221,6 +225,7 @@ function EditReminderForm({
                 <LoadingButton
                   type="submit"
                   variant="contained"
+                  color="secondary"
                   size="small"
                   loading={
                     isSubmitting

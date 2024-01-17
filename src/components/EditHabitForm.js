@@ -52,13 +52,17 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  // width: 400,
+  maxWidth: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
   maxHeight: "600px",
   overflow: "scroll",
+  "@media (max-width: 600px)": {
+    width: "90%",
+  },
 };
 
 function EditHabitForm({
@@ -271,37 +275,5 @@ function EditHabitForm({
     </div>
   );
 }
-
-// <form>
-//   <label for="name">Name:</label>
-//   <input id="name" type="text" />
-//   <br />
-//   <label for="description">Description:</label>
-//   <input type="text" />
-//   <br />
-//   <label>Goal:</label>
-//   <input type="text" />
-//   <br />
-//   <label>Start date:</label>
-//   <input type="date" />
-//   <br />
-//   <label>Time:</label>
-//   <input type="time" />
-//   <br />
-//   <label>Duration:</label>
-//   <input type="number" />
-//   <br />
-//   <label for="weekdays">On weekdays:</label>
-//   <select name="weekdays" id="weekdays" multiple>
-//     <option value="monday">Monday</option>
-//     <option value="tuesday">Tuesday</option>
-//     <option value="wednesday">Wednesday</option>
-//     <option value="thursday">Thursday</option>
-//     <option value="friday">Friday</option>
-//     <option value="saturday">Saturday</option>
-//     <option value="sunday">Sunday</option>
-//   </select>
-//   <input type="submit" value="Submit" />
-// </form>;
 
 export default EditHabitForm;
