@@ -53,15 +53,17 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  // width: 400,
-
+  width: "90%",
+  maxWidth: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  maxWidth: "300px",
   maxHeight: "600px",
   overflow: "scroll",
+  "@media (max-width: 600px)": {
+    width: "90%",
+  },
 };
 
 function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
@@ -207,8 +209,8 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
               >
                 <Button
                   // color="primary"
-                  color="secondary"
-                  variant="contained"
+                  color="success"
+                  variant="outlined"
                   size="small"
                   onClick={handleClose}
                   sx={{ mr: 2 }}

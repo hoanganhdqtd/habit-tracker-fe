@@ -12,20 +12,24 @@ import * as Yup from "yup";
 
 import { FTextField, FormProvider } from "./form";
 import { createTag, getTags } from "../features/tag/tagSlice";
-import { addHabit, addHabitTag } from "../features/habit/habitSlice";
+import { addHabitTag } from "../features/habit/habitSlice";
 
 const style = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: "90%",
+  maxWidth: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
   maxHeight: "600px",
   overflow: "scroll",
+  "@media (max-width: 600px)": {
+    width: "90%",
+  },
 };
 
 const defaultValues = {

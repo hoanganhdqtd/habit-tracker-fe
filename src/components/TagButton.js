@@ -7,7 +7,7 @@ import { getHabits } from "../features/habit/habitSlice";
 import { deleteSingleTag } from "../features/tag/tagSlice";
 import Tooltip from "@mui/material/Tooltip";
 
-export default function TagButton({ title, tagId, date, searchTag }) {
+export default function TagButton({ title, tagId, date, searchTag, color }) {
   // console.log("TagButton date:", date);
   const [isTagOn, setIsTagOn] = React.useState(false);
   const dispatch = useDispatch();
@@ -65,7 +65,8 @@ export default function TagButton({ title, tagId, date, searchTag }) {
           label={`#${title}`}
           onDelete={handleDelete}
           // color={title === searchTag ? "error" : "success"}
-          color={isTagOn ? "error" : "success"}
+          // color={isTagOn ? "error" : "success"}
+          color={searchTag.includes(title) ? "error" : "success"}
         />
       </Tooltip>
 

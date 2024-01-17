@@ -103,6 +103,64 @@ const StyledMenu = styled((props) => (
   },
 }));
 
+const CustomizedMenus = ({ setAddNewHabit, setCreateNewTag }) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  return (
+    <div>
+      <Button
+        id="demo-customized-button"
+        aria-controls={open ? "demo-customized-menu" : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? "true" : undefined}
+        variant="contained"
+        disableElevation
+        onClick={handleClick}
+        endIcon={<KeyboardArrowDownIcon />}
+      >
+        Options
+      </Button>
+      <StyledMenu
+        id="demo-customized-menu"
+        MenuListProps={{
+          "aria-labelledby": "demo-customized-button",
+        }}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem
+          onClick={() => {
+            console.log("addNewHabit");
+            setAddNewHabit(true);
+            handleClose();
+          }}
+          disableRipple
+        >
+          <AddIcon />
+          Add new habit
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setCreateNewTag(true);
+            handleClose();
+          }}
+          disableRipple
+        >
+          <TagIcon />
+          Add new tag
+        </MenuItem>
+      </StyledMenu>
+    </div>
+  );
+};
+
 function HomePage() {
   const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const [addNewHabit, setAddNewHabit] = useState(false);
@@ -143,63 +201,6 @@ function HomePage() {
 
   // clear location state
   window.history.replaceState({}, document.title);
-
-  const CustomizedMenus = () => {
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const open = Boolean(anchorEl);
-    const handleClick = (event) => {
-      setAnchorEl(event.currentTarget);
-    };
-    const handleClose = () => {
-      setAnchorEl(null);
-    };
-    return (
-      <div>
-        <Button
-          id="demo-customized-button"
-          aria-controls={open ? "demo-customized-menu" : undefined}
-          aria-haspopup="true"
-          aria-expanded={open ? "true" : undefined}
-          variant="contained"
-          disableElevation
-          onClick={handleClick}
-          endIcon={<KeyboardArrowDownIcon />}
-        >
-          Options
-        </Button>
-        <StyledMenu
-          id="demo-customized-menu"
-          MenuListProps={{
-            "aria-labelledby": "demo-customized-button",
-          }}
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-        >
-          <MenuItem
-            onClick={() => {
-              setAddNewHabit(true);
-              handleClose();
-            }}
-            disableRipple
-          >
-            <AddIcon />
-            Add new habit
-          </MenuItem>
-          <MenuItem
-            onClick={() => {
-              setCreateNewTag(true);
-              handleClose();
-            }}
-            disableRipple
-          >
-            <TagIcon />
-            Add new tag
-          </MenuItem>
-        </StyledMenu>
-      </div>
-    );
-  };
 
   return (
     <Box
@@ -267,7 +268,12 @@ function HomePage() {
                 )}
               </Stack>
             )}
-            {!smScreenUp && <CustomizedMenus />}
+            {!smScreenUp && (
+              <CustomizedMenus
+                setAddNewHabit={setAddNewHabit}
+                setCreateNewTag={setCreateNewTag}
+              />
+            )}
           </Stack>
 
           <Stack
@@ -338,6 +344,7 @@ function HomePage() {
                     title={tag.title}
                     date={dateValue}
                     searchTag={searchTag}
+                    color={searchTag.includes(tag) ? "error" : "success"}
                   />
                 ))}
               </Box>

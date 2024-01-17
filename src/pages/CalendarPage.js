@@ -122,6 +122,7 @@ function CalendarPage() {
   };
 
   useEffect(() => {
+    // dispatch(getHabits({ search, date: dateValue, tag: searchTag }));
     dispatch(getHabits({ search, date: dateValue, tag: searchTag }));
 
     if (!currentUser.avatarUrl) {
@@ -137,7 +138,7 @@ function CalendarPage() {
   // console.log("dateValue:", dateValue);
 
   // clear location state
-  // window.history.replaceState({}, document.title);
+  window.history.replaceState({}, document.title);
 
   return (
     <Box
@@ -207,9 +208,11 @@ function CalendarPage() {
                   tagId={tag._id}
                   title={tag.title}
                   searchTag={searchTag}
-                  onClick={() =>
-                    dispatch(getHabits({ tag: tag.title, date: dateValue }))
-                  }
+                  date={dateValue}
+                  color={searchTag.includes(tag) ? "error" : "success"}
+                  // onClick={() =>
+                  //   dispatch(getHabits({ tag: tag.title, date: dateValue }))
+                  // }
                 />
               ))}
             </Box>
@@ -237,7 +240,9 @@ function CalendarPage() {
                   onClick={() => {
                     // setDateValue(dayjs(weekDate[day]));
                     setDateValue(weekDate[day]);
-                    dispatch(getHabits({ date: weekDate[day] }));
+                    dispatch(
+                      getHabits({ date: weekDate[day], tag: searchTag })
+                    );
                   }}
                 >
                   {`${weekDate[day]}`.slice(0, 15)}
