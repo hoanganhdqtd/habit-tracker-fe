@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -65,12 +65,13 @@ const getWeekFromDate = (date) => {
 
 function CalendarPage() {
   const { tags } = useSelector((state) => state.tag);
-  const { search, tag } = useSelector((state) => state.habit);
+  const { search, searchTag } = useSelector((state) => state.habit);
   const { currentUser } = useSelector((state) => state.user);
 
   // const { tagToSearch } = navigate.state;
-  const { state } = useLocation();
-  let tagToSearch = state?.tagToSearch;
+
+  // const { state } = useLocation();
+  // let tagToSearch = state?.tagToSearch;
   // let tag;
   // if (state) {
   //   tag = state.tagToSearch;
@@ -121,7 +122,7 @@ function CalendarPage() {
   };
 
   useEffect(() => {
-    dispatch(getHabits({ search, date: dateValue, tag }));
+    dispatch(getHabits({ search, date: dateValue, tag: searchTag }));
 
     if (!currentUser.avatarUrl) {
       dispatch(getCurrentUserProfile());
@@ -131,7 +132,7 @@ function CalendarPage() {
     if (!tags.length) {
       dispatch(getTags());
     }
-  }, [search, dateValue, tag, currentUser, tags, dispatch]);
+  }, [search, dateValue, searchTag, currentUser, tags, dispatch]);
   // console.log("dateValue instanceof Date:", dateValue instanceof Date);
   // console.log("dateValue:", dateValue);
 
@@ -205,6 +206,7 @@ function CalendarPage() {
                   key={tag._id}
                   tagId={tag._id}
                   title={tag.title}
+                  searchTag={searchTag}
                   onClick={() =>
                     dispatch(getHabits({ tag: tag.title, date: dateValue }))
                   }

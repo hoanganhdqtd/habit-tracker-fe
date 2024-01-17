@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -116,10 +116,10 @@ function HomePage() {
     dispatch(changePage(value));
   };
 
-  const { search, page, date, totalPages } = useSelector(
+  const { search, page, date, totalPages, searchTag } = useSelector(
     (state) => state.habit
   );
-  // const { tags: habitTags } = useSelector((state) => state.habit.habitDetail);
+
   const { tags } = useSelector((state) => state.tag);
 
   // const { tagToSearch } = navigate.state;
@@ -335,6 +335,7 @@ function HomePage() {
                     tagId={tag._id}
                     title={tag.title}
                     date={dateValue}
+                    searchTag={searchTag}
                   />
                 ))}
               </Box>
