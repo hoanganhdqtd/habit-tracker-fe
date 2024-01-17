@@ -393,6 +393,12 @@ export const habitSlice = createSlice({
     searchQuery: (state, action) => {
       state.search = action.payload;
     },
+
+    deleteTagFromSearchTag: (state, action) => {
+      state.searchTag = state.searchTag
+        .replace(action.payload.title, "")
+        .trim();
+    },
   },
 
   extraReducers: {

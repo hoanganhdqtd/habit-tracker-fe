@@ -133,11 +133,13 @@ function HomePage() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCurrentUserProfile());
-    dispatch(getHabits({ page, search, date: dateValue, sort }));
+    dispatch(
+      getHabits({ page, search, tag: searchTag, date: dateValue, sort })
+    );
     if (!tags.length) {
       dispatch(getTags());
     }
-  }, [page, search, dateValue, tags, sort, dispatch]);
+  }, [page, search, searchTag, dateValue, tags, sort, dispatch]);
 
   // clear location state
   window.history.replaceState({}, document.title);

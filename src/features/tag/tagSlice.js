@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
-import { getHabits } from "../habit/habitSlice";
+import { getHabits, habitSlice } from "../habit/habitSlice";
 
 const initialState = {
   isLoading: false,
@@ -102,6 +102,7 @@ export const deleteSingleTag = (tagId) => async (dispatch) => {
   try {
     const response = await apiService.delete(`/tags/${tagId}`);
     dispatch(tagSlice.actions.deleteSingleTagSuccess(response.data));
+    dispatch(habitSlice.actions.deleteTagFromSearchTag(response.data));
     // dispatch(getHabits());
   } catch (error) {
     console.log("Error:", error);
