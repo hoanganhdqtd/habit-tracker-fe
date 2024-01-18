@@ -15,6 +15,7 @@ import {
   Menu,
   MenuItem,
   useMediaQuery,
+  FormControlLabel,
 } from "@mui/material";
 import { ThumbUp, SentimentVeryDissatisfied } from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -249,16 +250,18 @@ function HabitCard({ habit, isInCalendarPage, date }) {
           </Tooltip>
         </Stack>
         {isInCalendarPage && (
-          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-            <FSwitch
-              name="isCompleted"
-              // label="Completed"
-              label={switchLabel}
-              habitId={habit._id}
-              value={isCompleted}
-              date={date}
-            />
-          </FormProvider>
+          <Tooltip title="Change Habit's status" arrow>
+            <div>
+              <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+                <FSwitch
+                  name="isCompleted"
+                  habitId={habit._id}
+                  value={isCompleted}
+                  date={date}
+                />
+              </FormProvider>
+            </div>
+          </Tooltip>
         )}
 
         {isInCalendarPage && isCompleted && (
