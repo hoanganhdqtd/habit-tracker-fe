@@ -30,7 +30,6 @@ import {
 } from "@mui/material";
 import { PieChart } from "@mui/x-charts/PieChart";
 import CreateTagForm from "../components/CreateTagForm";
-// import AddTagForm from "../components/AddTagForm";
 
 const weekdaysByIndex = {
   0: "Sunday",

@@ -55,11 +55,12 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  maxHeight: "600px",
+  // maxHeight: "600px",
+  maxHeight: "90%",
   overflow: "scroll",
-  "@media (max-width: 600px)": {
-    width: "90%",
-  },
+  // "@media (max-width: 600px)": {
+  //   width: "90%",
+  // },
 };
 
 function EditReminderForm({

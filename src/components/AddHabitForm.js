@@ -59,7 +59,8 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  maxHeight: "600px",
+  // maxHeight: "600px",
+  maxHeight: "90%",
   overflow: "scroll",
   "@media (max-width: 600px)": {
     width: "90%",
@@ -125,7 +126,7 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        fullWidth
+        // fullWidth
       >
         <Box sx={style}>
           <Typography variant="h6" sx={{ mb: 2 }}>

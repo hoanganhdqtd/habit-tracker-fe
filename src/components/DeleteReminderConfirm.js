@@ -8,6 +8,7 @@ import {
   Box,
   IconButton,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useDispatch } from "react-redux";
@@ -18,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 function DeleteReminderConfirm({ habitId, reminderId, setIsReminderDelete }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const smScreenDown = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const handleClose = () => setIsReminderDelete(false);
 
   const handleReminderDelete = async (reminderId, habitId) => {
@@ -38,12 +40,18 @@ function DeleteReminderConfirm({ habitId, reminderId, setIsReminderDelete }) {
         <Typography>{`Are you sure you want to delete the reminder?`}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button color="success" variant="outlined" onClick={handleClose}>
+        <Button
+          color="success"
+          variant="outlined"
+          size={smScreenDown ? "small" : "medium"}
+          onClick={handleClose}
+        >
           Cancel
         </Button>
         <Button
           color="error"
           variant="contained"
+          size={smScreenDown ? "small" : "medium"}
           onClick={() => handleReminderDelete(reminderId, habitId)}
         >
           Confirm

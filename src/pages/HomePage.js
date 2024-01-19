@@ -269,10 +269,27 @@ function HomePage() {
               </Stack>
             )}
             {!smScreenUp && (
-              <CustomizedMenus
-                setAddNewHabit={setAddNewHabit}
-                setCreateNewTag={setCreateNewTag}
-              />
+              <>
+                <CustomizedMenus
+                  setAddNewHabit={setAddNewHabit}
+                  setCreateNewTag={setCreateNewTag}
+                />
+                {createNewTag && (
+                  <CreateTagForm
+                    createNewTag={createNewTag}
+                    setCreateNewTag={setCreateNewTag}
+                  />
+                )}
+
+                {addNewHabit && (
+                  <AddHabitForm
+                    addNewHabit={addNewHabit}
+                    setAddNewHabit={setAddNewHabit}
+                    dateValue={dateValue}
+                    tags={tags}
+                  />
+                )}
+              </>
             )}
           </Stack>
 

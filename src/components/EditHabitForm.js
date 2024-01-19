@@ -59,11 +59,12 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  maxHeight: "600px",
+  // maxHeight: "600px",
+  maxHeight: "90%",
   overflow: "scroll",
-  "@media (max-width: 600px)": {
-    width: "90%",
-  },
+  // "@media (max-width: 600px)": {
+  //   width: "90%",
+  // },
 };
 
 function EditHabitForm({
@@ -72,6 +73,7 @@ function EditHabitForm({
   handleHabitEdit,
   habitId,
 }) {
+  console.log("EditHabitForm");
   // const dispatch = useDispatch();
   const { habitDetail } = useSelector((state) => state.habit);
   const { name, description, goal, onWeekdays, startDate, duration } =

@@ -8,10 +8,12 @@ import {
   Box,
   IconButton,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 function DeleteHabitConfirm({ habitId, setIsHabitDelete, handleHabitDelete }) {
+  const smScreenDown = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const handleClose = () => setIsHabitDelete(false);
 
   return (
@@ -26,12 +28,18 @@ function DeleteHabitConfirm({ habitId, setIsHabitDelete, handleHabitDelete }) {
         <Typography>{`Are you sure you want to delete the habit?`}</Typography>
       </DialogContent>
       <DialogActions>
-        <Button color="success" variant="outlined" onClick={handleClose}>
+        <Button
+          color="success"
+          variant="outlined"
+          size={smScreenDown ? "small" : "medium"}
+          onClick={handleClose}
+        >
           Cancel
         </Button>
         <Button
           color="error"
           variant="contained"
+          size={smScreenDown ? "small" : "medium"}
           onClick={() => handleHabitDelete(habitId)}
         >
           Confirm

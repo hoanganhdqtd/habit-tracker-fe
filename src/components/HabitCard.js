@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -15,7 +15,6 @@ import {
   Menu,
   MenuItem,
   useMediaQuery,
-  FormControlLabel,
 } from "@mui/material";
 import { ThumbUp, SentimentVeryDissatisfied } from "@mui/icons-material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -202,6 +201,21 @@ function HabitCard({ habit, isInCalendarPage, date }) {
             </MenuItem>
           ))}
         </Menu>
+        {isHabitEdit && (
+          <EditHabitForm
+            isHabitEdit={isHabitEdit}
+            setIsHabitEdit={setIsHabitEdit}
+            handleHabitEdit={handleHabitEdit}
+            habitId={habit._id}
+          />
+        )}
+        {isHabitDelete && (
+          <DeleteHabitConfirm
+            handleHabitDelete={handleHabitDelete}
+            setIsHabitDelete={setIsHabitDelete}
+            habitId={habit._id}
+          />
+        )}
       </div>
     );
   };
@@ -250,7 +264,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
           </Tooltip>
         </Stack>
         {isInCalendarPage && (
-          <Tooltip title="Change Habit's status" arrow>
+          <Tooltip title="Change Habit's status of completion" arrow>
             <div>
               <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
                 <FSwitch
