@@ -14,10 +14,13 @@ import {
   Container,
   Divider,
   Stack,
+  Grid,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
 
 function StatisticsPage() {
+  const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { habitId } = useParams();
@@ -61,7 +64,8 @@ function StatisticsPage() {
       component="main"
       sx={{
         flexGrow: 1,
-        py: 8,
+        // py: 8,
+        py: 4,
       }}
     >
       <Container maxWidth="lg">
@@ -71,63 +75,104 @@ function StatisticsPage() {
             sx={{ mb: 3 }}
           >{`${name} status statistics`}</Typography>
 
-          <Card>
-            <CardHeader title={`${name} status pie chart`} />
-            <CardContent>
-              <PieChart
-                series={[
-                  {
-                    // arcLabel: (item) => `${item.label} (${item.value})`,
-                    arcLabel: (item) => `${item.value}`,
-                    arcLabelMinAngle: 45,
-                    highlightScope: { faded: "global", highlighted: "item" },
-                    faded: {
-                      innerRadius: 30,
-                      additionalRadius: -30,
-                      color: "gray",
+          <Grid
+            container
+            // direction={smScreenUp ? "row" : "column"}
+            justifyContent="space-evenly"
+            alignItems="center"
+          >
+            <Card>
+              <CardHeader title={`${name} status pie chart`} />
+              <CardContent>
+                <PieChart
+                  series={[
+                    {
+                      // arcLabel: (item) => `${item.label} (${item.value})`,
+                      arcLabel: (item) => `${item.value}`,
+                      arcLabelMinAngle: 45,
+                      highlightScope: { faded: "global", highlighted: "item" },
+                      faded: {
+                        innerRadius: 30,
+                        additionalRadius: -30,
+                        color: "gray",
+                      },
+                      data: [
+                        {
+                          id: 0,
+                          value: completedCount,
+                          label: smScreenUp
+                            ? `Number of days\non which the habit\nis completed`
+                            : "",
+                          color: "rgb(54, 162, 235)",
+                        },
+                        {
+                          id: 1,
+                          value: incompleteCount,
+                          label: smScreenUp
+                            ? `Number of days\non which the habit\nis not completed`
+                            : "",
+                          color: "rgb(255, 99, 132)",
+                        },
+                        // { id: 0, value: 10, label: "series A" },
+                        // { id: 1, value: 15, label: "series B" },
+                        // { id: 2, value: 20, label: "series C" },
+                      ],
                     },
-                    data: [
-                      {
-                        id: 0,
-                        value: completedCount,
-                        label: `Number of days\non which the habit\nis completed`,
-                        color: "rgb(54, 162, 235)",
-                      },
-                      {
-                        id: 1,
-                        value: incompleteCount,
-                        label: `Number of days\non which the habit\nis incomplete`,
-                        color: "rgb(255, 99, 132)",
-                      },
-                      // { id: 0, value: 10, label: "series A" },
-                      // { id: 1, value: 15, label: "series B" },
-                      // { id: 2, value: 20, label: "series C" },
-                    ],
-                  },
-                ]}
-                sx={{
-                  [`& .${pieArcLabelClasses.root}`]: {
-                    fill: "white",
-                    fontWeight: "bold",
-                  },
-                }}
-                width={500}
-                height={200}
-              />
-            </CardContent>
-            <Divider />
-            <CardActions sx={{ justifyContent: "flex-end" }}>
-              <Tooltip title="Back to the previous page" arrow>
-                <Button
-                  color="success"
-                  variant="outlined"
-                  onClick={() => navigate(-1)}
-                >
-                  Back
-                </Button>
-              </Tooltip>
-            </CardActions>
-          </Card>
+                  ]}
+                  sx={{
+                    [`& .${pieArcLabelClasses.root}`]: {
+                      fill: "white",
+                      fontWeight: "bold",
+                    },
+                  }}
+                  width={smScreenUp ? 500 : 250}
+                  height={200}
+                />
+              </CardContent>
+              {!smScreenUp && (
+                <Stack direction="column" spacing={2} sx={{ ml: 4, mb: 4 }}>
+                  <Stack direction="row" spacing={1}>
+                    <div
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "rgb(54, 162, 235)",
+                        // display: "inline-block",
+                      }}
+                    />
+                    <Typography>
+                      Number of days on which the habit is completed
+                    </Typography>
+                  </Stack>
+
+                  <Stack direction="row" spacing={1}>
+                    <div
+                      style={{
+                        width: 20,
+                        height: 20,
+                        backgroundColor: "rgb(255, 99, 132)",
+                      }}
+                    />
+                    <Typography>
+                      Number of days on which the habit is not completed
+                    </Typography>
+                  </Stack>
+                </Stack>
+              )}
+              <Divider />
+              <CardActions sx={{ justifyContent: "flex-end" }}>
+                <Tooltip title="Back to the previous page" arrow>
+                  <Button
+                    color="success"
+                    variant="outlined"
+                    onClick={() => navigate(-1)}
+                  >
+                    Back
+                  </Button>
+                </Tooltip>
+              </CardActions>
+            </Card>
+          </Grid>
         </Stack>
       </Container>
     </Box>
