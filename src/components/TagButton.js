@@ -9,7 +9,7 @@ import Tooltip from "@mui/material/Tooltip";
 
 export default function TagButton({ title, tagId, date, searchTag, color }) {
   // console.log("TagButton date:", date);
-  const [isTagOn, setIsTagOn] = React.useState(false);
+  const [isTagOn, setIsTagOn] = React.useState(searchTag.includes(title));
   const dispatch = useDispatch();
 
   const handleDelete = () => {
