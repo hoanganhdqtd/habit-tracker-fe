@@ -192,7 +192,7 @@ function HomePage() {
     dispatch(
       getHabits({ page, search, tag: searchTag, date: dateValue, sort })
     );
-    if (!tags.length) {
+    if (tags.length) {
       dispatch(getTags());
     }
   }, [page, search, searchTag, dateValue, tags, sort, dispatch]);
