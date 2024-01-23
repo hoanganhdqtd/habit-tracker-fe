@@ -19,14 +19,12 @@ import {
 } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 
-// import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import FileCopyIcon from "@mui/icons-material/FileCopy";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+// import ArchiveIcon from "@mui/icons-material/Archive";
+// import FileCopyIcon from "@mui/icons-material/FileCopy";
+// import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import TagIcon from "@mui/icons-material/Tag";
-import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -220,7 +218,7 @@ function HomePage() {
                   <Button
                     startIcon={
                       <SvgIcon fontSize="small">
-                        <PlusIcon />
+                        <TagIcon />
                       </SvgIcon>
                     }
                     variant="contained"
@@ -241,7 +239,7 @@ function HomePage() {
                   <Button
                     startIcon={
                       <SvgIcon fontSize="small">
-                        <PlusIcon />
+                        <AddIcon />
                       </SvgIcon>
                     }
                     variant="contained"
