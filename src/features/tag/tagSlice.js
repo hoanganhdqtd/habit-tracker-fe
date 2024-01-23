@@ -5,7 +5,7 @@ import { getHabits, habitSlice } from "../habit/habitSlice";
 const initialState = {
   isLoading: false,
   error: null,
-  tags: [],
+  tags: null,
 };
 
 export const tagSlice = createSlice({

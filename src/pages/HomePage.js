@@ -189,13 +189,17 @@ function HomePage() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCurrentUserProfile());
+  }, []);
+
+  useEffect(() => {
     dispatch(
       getHabits({ page, search, tag: searchTag, date: dateValue, sort })
     );
-    if (tags.length) {
-      dispatch(getTags());
-    }
-  }, [page, search, searchTag, dateValue, tags, sort, dispatch]);
+  }, [page, search, searchTag, dateValue, sort, dispatch]);
+
+  useEffect(() => {
+    dispatch(getTags());
+  }, []);
 
   // clear location state
   window.history.replaceState({}, document.title);
@@ -325,7 +329,7 @@ function HomePage() {
             </Grid>
           </Stack>
 
-          {tags.length !== 0 && (
+          {tags && Boolean(tags.length) && (
             <Stack direction="row" spacing={2}>
               <Box
                 sx={{

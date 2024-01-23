@@ -130,12 +130,16 @@ function CalendarPage() {
     }
     // dispatch(getCurrentUserProfile());
 
-    if (!tags.length) {
-      dispatch(getTags());
-    }
-  }, [search, dateValue, searchTag, currentUser, tags, dispatch]);
+    // if (!tags.length) {
+    //   dispatch(getTags());
+    // }
+  }, [search, dateValue, searchTag, currentUser, dispatch]);
   // console.log("dateValue instanceof Date:", dateValue instanceof Date);
   // console.log("dateValue:", dateValue);
+
+  useEffect(() => {
+    dispatch(getTags());
+  }, []);
 
   // clear location state
   window.history.replaceState({}, document.title);
@@ -175,7 +179,7 @@ function CalendarPage() {
             </LocalizationProvider>
           </Stack>
         </Stack>
-        {tags.length !== 0 && (
+        {tags && Boolean(tags.length) && (
           <Stack direction="row" spacing={2}>
             <Box
               sx={{
