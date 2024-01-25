@@ -25,6 +25,7 @@ const LOGIN_SUCCESS = "AUTH.LOGIN_SUCCESS";
 const REGISTER_SUCCESS = "AUTH.REGISTER_SUCCESS";
 const LOGOUT = "AUTH.LOGOUT";
 const UPDATE_PROFILE = "AUTH.UPDATE_PROFILE";
+const FORGOT_PASSWORD_SUCCESS = "AUTH.FORGOT_PASSWORD_SUCCESS";
 const RESET_PASSWORD_SUCCESS = "AUTH.RESET_PASSWORD_SUCCESS";
 
 const reducer = (state, action) => {
@@ -65,6 +66,13 @@ const reducer = (state, action) => {
           avatarUrl,
           password,
         },
+      };
+    case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: action.payload.user,
+        resetToken: action.payload.resetToken,
       };
     case RESET_PASSWORD_SUCCESS:
       return {
@@ -195,6 +203,19 @@ function AuthProvider({ children }) {
     callback();
   };
 
+  const forgotPassword = async ({ email }, callback) => {
+    const response = await apiService.post("/auth/forgot-password", {
+      email,
+    });
+    const { user, resetToken } = response.data;
+    setSession(resetToken);
+    dispatch({
+      type: FORGOT_PASSWORD_SUCCESS,
+      payload: { user },
+    });
+    callback();
+  };
+
   const resetPassword = async ({ email, newPassword }, callback) => {
     const response = await apiService.put("/users", {
       email,
@@ -218,6 +239,7 @@ function AuthProvider({ children }) {
         login,
         register,
         logout,
+        forgotPassword,
         resetPassword,
       }}
     >

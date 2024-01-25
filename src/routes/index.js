@@ -6,6 +6,8 @@ import HomePage from "../pages/HomePage";
 import RegisterPage from "../pages/RegisterPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import LoginPage from "../pages/LoginPage";
+import ForgotPasswordPage from "../pages/ForgotPasswordPage";
+import ResetPasswordPage from "../pages/ResetPasswordPage";
 import AuthRequire from "./AuthRequire";
 // import AccountPage from "../pages/AccountPage.js";
 import UserProfilePage from "../pages/UserProfilePage";
@@ -46,6 +48,8 @@ function Router() {
       <Route element={<BlankLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
       </Route>
     </Routes>
   );

@@ -103,16 +103,17 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = async () => {
-    try {
-      const backendUrl = process.env.REACT_APP_GOOGLE_LOGIN_API;
-      const response = await axios.get(`${backendUrl}`);
-      console("handleGoogleLogin response:", response);
-      navigate("/", { replace: true });
-      return response.data;
-    } catch (err) {
-      console.log("handleGoogleLogin error:", err);
-    }
+    // try {
+    //   const backendUrl = process.env.REACT_APP_GOOGLE_LOGIN_API;
+    //   const response = await axios.get(`${backendUrl}`);
+    //   console("handleGoogleLogin response:", response);
+    //   navigate("/", { replace: true });
+    //   return response.data;
+    // } catch (err) {
+    //   console.log("handleGoogleLogin error:", err);
+    // }
     // window.location.href = process.env.GOOGLE_LOGIN_API;
+    window.open("http://localhost:8000/auth/google", "_self");
   };
 
   return (
@@ -195,7 +196,9 @@ const LoginPage = () => {
                     <Link
                       component={RouterLink}
                       variant="subtitle2"
-                      onClick={() => setIsResetPassword(true)}
+                      // onClick={() => setIsResetPassword(true)}
+                      // onClick={() => navigate("/forgotPassword")}
+                      to="/forgot-password"
                     >
                       Forgot password?
                     </Link>
