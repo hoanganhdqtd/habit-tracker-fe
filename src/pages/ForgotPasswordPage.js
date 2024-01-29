@@ -41,14 +41,17 @@ const ForgotPasswordPage = () => {
 
   const onSubmit = async ({ email }) => {
     const from = location.state?.from?.pathname || "/";
+
     try {
       await auth.forgotPassword({ email }, () => {
         navigate(from, { replace: true });
       });
+      navigate(from, { replace: true });
     } catch (error) {
       reset();
       setError("responseError", error);
     }
+    setIsResetLinkSent(true);
   };
 
   return (
@@ -72,7 +75,7 @@ const ForgotPasswordPage = () => {
       >
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={2} sx={{ mb: 3 }}>
-            <Typography variant="h4">Reset password</Typography>
+            <Typography variant="h4">Forgot password</Typography>
             <Typography color="text.secondary" variant="body2">
               Back to the Login page&nbsp;
               <Link
@@ -101,6 +104,11 @@ const ForgotPasswordPage = () => {
                 <Alert severity="error">{errors.responseError.message}</Alert>
               )}
               {/* <FCheckbox name="remember" label="Remember me" /> */}
+              {isResetLinkSent && (
+                <Alert severity="error">
+                  Password reset link sent. Please check your email. &nbsp;
+                </Alert>
+              )}
             </Stack>
           </Stack>
 

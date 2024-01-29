@@ -67,19 +67,20 @@ const reducer = (state, action) => {
           password,
         },
       };
-    case FORGOT_PASSWORD_SUCCESS:
-      return {
-        ...state,
-        isAuthenticated: false,
-        user: action.payload.user,
-        resetToken: action.payload.resetToken,
-      };
+    // case FORGOT_PASSWORD_SUCCESS:
+    //   return {
+    //     ...state,
+    //     isAuthenticated: false,
+    //     user: action.payload.user,
+    //     resetToken: action.payload.resetToken,
+    //   };
     case RESET_PASSWORD_SUCCESS:
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload.user,
       };
+
     default:
       return state;
   }
@@ -208,7 +209,7 @@ function AuthProvider({ children }) {
       email,
     });
     const { user, resetToken } = response.data;
-    setSession(resetToken);
+    // setSession(resetToken);
     dispatch({
       type: FORGOT_PASSWORD_SUCCESS,
       payload: { user },
@@ -216,9 +217,9 @@ function AuthProvider({ children }) {
     callback();
   };
 
-  const resetPassword = async ({ email, newPassword }, callback) => {
-    const response = await apiService.put("/users", {
-      email,
+  const resetPassword = async ({ checksum, newPassword }, callback) => {
+    const response = await apiService.post("/auth/reset-password", {
+      checksum,
       newPassword,
     });
 

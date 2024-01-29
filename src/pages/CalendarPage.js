@@ -125,7 +125,7 @@ function CalendarPage() {
     // dispatch(getHabits({ search, date: dateValue, tag: searchTag }));
     dispatch(getHabits({ search, date: dateValue, tag: searchTag }));
 
-    if (!currentUser.avatarUrl) {
+    if (!currentUser.email) {
       dispatch(getCurrentUserProfile());
     }
     // dispatch(getCurrentUserProfile());
