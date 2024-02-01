@@ -16,6 +16,7 @@ import HabitDetailPage from "../pages/HabitDetailPage";
 import ReminderDetailPage from "../pages/ReminderDetailPage";
 import OverviewPage from "../pages/OverviewPage";
 import StatisticsPage from "../pages/StatisticsPage";
+import GoogleLoginPage from "../pages/GoogleLoginPage";
 
 function Router() {
   return (
@@ -46,6 +47,7 @@ function Router() {
       </Route>
 
       <Route element={<BlankLayout />}>
+        <Route path="/google-login" element={<GoogleLoginPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />

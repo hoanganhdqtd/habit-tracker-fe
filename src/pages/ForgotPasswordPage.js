@@ -1,5 +1,4 @@
-import axios from "axios";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -10,7 +9,6 @@ import { LoadingButton } from "@mui/lab";
 
 import { FormProvider, FTextField } from "../components/form";
 import useAuth from "../hooks/useAuth";
-import apiService from "../app/apiService";
 
 const ResetPasswordSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -47,11 +45,11 @@ const ForgotPasswordPage = () => {
         navigate(from, { replace: true });
       });
       navigate(from, { replace: true });
+      setIsResetLinkSent(true);
     } catch (error) {
       reset();
       setError("responseError", error);
     }
-    setIsResetLinkSent(true);
   };
 
   return (

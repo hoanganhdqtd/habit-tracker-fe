@@ -104,7 +104,7 @@ const LoginPage = () => {
 
   const handleGoogleLogin = async () => {
     // try {
-    //   const backendUrl = process.env.REACT_APP_GOOGLE_LOGIN_API;
+    //   const backendUrl = process.env.REACT_APP_GOOGLE_LOGIN_URL;
     //   const response = await axios.get(`${backendUrl}`);
     //   console("handleGoogleLogin response:", response);
     //   navigate("/", { replace: true });
@@ -112,8 +112,14 @@ const LoginPage = () => {
     // } catch (err) {
     //   console.log("handleGoogleLogin error:", err);
     // }
-    // window.location.href = process.env.GOOGLE_LOGIN_API;
-    window.open("http://localhost:8000/auth/google", "_self");
+    // window.location.href = process.env.GOOGLE_LOGIN_URL;
+    // window.open("http://localhost:8000/auth/google", "_self");
+    // window.open("https://habit-tracker-be.onrender.com/auth/google", "_self");
+    window.open(process.env.REACT_APP_GOOGLE_LOGIN_URL, "_self");
+  };
+
+  const handleGoogleLogout = () => {
+    window.open(process.env.REACT_APP_GOOGLE_LOGOUT_URL, "_self");
   };
 
   return (

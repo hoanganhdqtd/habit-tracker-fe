@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useReducer, useEffect } from "react";
 import { useSelector } from "react-redux";
 import apiService from "../app/apiService";
@@ -179,6 +180,24 @@ function AuthProvider({ children }) {
     callback();
   };
 
+  const loginWithGoogle = async (callback) => {
+    console.log("loginWithGoogle:");
+    const response = await axios.get(process.env.REACT_APP_GOOGLE_LOGIN_URL);
+
+    // The code below will not be executed if login failed
+    // user: object of user's information
+    const { user, accessToken } = response.data;
+
+    setSession(accessToken);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: { user },
+    });
+
+    callback();
+  };
+
   const register = async ({ name, email, password }, callback) => {
     const response = await apiService.post("/users", {
       name,
@@ -242,6 +261,7 @@ function AuthProvider({ children }) {
         logout,
         forgotPassword,
         resetPassword,
+        loginWithGoogle,
       }}
     >
       {children}
