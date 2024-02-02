@@ -98,15 +98,15 @@ const ForgotPasswordPage = () => {
               alignItems="center"
               justifyContent="space-between"
             >
-              {!!errors.responseError && (
-                <Alert severity="error">{errors.responseError.message}</Alert>
-              )}
+              {!!errors.responseError &&
+                (isResetLinkSent ? (
+                  <Alert severity="error">{errors.responseError.message}</Alert>
+                ) : (
+                  <Alert severity="error">
+                    Password reset link sent. Please check your email. &nbsp;
+                  </Alert>
+                ))}
               {/* <FCheckbox name="remember" label="Remember me" /> */}
-              {isResetLinkSent && (
-                <Alert severity="error">
-                  Password reset link sent. Please check your email. &nbsp;
-                </Alert>
-              )}
             </Stack>
           </Stack>
 
