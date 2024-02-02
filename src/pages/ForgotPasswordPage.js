@@ -43,9 +43,9 @@ const ForgotPasswordPage = () => {
     try {
       await auth.forgotPassword({ email }, () => {
         navigate(from, { replace: true });
+        setIsResetLinkSent(true);
       });
-      navigate(from, { replace: true });
-      setIsResetLinkSent(true);
+      // navigate(from, { replace: true });
     } catch (error) {
       reset();
       setError("responseError", error);
@@ -98,6 +98,15 @@ const ForgotPasswordPage = () => {
               alignItems="center"
               justifyContent="space-between"
             >
+              {/* {!!errors.responseError ? (
+                <Alert severity="error">{errors.responseError.message}</Alert>
+              ) : (
+                isResetLinkSent && (
+                  <Alert severity="error">
+                    Password reset link sent. Please check your email. &nbsp;
+                  </Alert>
+                )
+              )} */}
               {!!errors.responseError &&
                 (isResetLinkSent ? (
                   <Alert severity="error">{errors.responseError.message}</Alert>
