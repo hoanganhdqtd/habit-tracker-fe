@@ -182,11 +182,18 @@ function AuthProvider({ children }) {
 
   const loginWithGoogle = async (callback) => {
     console.log("loginWithGoogle:");
-    const response = await axios.get(process.env.REACT_APP_GOOGLE_LOGIN_URL);
+    const response = await axios.get(
+      process.env.REACT_APP_GOOGLE_LOGIN_SUCCESS_URL,
+      { withCredentials: true }
+    );
+    console.log("response.data:", response.data);
 
     // The code below will not be executed if login failed
     // user: object of user's information
-    const { user, accessToken } = response.data;
+    const { user, accessToken } = response.data.data;
+
+    console.log("user:", user);
+    console.log("accessToken:", accessToken);
 
     setSession(accessToken);
 
