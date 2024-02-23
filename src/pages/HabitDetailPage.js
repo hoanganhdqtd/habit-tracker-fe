@@ -7,6 +7,7 @@ import {
   editHabit,
   deleteHabit,
   getSingleHabitProgressList,
+  deleteHabitSingleReminder,
 } from "../features/habit/habitSlice";
 
 import AddReminderForm from "../components/AddReminderForm";
@@ -25,10 +26,11 @@ import {
   Stack,
   TextField,
   Tooltip,
+  Chip,
   Typography,
   useMediaQuery,
 } from "@mui/material";
-import { PieChart } from "@mui/x-charts/PieChart";
+// import { PieChart } from "@mui/x-charts/PieChart";
 import CreateTagForm from "../components/CreateTagForm";
 
 const weekdaysByIndex = {
@@ -40,16 +42,6 @@ const weekdaysByIndex = {
   5: "Friday",
   6: "Saturday",
 };
-
-const weekdays = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-];
 
 const getWeekdays = (weekdays) =>
   weekdays.map((weekday) => weekdaysByIndex[weekday]).join(", ");
@@ -82,30 +74,15 @@ function HabitDetailPage() {
     tags,
   } = habitDetail;
 
-  console.log("onWeekdays:", onWeekdays);
-  console.log("tags:", tags);
-
   const handleHabitEdit = async ({
     habitId,
     name,
     description,
     goal,
-
     startDate,
     duration,
     onWeekdays,
   }) => {
-    console.log("handleHabitEdit:");
-    console.log(
-      "habitId, name, description, goal, startDate, duration, onWeekdays:",
-      habitId,
-      name,
-      description,
-      goal,
-      startDate,
-      duration,
-      onWeekdays
-    );
     setIsHabitEdit(false);
     dispatch(
       editHabit({
@@ -124,6 +101,11 @@ function HabitDetailPage() {
     setIsHabitDelete(false);
     dispatch(deleteHabit({ habitId }));
     navigate("/", { replace: true });
+  };
+
+  const handleReminderDelete = async (reminderId, habitId) => {
+    dispatch(deleteHabitSingleReminder({ habitId, reminderId }));
+    // navigate(`/habit/${habitId}`, { replace: true });
   };
 
   // const newDate = dayjs()
@@ -248,20 +230,37 @@ function HabitDetailPage() {
                               ) : (
                                 reminders.map((reminder) => (
                                   <Tooltip
-                                    title="Click to view the reminder's detail"
+                                    title={`${
+                                      reminder.status === "ongoing"
+                                        ? reminder.status
+                                            .charAt(0)
+                                            .toUpperCase() +
+                                          reminder.status.slice(1)
+                                        : reminder.status
+                                            .charAt(0)
+                                            .toUpperCase() +
+                                          reminder.status.slice(1) +
+                                          "d"
+                                    } reminder - Click on the button to view detail or click on the 'X' sign to delete the reminder`}
                                     arrow
                                     key={reminder._id}
                                   >
-                                    <Button
+                                    {/* <Button
                                       variant="contained"
                                       key={reminder._id}
                                       size="small"
                                       sx={{
                                         mr: 1,
                                         mt: 1,
-                                        backgroundColor: "#03a9f4",
+                                        backgroundColor:
+                                          reminder.status === "ongoing"
+                                            ? "#03a9f4"
+                                            : "#910A67",
                                         "&:hover": {
-                                          backgroundColor: "#0288d1",
+                                          backgroundColor:
+                                            reminder.status === "ongoing"
+                                              ? "#0288d1"
+                                              : "#720455",
                                         },
                                       }}
                                       onClick={() =>
@@ -271,7 +270,38 @@ function HabitDetailPage() {
                                       }
                                     >
                                       {dayjs(reminder.time).format("LT")}
-                                    </Button>
+                                    </Button> */}
+                                    <Chip
+                                      label={dayjs(reminder.time).format("LT")}
+                                      // variant="outlined"
+                                      size="medium"
+                                      sx={{
+                                        mr: 1,
+                                        mt: 1,
+                                        backgroundColor:
+                                          reminder.status === "ongoing"
+                                            ? "#03a9f4"
+                                            : "#BE3144",
+                                        "&:hover": {
+                                          backgroundColor:
+                                            reminder.status === "ongoing"
+                                              ? "#0288d1"
+                                              : "#872341",
+                                        },
+                                        color: "white",
+                                      }}
+                                      onDelete={() =>
+                                        handleReminderDelete(
+                                          reminder._id,
+                                          habitId
+                                        )
+                                      }
+                                      onClick={() =>
+                                        navigate(
+                                          `/habit/${habitId}/reminder/${reminder._id}`
+                                        )
+                                      }
+                                    />
                                   </Tooltip>
                                 ))
                               )}

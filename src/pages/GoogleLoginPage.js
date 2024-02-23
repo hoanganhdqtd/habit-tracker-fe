@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { Box, CircularProgress } from "@mui/material";
 import useAuth from "../hooks/useAuth";
 
 function GoogleLoginPage() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();

@@ -186,14 +186,14 @@ function AuthProvider({ children }) {
       process.env.REACT_APP_GOOGLE_LOGIN_SUCCESS_URL,
       { withCredentials: true }
     );
-    console.log("response.data:", response.data);
+    // console.log("response.data:", response.data);
 
     // The code below will not be executed if login failed
     // user: object of user's information
     const { user, accessToken } = response.data.data;
 
-    console.log("user:", user);
-    console.log("accessToken:", accessToken);
+    // console.log("user:", user);
+    // console.log("accessToken:", accessToken);
 
     setSession(accessToken);
 
@@ -234,8 +234,7 @@ function AuthProvider({ children }) {
     const response = await apiService.post("/auth/forgot-password", {
       email,
     });
-    const { user, resetToken } = response.data;
-    // setSession(resetToken);
+    const { user } = response.data;
     dispatch({
       type: FORGOT_PASSWORD_SUCCESS,
       payload: { user },

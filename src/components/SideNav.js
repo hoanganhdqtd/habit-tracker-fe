@@ -1,19 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { Link, NavLink } from "react-router-dom";
-// import { usePathname } from "next/navigation";
 import { useLocation, useNavigate } from "react-router-dom";
-import ChevronUpDownIcon from "@heroicons/react/24/solid/ChevronUpDownIcon";
-import {
-  Box,
-  Button,
-  Divider,
-  Drawer,
-  Stack,
-  SvgIcon,
-  Typography,
-  useMediaQuery,
-} from "@mui/material";
+
+import { Box, Drawer, Stack, SvgIcon, useMediaQuery } from "@mui/material";
 import Logo from "../components/Logo";
 import { Scrollbar } from "../components/Scrollbar";
 import { SideNavItem } from "./SideNavItem";
@@ -28,7 +17,6 @@ import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
 
 import CalendarIcon from "@heroicons/react/24/solid/CalendarIcon";
 import useAuth from "../hooks/useAuth";
-// import { SvgIcon } from "@mui/material";
 
 const items = [
   {

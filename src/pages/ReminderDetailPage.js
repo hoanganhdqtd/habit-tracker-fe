@@ -73,19 +73,17 @@ function ReminderDetailPage() {
     startDate,
     status,
   }) => {
-    console.log("handleReminderEdit:");
-    console.log(
-      `reminderId: ${reminderId}`,
-      // reminderFrequency,
-      `time: ${time}`,
-      `onWeekdays: ${onWeekdays}`,
-      `startDate: ${startDate}`,
-      `status: ${status}`
-    );
-    setIsReminderEdit(false);
-    // dispatch(
-    //   editHabit({ habitId, name, goal, startDate, duration, onWeekdays })
+    // console.log("handleReminderEdit:");
+    // console.log(
+    //   `reminderId: ${reminderId}`,
+    //   // reminderFrequency,
+    //   `time: ${time}`,
+    //   `onWeekdays: ${onWeekdays}`,
+    //   `startDate: ${startDate}`,
+    //   `status: ${status}`
     // );
+    setIsReminderEdit(false);
+
     dispatch(
       editHabitSingleReminder({
         reminderId,
@@ -100,26 +98,8 @@ function ReminderDetailPage() {
   };
 
   useEffect(() => {
-    // const getReminder = async (reminderId) => {
-    //   try {
-    //     // const response = await axios.get(
-    //     //   `${process.env.REACT_APP_BACKEND_API}/reminders/${reminderId}`
-    //     // );
-    //     const response = await apiService.get(`/reminders/${reminderId}`);
-    //     console.log("getReminder response:", response);
-
-    //     setReminder(response.data);
-    //     return response.data;
-    //   } catch (err) {
-    //     console.log("getReminder err:", err);
-    //   }
-    // };
-    // getReminder(reminderId);
     dispatch(getHabitSingleReminder(reminderId));
   }, [reminderId, dispatch]);
-
-  // console.log("time, startDate, onWeekdays, status:");
-  // console.log(time, startDate, onWeekdays, status);
 
   const smScreenDown = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
@@ -131,7 +111,7 @@ function ReminderDetailPage() {
         py: 4,
       }}
     >
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         <Stack spacing={4}>
           <div>
             <Typography variant="h4">Reminder detail</Typography>

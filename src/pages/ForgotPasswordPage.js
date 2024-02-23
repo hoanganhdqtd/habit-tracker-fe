@@ -54,15 +54,6 @@ const ForgotPasswordPage = () => {
 
   return (
     <>
-      {/* <Box
-        sx={{
-          backgroundColor: "background.paper",
-          flex: "1 1 auto",
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      ></Box> */}
       <Box
         sx={{
           maxWidth: 450,

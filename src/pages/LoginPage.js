@@ -1,8 +1,7 @@
-import axios from "axios";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
+
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -11,14 +10,10 @@ import {
   Box,
   Button,
   Divider,
-  FormHelperText,
   IconButton,
   InputAdornment,
   Link,
   Stack,
-  Tab,
-  Tabs,
-  TextField,
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -49,32 +44,6 @@ const LoginPage = () => {
 
   const auth = useAuth();
 
-  // const formik = useFormik({
-  //   initialValues: {
-  //     email: "",
-  //     password: "",
-  //     submit: null,
-  //   },
-  //   validationSchema: Yup.object({
-  //     email: Yup.string()
-  //       .email("Must be a valid email")
-  //       .max(255)
-  //       .required("Email is required"),
-  //     password: Yup.string().max(255).required("Password is required"),
-  //   }),
-  //   onSubmit: async (values, helpers) => {
-  //     try {
-  //       await auth.login(values, () => {
-  //         navigate("/");
-  //       });
-  //     } catch (err) {
-  //       helpers.setStatus({ success: false });
-  //       helpers.setErrors({ submit: err.message });
-  //       helpers.setSubmitting(false);
-  //     }
-  //   },
-  // });
-
   const methods = useForm({
     resolver: yupResolver(LoginSchema),
     defaultValues,
@@ -101,36 +70,11 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = async () => {
-    // try {
-    //   const backendUrl = process.env.REACT_APP_GOOGLE_LOGIN_URL;
-    //   const response = await axios.get(`${backendUrl}`);
-    //   console("handleGoogleLogin response:", response);
-    //   navigate("/", { replace: true });
-    //   return response.data;
-    // } catch (err) {
-    //   console.log("handleGoogleLogin error:", err);
-    // }
-    // window.location.href = process.env.GOOGLE_LOGIN_URL;
-    // window.open("http://localhost:8000/auth/google", "_self");
-    // window.open("https://habit-tracker-be.onrender.com/auth/google", "_self");
     window.open(process.env.REACT_APP_GOOGLE_LOGIN_URL, "_self");
-  };
-
-  const handleGoogleLogout = () => {
-    window.open(process.env.REACT_APP_GOOGLE_LOGOUT_URL, "_self");
   };
 
   return (
     <>
-      {/* <Box
-        sx={{
-          backgroundColor: "background.paper",
-          flex: "1 1 auto",
-          alignItems: "center",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      ></Box> */}
       <Box
         sx={{
           maxWidth: 450,
@@ -191,9 +135,6 @@ const LoginPage = () => {
                   sx={{ my: 1 }}
                 >
                   <Alert severity="error">{errors.responseError.message}</Alert>
-                  {/* <Link component={RouterLink} variant="subtitle2" to="/">
-                      Forgot password?
-                    </Link> */}
                   <Link
                     component={RouterLink}
                     variant="subtitle2"
