@@ -13,6 +13,7 @@ import {
   IconButton,
   InputAdornment,
   Link,
+  Slide,
   Stack,
   Typography,
 } from "@mui/material";
@@ -41,6 +42,9 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [showPassword, setShowPassword] = useState(false);
+
+  // to make the sliding visible
+  const [introSlideIn, setIntroSlideIn] = useState(true);
 
   const auth = useAuth();
 
@@ -75,12 +79,48 @@ const LoginPage = () => {
 
   return (
     <>
+      <Slide direction="down" in={introSlideIn} mountOnEnter unmountOnExit>
+        <Typography
+          variant="h2"
+          align="center"
+          gutterBottom
+          sx={{
+            mt: { xs: 2, sm: 4, md: 6 },
+            mb: { xs: 2, sm: 3, md: 4 },
+            fontSize: { xs: "2rem", sm: "3rem", md: "4rem" },
+            color: "#2196f3",
+            fontWeight: "bold",
+          }}
+        >
+          Habit Tracker
+        </Typography>
+      </Slide>
+      <Slide direction="down" in={introSlideIn} mountOnEnter unmountOnExit>
+        <Typography
+          variant="h4"
+          align="center"
+          gutterBottom
+          sx={{
+            mt: { xs: 2, sm: 3, md: 4 },
+            mb: { xs: 3, sm: 4, md: 6 },
+            fontSize: { xs: "1rem", sm: "1.75rem", md: "2rem" },
+            color: "#757575",
+          }}
+        >
+          Welcome to Habit Tracker
+        </Typography>
+      </Slide>
+
       <Box
         sx={{
           maxWidth: 450,
-          px: 3,
-          py: "100px",
+          // px: 3,
+          // py: "100px",
+          // py: "50px",
+          px: { xs: 2, sm: 3, md: 4 },
+          py: { xs: 2, sm: 3, md: 4 },
           width: "90%",
+          // mx: "auto",
         }}
       >
         <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
