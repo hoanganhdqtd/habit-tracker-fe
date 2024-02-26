@@ -33,6 +33,7 @@ function MainLayout() {
           <Header />
           <AlertMsg />
           <Outlet />
+          {/* <Box sx={{ flexGrow: 1 }} /> */}
         </LayoutContainer>
       </LayoutRoot>
     </Stack>

@@ -14,6 +14,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Switch,
   useMediaQuery,
 } from "@mui/material";
 import { ThumbUp, SentimentVeryDissatisfied } from "@mui/icons-material";
@@ -24,21 +25,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 // import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 
-// import { red } from "@mui/material/colors";
 import dayjs from "dayjs";
 
-import { useForm } from "react-hook-form";
-import { FSwitch, FormProvider } from "./form";
-import { deleteHabit, editHabit } from "../features/habit/habitSlice";
-
-// import { getSingleHabitProgressList } from "../features/progress/progressSlice";
+// import { useForm } from "react-hook-form";
+// import { FSwitch, FormProvider } from "./form";
+import {
+  deleteHabit,
+  editHabit,
+  getHabitById,
+} from "../features/habit/habitSlice";
+import { updateSingleProgress } from "../features/progress/progressSlice";
 
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
 import EditHabitForm from "./EditHabitForm";
 
 const options = ["Statistics", "Edit", "Delete"];
-
-const ITEM_HEIGHT = 48;
 
 function HabitCard({ habit, isInCalendarPage, date }) {
   const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
@@ -75,28 +76,30 @@ function HabitCard({ habit, isInCalendarPage, date }) {
   );
 
   // console.log("progressToFind:", progressToFind);
-  // let status;
-  // if (progressToFind) {
-  //   status = progressToFind.status;
-  // }
-  const status = progressToFind?.status;
+  let status = progressToFind?.status;
 
-  // const { status } = progressToFind;
+  const [isCompleted, setIsCompleted] = useState(status === "completed");
 
-  const isCompleted = status === "completed" ? true : false;
+  // const defaultValues = { isCompleted };
+  // const methods = useForm({ defaultValues });
+  // const {
+  //   handleSubmit,
+  //   formState: { isSubmitting },
+  // } = methods;
 
-  const defaultValues = { isCompleted };
-  const methods = useForm({ defaultValues });
-  const {
-    handleSubmit,
-    formState: { isSubmitting },
-  } = methods;
+  // const onSubmit = (data) => {
+  //   console.log("Fswitch onSubmit data:", data);
+  //   const { completed } = data;
 
-  const onSubmit = (data) => {
-    console.log("Fswitch onSubmit data:", data);
-    const { completed } = data;
+  //   console.log("completed:", completed);
+  // };
 
-    console.log("completed:", completed);
+  const onSubmit = (checked) => {
+    console.log("Switch data:", checked);
+    // Update isCompleted state
+    setIsCompleted(checked);
+    status = checked ? "completed" : "incomplete";
+    dispatch(updateSingleProgress({ habitId: habit._id, date, status }));
   };
 
   const handleHabitDelete = async (habitId) => {
@@ -183,6 +186,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
                 if (option === "Statistics") {
                   navigate(`/statistics/${habit._id}`);
                 } else if (option === "Edit") {
+                  // dispatch(getHabitById(habit._id));
                   setIsHabitEdit(true);
                 } else {
                   setIsHabitDelete(true);
@@ -267,14 +271,19 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         {isInCalendarPage && (
           <Tooltip title="Change Habit's status of completion" arrow>
             <div>
-              <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+              {/* <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
                 <FSwitch
                   name="isCompleted"
                   habitId={habit._id}
                   value={isCompleted}
                   date={date}
                 />
-              </FormProvider>
+              </FormProvider> */}
+              <Switch
+                checked={isCompleted}
+                onChange={(e) => onSubmit(e.target.checked)}
+                name="isCompleted"
+              />
             </div>
           </Tooltip>
         )}
@@ -317,7 +326,8 @@ function HabitCard({ habit, isInCalendarPage, date }) {
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={() => {
+                  onClick={async () => {
+                    // dispatch(getHabitById(habit._id));
                     setIsHabitEdit(true);
                   }}
                 >

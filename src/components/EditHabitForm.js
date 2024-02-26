@@ -21,7 +21,6 @@ import {
   FTimePicker,
 } from "./form";
 import { getHabitById } from "../features/habit/habitSlice";
-import { getTags } from "../features/tag/tagSlice";
 
 const weekdays = [
   "Sunday",
@@ -32,16 +31,6 @@ const weekdays = [
   "Friday",
   "Saturday",
 ];
-
-const defaultValues = {
-  name: "",
-  goal: "",
-  description: "",
-  startDate: "",
-  duration: "",
-  onWeekdays: [],
-  tags: [],
-};
 
 const editHabitSchema = Yup.object().shape({
   duration: Yup.number(),
@@ -74,20 +63,20 @@ function EditHabitForm({
   habitId,
 }) {
   console.log("EditHabitForm");
-  // const dispatch = useDispatch();
+
   const { habitDetail } = useSelector((state) => state.habit);
   const { name, description, goal, onWeekdays, startDate, duration } =
     habitDetail;
-  defaultValues.name = name;
-  defaultValues.description = description;
-  defaultValues.goal = goal;
-  defaultValues.onWeekdays = onWeekdays;
-  defaultValues.startDate = startDate;
-  defaultValues.duration = duration;
 
-  // useEffect(() => {
-  //   dispatch(getHabitById(habitId));
-  // }, [dispatch, habitId]);
+  const defaultValues = {
+    name: name || "",
+    goal: goal || "",
+    description: description || "",
+    startDate: startDate || "",
+    duration: duration || "",
+    onWeekdays: onWeekdays || [],
+    tags: [],
+  };
 
   // const { search, page, totalPages } = useSelector((state) => state.habit);
 

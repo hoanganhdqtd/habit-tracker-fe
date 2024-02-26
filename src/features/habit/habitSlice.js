@@ -353,24 +353,6 @@ export const getSingleHabitProgressList = createAsyncThunk(
   }
 );
 
-export const updateSingleProgress = createAsyncThunk(
-  "habits/updateSingleProgress",
-  async ({ habitId, status, date }, { rejectWithValue, dispatch }) => {
-    try {
-      const response = await apiService.put(`/progress/habit/${habitId}`, {
-        status,
-        date,
-      });
-      // console.log("response.data:", response.data);
-      toast.success("Update progress successfully");
-      return response.data;
-    } catch (error) {
-      toast.error(error.message);
-      return rejectWithValue(error);
-    }
-  }
-);
-
 export const addHabitTag = createAsyncThunk(
   "habits/addHabitTag",
   async ({ habitId, title }, { rejectWithValue, dispatch }) => {
@@ -476,10 +458,7 @@ export const habitSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-    [updateSingleProgress.pending]: (state) => {
-      state.isLoading = true;
-      state.error = null;
-    },
+
     [addHabitTag.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
@@ -653,10 +632,7 @@ export const habitSlice = createSlice({
       state.habitDetail.progressList = action.payload.progressList;
       state.habitDetail = action.payload;
     },
-    [updateSingleProgress.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.currentProgress = action.payload;
-    },
+
     [addHabitTag.fulfilled]: (state, action) => {
       state.isLoading = false;
       // console.log("addHabitTag action.payload:", action.payload);
@@ -776,14 +752,7 @@ export const habitSlice = createSlice({
         state.error = action.error;
       }
     },
-    [updateSingleProgress.rejected]: (state, action) => {
-      state.isLoading = false;
-      if (action.payload) {
-        state.error = action.payload;
-      } else {
-        state.error = action.error;
-      }
-    },
+
     [addHabitTag.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {

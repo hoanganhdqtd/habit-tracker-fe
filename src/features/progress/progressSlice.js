@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import dayjs from "dayjs";
@@ -100,10 +101,12 @@ export const updateSingleProgress =
       dispatch(
         progressSlice.actions.updateSingleProgressSuccess(response.data)
       );
-      dispatch(getHabits({ date }));
+      // dispatch(getHabits({ date }));
+      toast.success("Update progress successfully");
     } catch (error) {
       console.log("Error:", error);
       dispatch(progressSlice.actions.hasError(error));
+      toast.error(error.message);
     }
   };
 

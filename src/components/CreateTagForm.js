@@ -1,7 +1,6 @@
 import React from "react";
 
-import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { alpha, Button, Stack, Box, Modal, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
@@ -43,7 +42,6 @@ const addTagSchema = Yup.object().shape({
 
 function CreateTagForm({ createNewTag, setCreateNewTag, habitId }) {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const methods = useForm({
     resolver: yupResolver(addTagSchema),

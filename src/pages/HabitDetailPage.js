@@ -428,7 +428,10 @@ function HabitDetailPage() {
                       variant="contained"
                       color="secondary"
                       size={smScreenDown ? "small" : "medium"}
-                      onClick={() => setIsHabitEdit(true)}
+                      onClick={() => {
+                        dispatch(getHabitById(habitId));
+                        setIsHabitEdit(true);
+                      }}
                     >
                       {smScreenDown ? "Edit" : "Edit habit"}
                     </Button>
