@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
-import apiService from "../../app/apiService";
-import { HABITS_PER_PAGE } from "../../app/config";
+import { toast } from "react-toastify";
 import dayjs from "dayjs";
 // import { startOfWeek } from "date-fns";
+import apiService from "../../app/apiService";
+import { HABITS_PER_PAGE } from "../../app/config";
 
 const initialState = {
   isLoading: false,
@@ -55,8 +55,10 @@ export const getHabits = createAsyncThunk(
       // console.log("response:", response);
       // console.log("getState:", getState());
 
+      // toast.success("Get habits successfully!");
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -74,6 +76,7 @@ export const getHabitsByUserId = createAsyncThunk(
 
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -93,6 +96,7 @@ export const getHabitById = createAsyncThunk(
       if (!response.data) return rejectWithValue({ message: "No data" });
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -126,8 +130,10 @@ export const addHabit = createAsyncThunk(
         // reminders,
       });
       // console.log("response.data", response.data);
+      toast.success("Habit added successfully");
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -162,10 +168,11 @@ export const editHabit = createAsyncThunk(
         onWeekdays,
         // reminders,
       });
-      // return;
-      console.log("response.data:", response.data);
+      // console.log("response.data:", response.data);
+      toast.success("Edit habit successfully");
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -177,9 +184,11 @@ export const deleteHabit = createAsyncThunk(
     try {
       let url = `/habits/${habitId}`;
       await apiService.delete(url);
-      dispatch(getHabitById(habitId));
+      toast.success("Delete habit successfully");
+      // dispatch(getHabitById(habitId));
       return habitId;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -194,6 +203,7 @@ export const getHabitReminders = createAsyncThunk(
       console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -213,9 +223,11 @@ export const addHabitReminder = createAsyncThunk(
         time,
         status,
       });
-      console.log("response.data:", response.data);
+      // console.log("response.data:", response.data);
+      toast.success("Add reminder successfully");
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -226,10 +238,11 @@ export const getHabitSingleReminder = createAsyncThunk(
   async (reminderId, { rejectWithValue, dispatch }) => {
     try {
       const response = await apiService.get(`/reminders/${reminderId}`);
-      console.log("response.data:", response.data);
+      // console.log("response.data:", response.data);
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
+    } catch (error) {
+      toast.error(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -248,10 +261,12 @@ export const editHabitSingleReminder = createAsyncThunk(
         status,
         startDate,
       });
-      console.log("response.data:", response.data);
+      // console.log("response.data:", response.data);
+      toast.success("Edit reminder successfully");
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
+    } catch (error) {
+      toast.error(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -263,9 +278,11 @@ export const deleteHabitSingleReminder = createAsyncThunk(
       const response = await apiService.delete(
         `/reminders/${reminderId}/habit/${habitId}`
       );
+      toast.success("Delete reminder successfully");
       console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -286,6 +303,7 @@ export const addHabitProgress = createAsyncThunk(
       console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
+      toast.error(error.message);
       return rejectWithValue(error);
     }
   }
@@ -312,10 +330,11 @@ export const getHabitSingleProgress = createAsyncThunk(
       const response = await apiService.get(
         `progress/habit/${habitId}?date=${date}`
       );
-      console.log("response.data:", response.data);
+      // console.log("response.data:", response.data);
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
+    } catch (error) {
+      toast.error(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -325,10 +344,11 @@ export const getSingleHabitProgressList = createAsyncThunk(
   async (habitId, { rejectWithValue, dispatch }) => {
     try {
       const response = await apiService.get(`/habits/${habitId}`);
-      console.log("response.data:", response.data);
+      // console.log("response.data:", response.data);
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
+    } catch (error) {
+      toast.error(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -341,10 +361,12 @@ export const updateSingleProgress = createAsyncThunk(
         status,
         date,
       });
-      console.log("response.data:", response.data);
+      // console.log("response.data:", response.data);
+      toast.success("Update progress successfully");
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
+    } catch (error) {
+      toast.error(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -356,10 +378,12 @@ export const addHabitTag = createAsyncThunk(
       const response = await apiService.post(`tags/habit/${habitId}`, {
         title,
       });
-      console.log("response.data:", response.data);
+      // console.log("response.data:", response.data);
+      toast.success("Add tag successfully");
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
+    } catch (error) {
+      toast.error(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -371,8 +395,8 @@ export const getTagsByHabitId = createAsyncThunk(
       const response = await apiService.get(`tags/habit/${habitId}`);
       console.log("response.data:", response.data);
       return response.data;
-    } catch (err) {
-      return rejectWithValue(err);
+    } catch (error) {
+      return rejectWithValue(error);
     }
   }
 );

@@ -52,10 +52,10 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      console.log(
-        "getCurrentUserProfileSuccess action.payload:",
-        action.payload
-      );
+      // console.log(
+      //   "getCurrentUserProfileSuccess action.payload:",
+      //   action.payload
+      // );
       state.currentUser = action.payload;
     },
 
@@ -89,7 +89,7 @@ export const createUser =
       const response = await apiService.post(`/users`, data);
 
       dispatch(userSlice.actions.createUserSuccess(response.data));
-      toast.success("Create user successfully");
+      toast.success("Register successfully");
     } catch (error) {
       dispatch(userSlice.actions.hasError(error.message));
       toast.error(error.message);
@@ -131,7 +131,7 @@ export const updateCurrentUserProfile =
       dispatch(
         userSlice.actions.updateCurrentUserProfileSuccess(response.data)
       );
-      toast.success("Update Profile successfully");
+      toast.success("Update profile successfully");
     } catch (error) {
       dispatch(userSlice.actions.hasError(error.message));
       toast.error(error.message);
@@ -143,9 +143,11 @@ export const getCurrentUserProfile = () => async (dispatch) => {
   try {
     const response = await apiService.get("/users/me");
     dispatch(userSlice.actions.getCurrentUserProfileSuccess(response.data));
+    // toast.success("Get user profile successfully");
     return response.data;
   } catch (error) {
     dispatch(userSlice.actions.hasError(error));
+    toast.error(error.message);
   }
 };
 
@@ -154,6 +156,8 @@ export const getUserById = (id) => async (dispatch) => {
   try {
     const response = await apiService.get(`/users/${id}`);
     dispatch(userSlice.actions.getUserByIdSuccess(response.data));
+    // toast.success("Get user by ID successfully");
+    return response.data;
   } catch (error) {
     dispatch(userSlice.actions.hasError(error));
     toast.error(error.message);

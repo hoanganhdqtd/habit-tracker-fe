@@ -3,6 +3,7 @@ import { Box, Stack } from "@mui/material";
 import SideNav from "../components/SideNav";
 import { styled } from "@mui/material/styles";
 import Header from "../components/Header";
+import AlertMsg from "../components/AlertMsg";
 
 const LayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -30,6 +31,7 @@ function MainLayout() {
       <LayoutRoot>
         <LayoutContainer>
           <Header />
+          <AlertMsg />
           <Outlet />
         </LayoutContainer>
       </LayoutRoot>

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
 import { getHabits, habitSlice } from "../habit/habitSlice";
 
@@ -62,9 +63,11 @@ export const createTag =
 
       dispatch(tagSlice.actions.createTagSuccess(response.data));
       dispatch(getTags());
+      toast.success("Create new tag successfully");
     } catch (error) {
       console.log("Error:", error);
       dispatch(tagSlice.actions.hasError(error.message));
+      toast.error(error.message);
     }
   };
 
@@ -77,6 +80,7 @@ export const getTags = () => async (dispatch) => {
   } catch (error) {
     console.log("Error:", error);
     dispatch(tagSlice.actions.hasError(error.message));
+    toast.error(error.message);
   }
 };
 
@@ -91,9 +95,11 @@ export const updateSingleTag =
       const response = await apiService.put(`/tags/${tagId}`, data);
 
       dispatch(tagSlice.actions.updateSingleTagSuccess(response.data));
+      toast.success("Update tag successfully");
     } catch (error) {
       console.log("Error:", error);
       dispatch(tagSlice.actions.hasError(error.message));
+      toast.error(error.message);
     }
   };
 
@@ -103,10 +109,12 @@ export const deleteSingleTag = (tagId) => async (dispatch) => {
     const response = await apiService.delete(`/tags/${tagId}`);
     dispatch(tagSlice.actions.deleteSingleTagSuccess(response.data));
     dispatch(habitSlice.actions.deleteTagFromSearchTag(response.data));
+    toast.success("Delete tag successfully");
     // dispatch(getHabits());
   } catch (error) {
     console.log("Error:", error);
     dispatch(tagSlice.actions.hasError(error.message));
+    toast.error(error.message);
   }
 };
 

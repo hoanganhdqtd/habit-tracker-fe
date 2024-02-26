@@ -23,12 +23,12 @@ export const progressSlice = createSlice({
       state.error = action.payload;
     },
 
-    getSingleHabitProgressListSuccess(state, action) {
-      state.isLoading = false;
-      state.error = null;
+    // getSingleHabitProgressListSuccess(state, action) {
+    //   state.isLoading = false;
+    //   state.error = null;
 
-      state.progressList = action.payload.progress;
-    },
+    //   state.progressList = action.payload.progress;
+    // },
 
     addHabitProgressSuccess(state, action) {
       state.isLoading = false;
@@ -46,39 +46,30 @@ export const progressSlice = createSlice({
 
       state.progress = action.payload;
     },
-
-    getSingleProgressSuccess(state, action) {
-      state.isLoading = false;
-      state.error = null;
-
-      console.log("getSingleProgressSuccess action.payload:", action.payload);
-
-      state.progress = action.payload;
-    },
   },
 });
 
-export const getSingleHabitProgressList =
-  ({ habitId, date }) =>
-  async (dispatch) => {
-    dispatch(progressSlice.actions.startLoading());
-    let url = `progress/habit/${habitId}`;
-    if (date) {
-      url += `?date=${date}`;
-    }
+// export const getSingleHabitProgressList =
+//   ({ habitId, date }) =>
+//   async (dispatch) => {
+//     dispatch(progressSlice.actions.startLoading());
+//     let url = `progress/habit/${habitId}`;
+//     if (date) {
+//       url += `?date=${date}`;
+//     }
 
-    try {
-      // const response = await apiService.get(`progress/habit/${habitId}`);
-      const response = await apiService.get(url);
-      console.log("getSingleHabitProgressList response:", response);
-      dispatch(
-        progressSlice.actions.getSingleHabitProgressListSuccess(response.data)
-      );
-    } catch (error) {
-      console.log("Error:", error);
-      dispatch(progressSlice.actions.hasError(error));
-    }
-  };
+//     try {
+//       // const response = await apiService.get(`progress/habit/${habitId}`);
+//       const response = await apiService.get(url);
+//       console.log("getSingleHabitProgressList response:", response);
+//       dispatch(
+//         progressSlice.actions.getSingleHabitProgressListSuccess(response.data)
+//       );
+//     } catch (error) {
+//       console.log("Error:", error);
+//       dispatch(progressSlice.actions.hasError(error));
+//     }
+//   };
 
 export const addHabitProgress = (habitId) => async (dispatch) => {
   dispatch(progressSlice.actions.startLoading());
@@ -115,18 +106,6 @@ export const updateSingleProgress =
       dispatch(progressSlice.actions.hasError(error));
     }
   };
-
-export const getSingleProgress = (progressId) => async (dispatch) => {
-  dispatch(progressSlice.actions.startLoading());
-  try {
-    const response = await apiService.get(`/progress/${progressId}`);
-    console.log("getSingleProgress response:", response);
-    dispatch(progressSlice.actions.getSingleProgressSuccess(response.data));
-  } catch (error) {
-    console.log("Error:", error);
-    dispatch(progressSlice.actions.hasError(error));
-  }
-};
 
 const { actions, reducer } = progressSlice;
 

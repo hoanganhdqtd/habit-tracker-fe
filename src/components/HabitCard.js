@@ -167,12 +167,13 @@ function HabitCard({ habit, isInCalendarPage, date }) {
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
-          PaperProps={{
-            style: {
-              maxHeight: ITEM_HEIGHT * 4.5,
-              width: "20ch",
-            },
-          }}
+          // PaperProps deprecated
+          // PaperProps={{
+          //   style: {
+          //     maxHeight: ITEM_HEIGHT * 4.5,
+          //     width: "20ch",
+          //   },
+          // }}
         >
           {options.map((option) => (
             <MenuItem
