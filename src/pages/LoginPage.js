@@ -85,8 +85,8 @@ const LoginPage = () => {
           align="center"
           gutterBottom
           sx={{
-            mt: { xs: 2, sm: 4, md: 6 },
-            mb: { xs: 2, sm: 3, md: 4 },
+            mt: { xs: 2, sm: 3, lg: 4, xl: 5 },
+            // mb: { xs: 1, sm: 2, lg: 3, xl: 4 },
             fontSize: { xs: "2rem", sm: "3rem", md: "4rem" },
             color: "#2196f3",
             fontWeight: "bold",
@@ -101,8 +101,8 @@ const LoginPage = () => {
           align="center"
           gutterBottom
           sx={{
-            mt: { xs: 2, sm: 3, md: 4 },
-            mb: { xs: 3, sm: 4, md: 6 },
+            mt: { xs: 0.5, sm: 1, lg: 1.5, xl: 2 },
+            mb: { xs: 2, sm: 3, lg: 4, xl: 5 },
             fontSize: { xs: "1rem", sm: "1.75rem", md: "2rem" },
             color: "#757575",
           }}
