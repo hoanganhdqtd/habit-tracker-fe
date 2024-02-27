@@ -23,21 +23,15 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-// import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-
 import dayjs from "dayjs";
 
 // import { useForm } from "react-hook-form";
 // import { FSwitch, FormProvider } from "./form";
-import {
-  deleteHabit,
-  editHabit,
-  getHabitById,
-} from "../features/habit/habitSlice";
-import { updateSingleProgress } from "../features/progress/progressSlice";
-
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
 import EditHabitForm from "./EditHabitForm";
+
+import { deleteHabit, editHabit } from "../features/habit/habitSlice";
+import { updateSingleProgress } from "../features/progress/progressSlice";
 
 const options = ["Statistics", "Edit", "Delete"];
 
@@ -186,7 +180,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
                 if (option === "Statistics") {
                   navigate(`/statistics/${habit._id}`);
                 } else if (option === "Edit") {
-                  // dispatch(getHabitById(habit._id));
                   setIsHabitEdit(true);
                 } else {
                   setIsHabitDelete(true);
@@ -326,10 +319,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
                 <Button
                   variant="contained"
                   color="secondary"
-                  onClick={async () => {
-                    // dispatch(getHabitById(habit._id));
-                    setIsHabitEdit(true);
-                  }}
+                  onClick={() => setIsHabitEdit(true)}
                 >
                   Edit
                 </Button>

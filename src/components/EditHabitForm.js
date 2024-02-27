@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
@@ -20,7 +20,6 @@ import {
   FDatePicker,
   FTimePicker,
 } from "./form";
-import { getHabitById } from "../features/habit/habitSlice";
 
 const weekdays = [
   "Sunday",
@@ -62,19 +61,14 @@ function EditHabitForm({
   handleHabitEdit,
   habitId,
 }) {
-  console.log("EditHabitForm");
-
-  const { habitDetail } = useSelector((state) => state.habit);
-  const { name, description, goal, onWeekdays, startDate, duration } =
-    habitDetail;
-
+  const { habitsById } = useSelector((state) => state.habit);
   const defaultValues = {
-    name: name || "",
-    goal: goal || "",
-    description: description || "",
-    startDate: startDate || "",
-    duration: duration || "",
-    onWeekdays: onWeekdays || [],
+    name: habitsById[habitId]?.name || "",
+    goal: habitsById[habitId]?.goal || "",
+    description: habitsById[habitId]?.description || "",
+    startDate: habitsById[habitId]?.startDate || "",
+    duration: habitsById[habitId]?.duration || "",
+    onWeekdays: habitsById[habitId]?.onWeekdays || [],
     tags: [],
   };
 
@@ -85,7 +79,9 @@ function EditHabitForm({
     .set("minute", 0)
     .set("second", 0)
     .set("millisecond", 0);
-  const [dateValue, setDateValue] = useState(startDate || newDate);
+  const [dateValue, setDateValue] = useState(
+    defaultValues.startDate || newDate
+  );
   // const [timeValue, setTimeValue] = useState(dayjs(new Date()));
 
   const methods = useForm({
@@ -140,26 +136,11 @@ function EditHabitForm({
           </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              {/* <FTextField
-                name="name"
-                fullWidth
-                rows={4}
-                placeholder="Name"
-                sx={{
-                  "& fieldset": {
-                    borderWidth: `1px !important`,
-                    borderColor: alpha("#919EAB", 0.32),
-                  },
-                }}
-              /> */}
-
               <FTextField
                 name="name"
                 label="Name"
                 fullWidth
                 rows={4}
-                // placeholder="Name"
-                // value={name}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -174,8 +155,6 @@ function EditHabitForm({
                 label="Description"
                 fullWidth
                 rows={4}
-                // placeholder="Description"
-                // value={description}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -190,8 +169,6 @@ function EditHabitForm({
                 label="Goal"
                 fullWidth
                 rows={4}
-                // placeholder="Goal"
-                // value={goal}
                 required={false}
                 sx={{
                   "& fieldset": {
@@ -213,8 +190,6 @@ function EditHabitForm({
                 label="Duration (hours/day)"
                 fullWidth
                 rows={4}
-                // placeholder="Duration (hours/day)"
-                // value={duration}
                 required={false}
                 sx={{
                   "& fieldset": {
