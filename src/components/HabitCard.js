@@ -38,7 +38,7 @@ const options = ["Statistics", "Edit", "Delete"];
 function HabitCard({ habit, isInCalendarPage, date }) {
   const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const Item = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+    backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#f9f9f9",
     ...theme.typography.body2,
     padding: theme.spacing(1),
     textAlign: "center",
@@ -109,30 +109,17 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     duration,
     onWeekdays,
   }) => {
-    // console.log(
-    //   "habitId, name, goal, startDate, duration, onWeekdays:",
-    //   habitId,
-    //   name,
-    //   goal,
-    //   startDate,
-    //   duration,
-    //   onWeekdays
-    // );
     setIsHabitEdit(false);
     dispatch(
       editHabit({ habitId, name, goal, startDate, duration, onWeekdays })
     );
   };
 
-  // const switchLabel = useMediaQuery(theme.breakpoints.up("sm"))
-  //   ? "Completed"
+  // const switchLabel = useMediaQuery((theme) => theme.breakpoints.up("md"))
+  //   ? isCompleted
+  //     ? "Completed"
+  //     : "Incomplete"
   //   : "";
-
-  const switchLabel = useMediaQuery((theme) => theme.breakpoints.up("md"))
-    ? isCompleted
-      ? "Completed"
-      : "Incomplete"
-    : "";
 
   const LongMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
