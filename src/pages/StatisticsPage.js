@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
-import Typography from "@mui/material/Typography";
-import { getSingleHabitProgressList } from "../features/habit/habitSlice";
 import {
   Box,
   Button,
@@ -16,14 +14,18 @@ import {
   Stack,
   Grid,
   Tooltip,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
+import LoadingScreen from "../components/LoadingScreen";
+import { getSingleHabitProgressList } from "../features/habit/habitSlice";
 
 function StatisticsPage() {
   const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { habitId } = useParams();
+  const { isLoading } = useSelector((state) => state.habit);
   const { name, progressList, startDate, onWeekdays } = useSelector(
     (state) => state.habit.habitDetail
   );
@@ -59,7 +61,9 @@ function StatisticsPage() {
   );
   const incompleteCount = numberOfWeekdaysBetween - completedCount;
 
-  return (
+  return isLoading ? (
+    <LoadingScreen />
+  ) : (
     <Box
       component="main"
       sx={{

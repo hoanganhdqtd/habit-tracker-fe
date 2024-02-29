@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getHabits } from "../features/habit/habitSlice";
 
 // import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart, pieArcLabelClasses } from "@mui/x-charts/PieChart";
@@ -24,14 +23,15 @@ import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 import dayjs from "dayjs";
+import LoadingScreen from "../components/LoadingScreen";
+import { getHabits } from "../features/habit/habitSlice";
 
 // import { SearchBox } from "../components/SearchBox";
 
 function OverviewPage() {
   const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
-  const { search, page, date, habitsById, currentPageHabits } = useSelector(
-    (state) => state.habit
-  );
+  const { search, page, date, habitsById, currentPageHabits, isLoading } =
+    useSelector((state) => state.habit);
 
   const newDate = dayjs()
     .set("hour", 0)
@@ -60,7 +60,9 @@ function OverviewPage() {
     }
   });
 
-  return (
+  return isLoading ? (
+    <LoadingScreen />
+  ) : (
     <Box
       component="main"
       sx={{

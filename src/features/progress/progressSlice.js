@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import dayjs from "dayjs";
-import { getHabits } from "../habit/habitSlice";
+// import { getHabits } from "../habit/habitSlice";
 
 const initialState = {
   isLoading: false,
@@ -43,7 +43,7 @@ export const progressSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      console.log("updateSingleProgress action.payload:", action.payload);
+      // console.log("updateSingleProgress action.payload:", action.payload);
 
       state.progress = action.payload;
     },
@@ -102,7 +102,8 @@ export const updateSingleProgress =
         progressSlice.actions.updateSingleProgressSuccess(response.data)
       );
       // dispatch(getHabits({ date }));
-      toast.success("Update progress successfully");
+      const habitName = response.data.name;
+      toast.success(`Update ${habitName} progress successfully`);
     } catch (error) {
       console.log("Error:", error);
       dispatch(progressSlice.actions.hasError(error));
