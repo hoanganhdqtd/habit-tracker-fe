@@ -241,7 +241,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
                 navigate(`/habit/${habit._id}`);
               }}
               sx={{
-                width: smScreenUp ? "inherit" : "50px",
+                width: smScreenUp ? "inherit" : "100px",
               }}
             >
               {habit.name}
