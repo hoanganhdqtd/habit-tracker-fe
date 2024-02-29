@@ -85,7 +85,7 @@ function StatisticsPage() {
             justifyContent="space-evenly"
             alignItems="center"
           >
-            <Card>
+            <Card sx={{ backgroundColor: "#f5f5f5" }}>
               <CardHeader title={`${name} status pie chart`} />
               <CardContent>
                 <PieChart

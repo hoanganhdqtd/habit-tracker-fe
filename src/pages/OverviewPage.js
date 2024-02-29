@@ -99,7 +99,7 @@ function OverviewPage() {
               justifyContent="space-evenly"
               alignItems="center"
             >
-              <Card>
+              <Card sx={{ backgroundColor: "#f5f5f5" }}>
                 <CardHeader title={`Habits' status overview by date`} />
                 <CardContent>
                   <PieChart
@@ -177,7 +177,7 @@ function OverviewPage() {
                     </Stack>
                   </Stack>
                 )}
-                <Divider />
+                <Divider sx={{ backgroundColor: "#bdbdbd" }} />
                 <CardActions sx={{ justifyContent: "flex-end" }}>
                   <Tooltip title="Back to the previous page" arrow>
                     <Button
