@@ -47,6 +47,8 @@ function HabitCard({ habit, isInCalendarPage, date }) {
     maxWidth: 600,
   }));
 
+  const isXsScreenUp = window.innerWidth > 375;
+
   const [isHabitEdit, setIsHabitEdit] = useState(false);
   const [isHabitDelete, setIsHabitDelete] = useState(false);
 
@@ -241,7 +243,7 @@ function HabitCard({ habit, isInCalendarPage, date }) {
                 navigate(`/habit/${habit._id}`);
               }}
               sx={{
-                width: smScreenUp ? "inherit" : "100px",
+                width: smScreenUp ? "inherit" : isXsScreenUp ? "100px" : "50px",
               }}
             >
               {habit.name}
