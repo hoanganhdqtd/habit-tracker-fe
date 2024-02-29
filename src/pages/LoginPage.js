@@ -113,7 +113,7 @@ const LoginPage = () => {
 
       <Box
         sx={{
-          maxWidth: 400,
+          maxWidth: 450,
           // px: 3,
           // py: "100px",
           // py: "50px",
