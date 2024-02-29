@@ -10,6 +10,7 @@ import {
   deleteHabitSingleReminder,
 } from "../features/habit/habitSlice";
 
+import LoadingScreen from "../components/LoadingScreen";
 import AddReminderForm from "../components/AddReminderForm";
 import EditHabitForm from "../components/EditHabitForm";
 import DeleteHabitConfirm from "../components/DeleteHabitConfirm";
@@ -61,7 +62,7 @@ function HabitDetailPage() {
     // dispatch(getTagsByHabitId(habitId));
   }, [habitId, dispatch]);
 
-  const { habitDetail } = useSelector((state) => state.habit);
+  const { habitDetail, isLoading } = useSelector((state) => state.habit);
 
   const {
     name,
@@ -117,7 +118,9 @@ function HabitDetailPage() {
 
   const smScreenDown = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
-  return (
+  return isLoading ? (
+    <LoadingScreen />
+  ) : (
     <Box
       component="main"
       sx={{
