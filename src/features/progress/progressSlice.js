@@ -1,8 +1,7 @@
 import { toast } from "react-toastify";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import apiService from "../../app/apiService";
 import dayjs from "dayjs";
-// import { getHabits } from "../habit/habitSlice";
 
 const initialState = {
   isLoading: false,
@@ -24,13 +23,6 @@ export const progressSlice = createSlice({
       state.error = action.payload;
     },
 
-    // getSingleHabitProgressListSuccess(state, action) {
-    //   state.isLoading = false;
-    //   state.error = null;
-
-    //   state.progressList = action.payload.progress;
-    // },
-
     addHabitProgressSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
@@ -42,35 +34,10 @@ export const progressSlice = createSlice({
     updateSingleProgressSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-
-      // console.log("updateSingleProgress action.payload:", action.payload);
-
       state.progress = action.payload;
     },
   },
 });
-
-// export const getSingleHabitProgressList =
-//   ({ habitId, date }) =>
-//   async (dispatch) => {
-//     dispatch(progressSlice.actions.startLoading());
-//     let url = `progress/habit/${habitId}`;
-//     if (date) {
-//       url += `?date=${date}`;
-//     }
-
-//     try {
-//       // const response = await apiService.get(`progress/habit/${habitId}`);
-//       const response = await apiService.get(url);
-//       console.log("getSingleHabitProgressList response:", response);
-//       dispatch(
-//         progressSlice.actions.getSingleHabitProgressListSuccess(response.data)
-//       );
-//     } catch (error) {
-//       console.log("Error:", error);
-//       dispatch(progressSlice.actions.hasError(error));
-//     }
-//   };
 
 export const addHabitProgress = (habitId) => async (dispatch) => {
   dispatch(progressSlice.actions.startLoading());
@@ -80,7 +47,6 @@ export const addHabitProgress = (habitId) => async (dispatch) => {
       date: dayjs(new Date()).set("hour", 0).set("minute", 0).set("second", 0),
       habit: habitId,
     });
-    // console.log("addHabitProgress response:", response);
     dispatch(progressSlice.actions.addHabitProgressSuccess(response.data));
   } catch (error) {
     console.log("Error:", error);
@@ -97,11 +63,9 @@ export const updateSingleProgress =
         status,
         date,
       });
-      // console.log("updateSingleProgress response:", response);
       dispatch(
         progressSlice.actions.updateSingleProgressSuccess(response.data)
       );
-      // dispatch(getHabits({ date }));
       const habitName = response.data.name;
       toast.success(`Update ${habitName} progress successfully`);
     } catch (error) {

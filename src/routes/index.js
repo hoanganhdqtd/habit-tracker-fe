@@ -9,7 +9,6 @@ import LoginPage from "../pages/LoginPage";
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import AuthRequire from "./AuthRequire";
-// import AccountPage from "../pages/AccountPage.js";
 import UserProfilePage from "../pages/UserProfilePage";
 import CalendarPage from "../pages/CalendarPage";
 import HabitDetailPage from "../pages/HabitDetailPage";
@@ -30,12 +29,8 @@ function Router() {
         }
       >
         <Route index element={<HomePage />} />
-        {/* <Route path="account" element={<AccountPage />} /> */}
-        {/* <Route path="user/:userId" element={<UserProfilePage />} /> */}
-
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/account" element={<UserProfilePage />} />
-        {/* <Route path="/habit" element={<HabitDetailPage />} /> */}
         <Route path="/habit/:habitId" element={<HabitDetailPage />} />
         <Route
           path="/habit/:habitId/reminder/:reminderId"

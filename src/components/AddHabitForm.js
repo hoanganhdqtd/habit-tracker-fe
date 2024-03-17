@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -6,21 +6,14 @@ import { alpha, Button, Stack, Typography, useMediaQuery } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-import {
-  FormProvider,
-  FTextField,
-  FMultiCheckbox,
-  FDatePicker,
-  FTimePicker,
-} from "./form";
+import { FormProvider, FTextField, FMultiCheckbox, FDatePicker } from "./form";
 import { addHabit, getHabits } from "../features/habit/habitSlice";
-import { getTags } from "../features/tag/tagSlice";
 
 const weekdays = [
   "Sunday",
@@ -59,7 +52,6 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  // maxHeight: "600px",
   maxHeight: "90%",
   overflow: "scroll",
   "@media (max-width: 600px)": {
@@ -74,7 +66,6 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
     .set("second", 0)
     .set("millisecond", 0);
   const [startDateValue, setStartDateValue] = useState(newDate);
-  // const [timeValue, setTimeValue] = useState(dayjs(new Date()));
   const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
   style.width = smScreenUp ? "400" : "fullWidth";
 
@@ -92,14 +83,6 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
 
   const onSubmit = (data) => {
     const { name, description, goal, duration, onWeekdays } = data;
-
-    // console.log("name:", name);
-    // console.log("description:", description);
-    // console.log("goal:", goal);
-    // console.log("duration:", duration);
-
-    // console.log("time:", time);
-    // dispatch(addHabit({ name, goal, startDate: dateValue, time: timeValue, duration }));
     dispatch(
       addHabit({
         name,
@@ -113,7 +96,6 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
 
     handleClose();
     navigate("/");
-    // dispatch(getHabits());
     dispatch(getHabits({ date: dateValue }));
   };
 
@@ -178,7 +160,6 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
                 dateValue={startDateValue}
                 setDateValue={setStartDateValue}
               />
-              {/* <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} /> */}
 
               <FTextField
                 name="duration"
@@ -198,8 +179,6 @@ function AddHabitForm({ addNewHabit, setAddNewHabit, dateValue, tags }) {
                 On weekdays (all selected without any being checked):
               </Typography>
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
-
-              {/* <FMultiCheckbox name="tags" options={tags} /> */}
 
               <Box
                 sx={{

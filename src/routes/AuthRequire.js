@@ -2,7 +2,7 @@ import { Navigate, useLocation } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import LoadingScreen from "../components/LoadingScreen";
 
-// persistent login
+// For persistent login
 // <AuthRequire><HomePage/></AuthRequire>
 function AuthRequire({ children }) {
   const { isInitialized, isAuthenticated } = useAuth();

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import apiService from "../../app/apiService";
-import { getHabits, habitSlice } from "../habit/habitSlice";
+import { habitSlice } from "../habit/habitSlice";
 
 const initialState = {
   isLoading: false,
@@ -110,7 +110,6 @@ export const deleteSingleTag = (tagId) => async (dispatch) => {
     dispatch(tagSlice.actions.deleteSingleTagSuccess(response.data));
     dispatch(habitSlice.actions.deleteTagFromSearchTag(response.data));
     toast.success("Delete tag successfully");
-    // dispatch(getHabits());
   } catch (error) {
     console.log("Error:", error);
     dispatch(tagSlice.actions.hasError(error.message));

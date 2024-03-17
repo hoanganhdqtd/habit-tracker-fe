@@ -8,14 +8,11 @@ import { deleteSingleTag } from "../features/tag/tagSlice";
 import Tooltip from "@mui/material/Tooltip";
 
 export default function TagButton({ title, tagId, date, searchTag }) {
-  // console.log("TagButton date:", date);
   const [isTagOn, setIsTagOn] = React.useState(searchTag.includes(title));
   const dispatch = useDispatch();
 
   const handleDelete = () => {
-    // console.info("You clicked the delete icon.");
     dispatch(deleteSingleTag(tagId));
-    // dispatch(getHabits());
   };
 
   return (
@@ -31,24 +28,18 @@ export default function TagButton({ title, tagId, date, searchTag }) {
             searchTag += `${title}`;
           }
         } else {
-          // searchTag = "";
           const titlePosition = searchTag.indexOf(title);
           if (searchTag.includes("+")) {
             if (titlePosition === 0) {
-              // searchTag = searchTag.replace(`${title}+`, "");
               searchTag = searchTag.replace(`${title}+`, "").trim();
-              // console.log("searchTag length:", searchTag.length);
             } else {
               searchTag = searchTag.replace(`+${title}`, "").trim();
-              // console.log("searchTag length:", searchTag.length);
             }
           } else {
             searchTag = searchTag.replace(`${title}`, "").trim();
-            // console.log("searchTag length:", searchTag.length);
           }
         }
-        // console.log("TagButton searchTag:", searchTag);
-        // dispatch(getHabits({ date, tag: title }));
+
         dispatch(getHabits({ date, tag: searchTag }));
         setIsTagOn(!isTagOn);
       }}
@@ -67,8 +58,6 @@ export default function TagButton({ title, tagId, date, searchTag }) {
           color={searchTag.includes(title) ? "error" : "success"}
         />
       </Tooltip>
-
-      {/* <Chip label="Deletable" variant="outlined" onDelete={handleDelete} /> */}
     </Stack>
   );
 }

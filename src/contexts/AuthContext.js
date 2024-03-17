@@ -4,17 +4,6 @@ import { useSelector } from "react-redux";
 import apiService from "../app/apiService";
 import { isValidToken } from "../utils/jwt";
 
-// isInitialized: to keep the user state of login after
-// refresh by checking if the account is created and the
-// accessToken is available
-
-// isAuthenticated: check if the user logged in successfully
-
-// user: object of user's information
-
-// accessToken changes for new session (after logout)
-
-// current user's data
 const initialState = {
   isInitialized: false,
   isAuthenticated: false,
@@ -68,13 +57,7 @@ const reducer = (state, action) => {
           password,
         },
       };
-    // case FORGOT_PASSWORD_SUCCESS:
-    //   return {
-    //     ...state,
-    //     isAuthenticated: false,
-    //     user: action.payload.user,
-    //     resetToken: action.payload.resetToken,
-    //   };
+
     case RESET_PASSWORD_SUCCESS:
       return {
         ...state,
@@ -87,10 +70,6 @@ const reducer = (state, action) => {
   }
 };
 
-// to save accessToken to the local storage and
-// apiService header
-// => accessToken will be added to the header automatically
-// for requests
 const setSession = (accessToken) => {
   if (accessToken) {
     window.localStorage.setItem("accessToken", accessToken);
@@ -108,8 +87,6 @@ function AuthProvider({ children }) {
 
   // to update profile after the user modified
   const updatedProfile = useSelector((state) => state.user.updatedProfile);
-
-  // console.log("profile cover");
 
   useEffect(() => {
     const initialize = async () => {
@@ -157,17 +134,9 @@ function AuthProvider({ children }) {
       dispatch({ type: UPDATE_PROFILE, payload: updatedProfile });
   }, [updatedProfile]);
 
-  // callback: to navigate the user to the homepage
-  // after a successful login
-
-  // unsuccessful login response.data
-  // {errors: {message: "..."}, message: "..."}
-
   const login = async ({ email, password }, callback) => {
     const response = await apiService.post("/auth/login", { email, password });
 
-    // The code below will not be executed if login failed
-    // user: object of user's information
     const { user, accessToken } = response.data;
 
     setSession(accessToken);
@@ -186,14 +155,8 @@ function AuthProvider({ children }) {
       process.env.REACT_APP_GOOGLE_LOGIN_SUCCESS_URL,
       { withCredentials: true }
     );
-    // console.log("response.data:", response.data);
 
-    // The code below will not be executed if login failed
-    // user: object of user's information
     const { user, accessToken } = response.data.data;
-
-    // console.log("user:", user);
-    // console.log("accessToken:", accessToken);
 
     setSession(accessToken);
 

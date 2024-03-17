@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import { alpha, Button, Stack, Typography } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import {
   FormProvider,
   FMultiCheckbox,
   FDatePicker,
   FTimePicker,
-  FSwitch,
   FRadioGroup,
 } from "./form";
 
@@ -49,7 +47,6 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  // maxHeight: "600px",
   maxHeight: "90%",
   overflow: "scroll",
   // "@media (max-width: 600px)": {
@@ -65,7 +62,6 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
     .set("millisecond", 0);
   const [dateValue, setDateValue] = useState(newDate);
   const [timeValue, setTimeValue] = useState(dayjs(new Date()));
-  // const [timeValue, setTimeValue] = useState(null);
 
   const methods = useForm({ defaultValues });
   const {
@@ -74,29 +70,13 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
   } = methods;
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const onSubmit = (data) => {
-    // const { reminderFrequency, onWeekdays, status } = data;
     const { onWeekdays, status } = data;
-    // dispatch(addHabit(data));
-    // startDate: new Date("23-8-2023"),
-
-    // console.log("reminderFrequency:", reminderFrequency);
-    console.log("onWeekdays:", onWeekdays);
-
-    console.log("status:", status);
-    console.log("startDate:", dateValue);
-    console.log("time:", timeValue);
-
     handleClose();
-    // navigate("/");
-    // navigate(0);
-    // dispatch(getHabitById(habitId));
     dispatch(
       addHabitReminder({
         habitId,
-        // reminderFrequency,
         onWeekdays,
         startDate: dateValue,
         time: timeValue,
@@ -121,13 +101,6 @@ function AddReminderForm({ isAddNewReminder, setIsAddNewReminder, habitId }) {
           </Typography>
           <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
-              {/* {"Reminder frequency:"}
-              <FRadioGroup
-                name="reminderFrequency"
-                options={["once", "repeated"]}
-                required={true}
-              /> */}
-
               <FTimePicker
                 name="time"
                 timeValue={timeValue}

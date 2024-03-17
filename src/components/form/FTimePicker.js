@@ -9,9 +9,7 @@ export default function FTimePicker({ timeValue, setTimeValue }) {
       <TimePicker
         label="Pick time"
         value={dayjs(timeValue)}
-        // value={timeValue}
         onChange={(newTimeValue) => {
-          console.log("newTimeValue:", newTimeValue);
           setTimeValue(newTimeValue);
         }}
       />

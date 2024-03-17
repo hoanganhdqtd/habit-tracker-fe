@@ -1,19 +1,11 @@
 import React, { useCallback } from "react";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import {
-  alpha,
-  Button,
-  Card,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { alpha, Button, Card, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
 
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-// import { useNavigate } from "react-router-dom";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -27,14 +19,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  // width: 400,
   width: "90%",
   maxWidth: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  // maxHeight: "600px",
   maxHeight: "90%",
   overflow: "scroll",
   // "@media (max-width: 600px)": {
@@ -70,8 +60,6 @@ function EditProfileForm({
   const defaultValues = {
     name: name || "",
     email: email || "",
-    // password: password || "",
-    // confirmPassword: password || "",
     avatarUrl: avatarUrl || "",
   };
 
@@ -85,11 +73,6 @@ function EditProfileForm({
   const {
     setValue,
     handleSubmit,
-    // register,
-    // watch,
-    // errors,
-    // control,
-    // formState: { isSubmitting , errors},
     formState: { isSubmitting },
   } = methods;
 
@@ -115,8 +98,6 @@ function EditProfileForm({
 
     handleProfileEdit({ name, password, avatarUrl });
     handleClose();
-    // navigate("/");
-    // navigate(`/habit/${habitId}`);
   };
 
   const handleProfileEdit = async ({ name, password, avatarUrl }) => {
@@ -149,8 +130,6 @@ function EditProfileForm({
                   label="Name"
                   fullWidth
                   rows={4}
-                  // placeholder="Name"
-                  // value={name}
                   required={!isUploadAvatar ? true : false}
                   sx={{
                     "& fieldset": {
@@ -168,9 +147,6 @@ function EditProfileForm({
                   type="password"
                   fullWidth
                   rows={4}
-                  // placeholder="Name"
-                  // value={password}
-                  // required={true}
                   required={!isUploadAvatar ? true : false}
                   sx={{
                     "& fieldset": {
@@ -188,9 +164,6 @@ function EditProfileForm({
                   type="password"
                   fullWidth
                   rows={4}
-                  // placeholder="Name"
-                  // value={confirmPassword}
-                  // required={true}
                   required={!isUploadAvatar ? true : false}
                   sx={{
                     "& fieldset": {

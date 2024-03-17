@@ -58,7 +58,6 @@ function EditReminderForm({
   setIsReminderEdit,
   handleReminderEdit,
   reminderId,
-  // reminder,
 }) {
   const dispatch = useDispatch();
   const smScreenUp = useMediaQuery((theme) => theme.breakpoints.up("sm"));
@@ -97,8 +96,6 @@ function EditReminderForm({
 
   const onSubmit = (data) => {
     const { onWeekdays, status } = data;
-    // console.log("onSubmit editReminder:");
-    // console.log("data:", data);
     handleReminderEdit({
       reminderId,
       time: timeValue,
@@ -139,7 +136,6 @@ function EditReminderForm({
               </Typography>
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
 
-              {/* <FMultiCheckbox name="tags" options={tags} /> */}
               <Typography variant="inherit">Status:</Typography>
               <FRadioGroup
                 name="status"

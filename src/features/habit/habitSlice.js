@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
-// import { startOfWeek } from "date-fns";
 import apiService from "../../app/apiService";
 import { HABITS_PER_PAGE } from "../../app/config";
 
@@ -20,7 +19,6 @@ const initialState = {
   search: "",
   page: 1,
   totalPages: 0,
-  // remindersByHabitId: [],
   currentReminder: {},
   currentProgress: {},
   date: "",
@@ -36,26 +34,15 @@ export const getHabits = createAsyncThunk(
       if (date) {
         url += `&date=${date}`;
       }
-      // const { tagToSearch } = locationState;
       if (tag) {
         url += `&tag=${tag}`;
       }
-      // if (tagToSearch) {
-      //   url += `&tag=${tagToSearch}`;
-      // }
 
       if (sort) {
         url += `&sort=${sort}`;
       }
 
-      // console.log("search:", search);
-      // console.log("date:", date);
-      // console.log("tag:", tag);
       const response = await apiService.get(url);
-      // console.log("response:", response);
-      // console.log("getState:", getState());
-
-      // toast.success("Get habits successfully!");
       return response.data;
     } catch (error) {
       toast.error(error.message);
@@ -72,8 +59,6 @@ export const getHabitsByUserId = createAsyncThunk(
       if (search) url += `&search=${search}`;
       const response = await apiService.get(url);
 
-      // console.log("response:", response);
-
       return response.data;
     } catch (error) {
       toast.error(error.message);
@@ -88,11 +73,6 @@ export const getHabitById = createAsyncThunk(
     try {
       let url = `/habits/${id}`;
       const response = await apiService.get(url);
-
-      // console.log("getHabitById getState:", getState());
-
-      // console.log("getHabitById response:", response);
-
       if (!response.data) return rejectWithValue({ message: "No data" });
       return response.data;
     } catch (error) {
@@ -105,16 +85,7 @@ export const getHabitById = createAsyncThunk(
 export const addHabit = createAsyncThunk(
   "habits/addHabit",
   async (
-    {
-      name,
-      description,
-      goal,
-      startDate,
-      // progress,
-      duration,
-      onWeekdays,
-      // reminders,
-    },
+    { name, description, goal, startDate, duration, onWeekdays },
     { rejectWithValue }
   ) => {
     try {
@@ -124,12 +95,10 @@ export const addHabit = createAsyncThunk(
         description,
         goal,
         startDate,
-        // progress,
         duration,
         onWeekdays,
-        // reminders,
       });
-      // console.log("response.data", response.data);
+
       toast.success("Habit added successfully");
       return response.data;
     } catch (error) {
@@ -142,33 +111,20 @@ export const addHabit = createAsyncThunk(
 export const editHabit = createAsyncThunk(
   "habits/editHabit",
   async (
-    {
-      name,
-      description,
-      goal,
-      startDate,
-      // progress,
-      duration,
-      onWeekdays,
-      // reminders,
-      habitId,
-    },
+    { name, description, goal, startDate, duration, onWeekdays, habitId },
     { rejectWithValue }
   ) => {
     try {
-      console.log("name:", name);
       let url = `/habits/${habitId}`;
       const response = await apiService.put(url, {
         name,
         description,
         goal,
         startDate,
-        // progress,
         duration,
         onWeekdays,
-        // reminders,
       });
-      // console.log("response.data:", response.data);
+
       toast.success("Edit habit successfully");
       return response.data;
     } catch (error) {
@@ -185,7 +141,6 @@ export const deleteHabit = createAsyncThunk(
       let url = `/habits/${habitId}`;
       await apiService.delete(url);
       toast.success("Delete habit successfully");
-      // dispatch(getHabitById(habitId));
       return habitId;
     } catch (error) {
       toast.error(error.message);
@@ -200,7 +155,6 @@ export const getHabitReminders = createAsyncThunk(
     try {
       let url = `/reminders/habit/${habitId}`;
       const response = await apiService.get(url);
-      console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
       toast.error(error.message);
@@ -212,18 +166,16 @@ export const getHabitReminders = createAsyncThunk(
 export const addHabitReminder = createAsyncThunk(
   "habits/addHabitReminder",
   async (
-    { habitId, reminderFrequency, onWeekdays, time, status, startDate },
+    { habitId, onWeekdays, time, status, startDate },
     { rejectWithValue, dispatch }
   ) => {
     try {
       const response = await apiService.post(`/reminders/habit/${habitId}`, {
-        // reminderFrequency,
         onWeekdays,
         startDate,
         time,
         status,
       });
-      // console.log("response.data:", response.data);
       toast.success("Add reminder successfully");
       return response.data;
     } catch (error) {
@@ -238,7 +190,6 @@ export const getHabitSingleReminder = createAsyncThunk(
   async (reminderId, { rejectWithValue, dispatch }) => {
     try {
       const response = await apiService.get(`/reminders/${reminderId}`);
-      // console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
       toast.error(error.message);
@@ -261,7 +212,6 @@ export const editHabitSingleReminder = createAsyncThunk(
         status,
         startDate,
       });
-      // console.log("response.data:", response.data);
       toast.success("Edit reminder successfully");
       return response.data;
     } catch (error) {
@@ -279,7 +229,6 @@ export const deleteHabitSingleReminder = createAsyncThunk(
         `/reminders/${reminderId}/habit/${habitId}`
       );
       toast.success("Delete reminder successfully");
-      console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
       toast.error(error.message);
@@ -300,7 +249,6 @@ export const addHabitProgress = createAsyncThunk(
           .set("second", 0),
         habit: habitId,
       });
-      console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
       toast.error(error.message);
@@ -308,19 +256,6 @@ export const addHabitProgress = createAsyncThunk(
     }
   }
 );
-
-// export const getHabitSingleProgress = createAsyncThunk(
-//   "habits/getHabitSingleProgress",
-//   async (progressId, { rejectWithValue, dispatch }) => {
-//     try {
-//       const response = await apiService.get(`/progress/${progressId}`);
-//       console.log("response.data:", response.data);
-//       return response.data;
-//     } catch (err) {
-//       return rejectWithValue(err);
-//     }
-//   }
-// );
 
 // GET progress/habit/:habitId?date=${date}
 export const getHabitSingleProgress = createAsyncThunk(
@@ -330,7 +265,6 @@ export const getHabitSingleProgress = createAsyncThunk(
       const response = await apiService.get(
         `progress/habit/${habitId}?date=${date}`
       );
-      // console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
       toast.error(error.message);
@@ -344,7 +278,6 @@ export const getSingleHabitProgressList = createAsyncThunk(
   async (habitId, { rejectWithValue, dispatch }) => {
     try {
       const response = await apiService.get(`/habits/${habitId}`);
-      // console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
       toast.error(error.message);
@@ -360,7 +293,6 @@ export const addHabitTag = createAsyncThunk(
       const response = await apiService.post(`tags/habit/${habitId}`, {
         title,
       });
-      // console.log("response.data:", response.data);
       toast.success("Add tag successfully");
       return response.data;
     } catch (error) {
@@ -375,7 +307,6 @@ export const getTagsByHabitId = createAsyncThunk(
   async (habitId, { rejectWithValue, dispatch }) => {
     try {
       const response = await apiService.get(`tags/habit/${habitId}`);
-      console.log("response.data:", response.data);
       return response.data;
     } catch (error) {
       return rejectWithValue(error);
@@ -389,7 +320,6 @@ export const habitSlice = createSlice({
   reducers: {
     changePage: (state, action) => {
       if (action.payload) {
-        console.log("changePage", action.payload);
         state.page = action.payload;
       } else {
         state.page++;
@@ -412,12 +342,10 @@ export const habitSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-
     [getHabitById.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
     },
-
     [addHabit.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
@@ -447,7 +375,6 @@ export const habitSlice = createSlice({
       state.error = null;
     },
     [addHabitProgress.pending]: (state) => {
-      // state.isLoading = true;
       state.error = null;
     },
     [getHabitSingleProgress.pending]: (state) => {
@@ -458,7 +385,6 @@ export const habitSlice = createSlice({
       state.isLoading = true;
       state.error = null;
     },
-
     [addHabitTag.pending]: (state) => {
       state.isLoading = true;
       state.error = null;
@@ -469,25 +395,9 @@ export const habitSlice = createSlice({
     },
 
     [getHabits.fulfilled]: (state, action) => {
-      // console.log("action.payload:", action.payload);
       state.isLoading = false;
       state.totalHabits = action.payload.count;
       state.totalPages = action.payload.totalPages;
-      // const { search } = state;
-
-      // if (search && state.page === 1) {
-      //   state.currentPageHabits = action.payload.habits;
-      // } else {
-      //   state.currentPageHabits = [
-      //     ...state.currentPageHabits,
-      //     ...action.payload.habits,
-      //   ];
-      // }
-
-      // const { date, tag } = action.payload;
-      // state.date = date ? date : "";
-      // state.tag = tag ? tag : "";
-
       state.date = action.payload.date;
       state.searchTag = action.payload.searchTag;
       state.currentPageHabits = [];
@@ -495,24 +405,13 @@ export const habitSlice = createSlice({
         state.habitsById[habit._id] = habit;
         if (!state.currentPageHabits.includes(habit._id))
           state.currentPageHabits.push(habit._id);
-        // state.currentPageHabits.push(habit._id);
       });
     },
     [getHabitsByUserId.fulfilled]: (state, action) => {
       state.isLoading = false;
       state.totalHabits = action.payload.count;
-      // state.totalPages = Math.ceil(state.totalHabits / HABITS_PER_PAGE);
       state.totalPages = action.payload.totalPages;
       const { search } = state;
-      // if (search && state.page === 1) {
-      //   state.currentPageHabits = action.payload.habits;
-      // } else {
-      //   state.currentPageHabits = [
-      //     ...state.currentPageHabits,
-      //     ...action.payload.habits,
-      //   ];
-      // }
-
       state.currentPageHabits = [];
       action.payload.habits.forEach((habit) => {
         state.habitsById[habit._id] = habit;
@@ -522,13 +421,10 @@ export const habitSlice = createSlice({
     },
     [getHabitById.fulfilled]: (state, action) => {
       state.isLoading = false;
-      // state.habit = action.payload;
-
       state.habitDetail = action.payload;
     },
     [addHabit.fulfilled]: (state, action) => {
       state.isLoading = false;
-
       const newHabit = action.payload;
       if (
         state.currentPageHabits.length > 0 &&
@@ -536,7 +432,6 @@ export const habitSlice = createSlice({
       ) {
         state.currentPageHabits.pop();
       }
-      // console.log("newHabit._id:", newHabit._id);
       state.habitsById[newHabit._id] = newHabit;
       state.currentPageHabits.unshift(newHabit._id);
       state.totalHabits += 1;
@@ -547,22 +442,18 @@ export const habitSlice = createSlice({
       state.currentPageHabits = state.currentPageHabits.filter(
         (habitId) => habitId !== action.payload
       );
-      // delete state.habitsById[action.payload];
       state.totalHabits -= 1;
       state.totalPages = Math.ceil(state.totalHabits / HABITS_PER_PAGE);
     },
     [editHabit.fulfilled]: (state, action) => {
       state.isLoading = false;
-
       const {
         name,
         description,
         goal,
         startDate,
-        // progress,
         duration,
         onWeekdays,
-        // reminders,
         _id: habitId,
       } = action.payload;
 
@@ -587,21 +478,14 @@ export const habitSlice = createSlice({
     },
     [addHabitReminder.fulfilled]: (state, action) => {
       state.isLoading = false;
-
-      // state.remindersByHabitId[]
-
-      // state.remindersByHabitId = action.payload.reminders;
       state.habitDetail.reminders = action.payload.reminders;
     },
     [getHabitReminders.fulfilled]: (state, action) => {
-      // remindersByHabitId[]
       state.isLoading = false;
       state.habitDetail.reminders = action.payload.reminders;
     },
     [editHabitSingleReminder.fulfilled]: (state, action) => {
       state.isLoading = false;
-
-      // state.habitDetail.reminders = action.payload.reminders;
       state.currentReminder = action.payload;
     },
     [getHabitSingleReminder.fulfilled]: (state, action) => {
@@ -610,15 +494,11 @@ export const habitSlice = createSlice({
     },
     [deleteHabitSingleReminder.fulfilled]: (state, action) => {
       state.isLoading = false;
-
       state.habitDetail.reminders = state.habitDetail.reminders.filter(
         (reminder) => reminder._id !== action.payload._id
       );
     },
-
     [addHabitProgress.fulfilled]: (state, action) => {
-      // state.isLoading = false;
-      // console.log("action.payload:", action.payload);
       state.habitDetail.progressList.push(action.payload.progress);
       state.currentProgress = action.payload.progress;
     },
@@ -628,15 +508,11 @@ export const habitSlice = createSlice({
     },
     [getSingleHabitProgressList.fulfilled]: (state, action) => {
       state.isLoading = false;
-      console.log("action.payload:", action.payload);
       state.habitDetail.progressList = action.payload.progressList;
       state.habitDetail = action.payload;
     },
-
     [addHabitTag.fulfilled]: (state, action) => {
       state.isLoading = false;
-      // console.log("addHabitTag action.payload:", action.payload);
-      // state.habitDetail.tags.push(action.payload._id);
       state.habitDetail.tags.push(action.payload);
     },
     [getTagsByHabitId.fulfilled]: (state, action) => {
@@ -647,10 +523,8 @@ export const habitSlice = createSlice({
     [getHabits.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
-        // state.errorMessage = action.payload.message;
         state.error = action.payload;
       } else {
-        // state.errorMessage = action.error.message;
         state.error = action.error;
       }
     },
@@ -670,7 +544,6 @@ export const habitSlice = createSlice({
         state.error = action.error;
       }
     },
-
     [addHabit.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {
@@ -727,9 +600,7 @@ export const habitSlice = createSlice({
         state.error = action.error;
       }
     },
-
     [addHabitProgress.rejected]: (state, action) => {
-      // state.isLoading = false;
       if (action.payload) {
         state.error = action.payload;
       } else {
@@ -752,7 +623,6 @@ export const habitSlice = createSlice({
         state.error = action.error;
       }
     },
-
     [addHabitTag.rejected]: (state, action) => {
       state.isLoading = false;
       if (action.payload) {

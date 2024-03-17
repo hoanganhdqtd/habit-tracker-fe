@@ -25,8 +25,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 import dayjs from "dayjs";
 
-// import { useForm } from "react-hook-form";
-// import { FSwitch, FormProvider } from "./form";
 import DeleteHabitConfirm from "./DeleteHabitConfirm";
 import EditHabitForm from "./EditHabitForm";
 
@@ -58,9 +56,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
   const { currentUser } = useSelector((state) => state.user);
   const { avatarUrl } = currentUser;
 
-  // const { progress } = useSelector((state) => state.progress);
-  // const { status } = progress;
-
   const { habitsById } = useSelector((state) => state.habit);
 
   const { progressList } = habitsById[habit._id];
@@ -71,27 +66,11 @@ function HabitCard({ habit, isInCalendarPage, date }) {
       dayjs(progress.date).isSame(date) && progress.habit === habit._id
   );
 
-  // console.log("progressToFind:", progressToFind);
   let status = progressToFind?.status;
 
   const [isCompleted, setIsCompleted] = useState(status === "completed");
 
-  // const defaultValues = { isCompleted };
-  // const methods = useForm({ defaultValues });
-  // const {
-  //   handleSubmit,
-  //   formState: { isSubmitting },
-  // } = methods;
-
-  // const onSubmit = (data) => {
-  //   console.log("Fswitch onSubmit data:", data);
-  //   const { completed } = data;
-
-  //   console.log("completed:", completed);
-  // };
-
   const onSubmit = (checked) => {
-    console.log("Switch data:", checked);
     // Update isCompleted state
     setIsCompleted(checked);
     status = checked ? "completed" : "incomplete";
@@ -116,12 +95,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
       editHabit({ habitId, name, goal, startDate, duration, onWeekdays })
     );
   };
-
-  // const switchLabel = useMediaQuery((theme) => theme.breakpoints.up("md"))
-  //   ? isCompleted
-  //     ? "Completed"
-  //     : "Incomplete"
-  //   : "";
 
   const LongMenu = () => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -243,7 +216,8 @@ function HabitCard({ habit, isInCalendarPage, date }) {
                 navigate(`/habit/${habit._id}`);
               }}
               sx={{
-                width: smScreenUp ? "inherit" : isXsScreenUp ? "100px" : "50px",
+                width: smScreenUp ? "200px" : isXsScreenUp ? "100px" : "50px",
+                textAlign: "left",
               }}
             >
               {habit.name}
@@ -253,14 +227,6 @@ function HabitCard({ habit, isInCalendarPage, date }) {
         {isInCalendarPage && (
           <Tooltip title="Change Habit's status of completion" arrow>
             <div>
-              {/* <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-                <FSwitch
-                  name="isCompleted"
-                  habitId={habit._id}
-                  value={isCompleted}
-                  date={date}
-                />
-              </FormProvider> */}
               <Switch
                 checked={isCompleted}
                 onChange={(e) => onSubmit(e.target.checked)}

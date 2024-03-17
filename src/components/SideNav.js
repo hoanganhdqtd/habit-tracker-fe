@@ -3,25 +3,21 @@ import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { Box, Drawer, Stack, SvgIcon, useMediaQuery } from "@mui/material";
-import Logo from "../components/Logo";
 import { Scrollbar } from "../components/Scrollbar";
 import { SideNavItem } from "./SideNavItem";
 
 import ChartBarIcon from "@heroicons/react/24/solid/ChartBarIcon";
-// import CharPieIcon from "@heroicons/react/24/solid/ChartPieIcon";
 import ListBulletIcon from "@heroicons/react/24/solid/ListBulletIcon";
 import LockClosedIcon from "@heroicons/react/24/solid/LockClosedIcon";
-
 import UserIcon from "@heroicons/react/24/solid/UserIcon";
 import UserPlusIcon from "@heroicons/react/24/solid/UserPlusIcon";
-
 import CalendarIcon from "@heroicons/react/24/solid/CalendarIcon";
+
 import useAuth from "../hooks/useAuth";
 
 const items = [
   {
     title: "Overview",
-    // title: "Habits",
     path: "/overview",
     authRequired: true,
     icon: (
@@ -32,7 +28,6 @@ const items = [
   },
   {
     title: "Habits",
-    // title: "Habits",
     path: "/",
     authRequired: true,
     icon: (
@@ -51,17 +46,6 @@ const items = [
       </SvgIcon>
     ),
   },
-  // {
-  //   title: "Statistics",
-  //   path: "/statistics",
-  //   authRequired: true,
-  //   icon: (
-  //     <SvgIcon fontSize="small">
-  //       <CharPieIcon />
-  //     </SvgIcon>
-  //   ),
-  // },
-
   {
     title: "Account",
     path: "/account",
@@ -105,17 +89,13 @@ const items = [
   },
 ];
 
-// const SideNav = ({ open = true, onClose = () => {} })
 const SideNav = (props) => {
   const { open, onClose } = props;
   const { isAuthenticated, logout } = useAuth();
-  // const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
   const pathname = useLocation().pathname;
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up("lg"));
-
-  // console.log("pathname:", pathname);
 
   const content = (
     <Scrollbar
@@ -137,44 +117,6 @@ const SideNav = (props) => {
           pt: 5,
         }}
       >
-        {/* <Box sx={{ p: 3 }}>
-          <Box
-            component={NavLink}
-            href="/"
-            sx={{
-              display: "inline-flex",
-              height: 32,
-              width: 32,
-            }}
-          >
-            <Logo />
-          </Box>
-          <Box
-            sx={{
-              alignItems: "center",
-              backgroundColor: "rgba(255, 255, 255, 0.04)",
-              borderRadius: 1,
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "space-between",
-              mt: 2,
-              p: "12px",
-            }}
-          >
-            <div>
-              <Typography color="inherit" variant="subtitle1">
-                Devias
-              </Typography>
-              <Typography color="neutral.400" variant="body2">
-                Production
-              </Typography>
-            </div>
-            <SvgIcon fontSize="small" sx={{ color: "neutral.500" }}>
-              <ChevronUpDownIcon />
-            </SvgIcon>
-          </Box>
-        </Box>
-        <Divider sx={{ borderColor: "neutral.700" }} /> */}
         <Box
           component="nav"
           sx={{
@@ -193,9 +135,6 @@ const SideNav = (props) => {
             }}
           >
             {items.map((item) => {
-              // login or register
-              // if (item.)
-
               const active = item.path ? pathname === item.path : false;
 
               if (!isAuthenticated && item.authRequired) return null;

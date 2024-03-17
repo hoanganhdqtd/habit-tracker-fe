@@ -53,9 +53,8 @@ function CreateTagForm({ createNewTag, setCreateNewTag, habitId }) {
   } = methods;
 
   const onSubmit = (data) => {
-    console.log("data:", data);
     const { title } = data;
-    // dispatch(createTag({ title }));
+
     if (habitId) {
       dispatch(addHabitTag({ habitId, title }));
     } else {

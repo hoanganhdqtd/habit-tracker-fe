@@ -13,13 +13,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 
-import {
-  FormProvider,
-  FTextField,
-  FMultiCheckbox,
-  FDatePicker,
-  FTimePicker,
-} from "./form";
+import { FormProvider, FTextField, FMultiCheckbox, FDatePicker } from "./form";
 
 const weekdays = [
   "Sunday",
@@ -40,14 +34,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  // width: 400,
   width: "90%",
   maxWidth: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
-  // maxHeight: "600px",
   maxHeight: "90%",
   overflow: "scroll",
   // "@media (max-width: 600px)": {
@@ -72,8 +64,6 @@ function EditHabitForm({
     tags: [],
   };
 
-  // const { search, page, totalPages } = useSelector((state) => state.habit);
-
   const newDate = dayjs()
     .set("hour", 0)
     .set("minute", 0)
@@ -82,7 +72,6 @@ function EditHabitForm({
   const [dateValue, setDateValue] = useState(
     defaultValues.startDate || newDate
   );
-  // const [timeValue, setTimeValue] = useState(dayjs(new Date()));
 
   const methods = useForm({
     resolver: yupResolver(editHabitSchema),
@@ -109,18 +98,10 @@ function EditHabitForm({
     });
 
     handleClose();
-    // navigate("/");
-    // navigate(`/habit/${habitId}`);
     navigate(0);
   };
 
   const handleClose = () => setIsHabitEdit(false);
-
-  // useEffect(() => {
-  //   if (onWeekdays && onWeekdays.length) {
-  //     methods.setValue("onWeekdays", onWeekdays);
-  //   }
-  // }, [onWeekdays]);
 
   return (
     <div>
@@ -179,11 +160,9 @@ function EditHabitForm({
               />
 
               <FDatePicker
-                // dateValue={dayjs(startDate)}
                 dateValue={dayjs(dateValue)}
                 setDateValue={setDateValue}
               />
-              {/* <FTimePicker timeValue={timeValue} setTimeValue={setTimeValue} /> */}
 
               <FTextField
                 name="duration"
@@ -203,8 +182,6 @@ function EditHabitForm({
                 On weekdays (pick some days to edit):
               </Typography>
               <FMultiCheckbox name="onWeekdays" options={weekdays} />
-
-              {/* <FMultiCheckbox name="tags" options={tags} /> */}
 
               <Box
                 sx={{

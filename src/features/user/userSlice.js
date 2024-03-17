@@ -34,10 +34,6 @@ export const userSlice = createSlice({
     updateUserProfileSuccess(state, action) {
       state.isLoading = false;
       state.error = null;
-
-      // when the profile is updated,
-      // dispatch UPDATE_PROFILE action in the AuthContext
-      // console("action.payload:", action.payload);
       state.updatedProfile = action.payload;
     },
 
@@ -52,10 +48,6 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      // console.log(
-      //   "getCurrentUserProfileSuccess action.payload:",
-      //   action.payload
-      // );
       state.currentUser = action.payload;
     },
 
@@ -63,12 +55,6 @@ export const userSlice = createSlice({
       state.isLoading = false;
       state.error = null;
 
-      // when the profile is updated,
-      // dispatch UPDATE_PROFILE action in the AuthContext
-      console.log("updateUserProfile action.payload:", action.payload);
-      console.log(
-        "old avatarUrl: https://res.cloudinary.com/dlcfdckfl/image/upload/v1704199905/ics1pxuxszx8ikgvt2sy.png"
-      );
       state.updatedProfile = action.payload;
       state.currentUser = action.payload;
     },
@@ -101,11 +87,6 @@ export const updateCurrentUserProfile =
   async (dispatch) => {
     dispatch(userSlice.actions.startLoading());
     try {
-      // const data = {
-      //   name,
-      //   password,
-      //   avatarUrl,
-      // };
       const data = {};
       if (name) {
         data.name = name;
@@ -143,7 +124,6 @@ export const getCurrentUserProfile = () => async (dispatch) => {
   try {
     const response = await apiService.get("/users/me");
     dispatch(userSlice.actions.getCurrentUserProfileSuccess(response.data));
-    // toast.success("Get user profile successfully");
     return response.data;
   } catch (error) {
     dispatch(userSlice.actions.hasError(error));
@@ -156,7 +136,6 @@ export const getUserById = (id) => async (dispatch) => {
   try {
     const response = await apiService.get(`/users/${id}`);
     dispatch(userSlice.actions.getUserByIdSuccess(response.data));
-    // toast.success("Get user by ID successfully");
     return response.data;
   } catch (error) {
     dispatch(userSlice.actions.hasError(error));
