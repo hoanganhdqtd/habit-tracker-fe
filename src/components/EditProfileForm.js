@@ -35,10 +35,10 @@ const style = {
 const UpdateUserSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
   password: Yup.string()
-    .required("Password is required")
+    .required("NewPassword is required")
     .min(4, "Password length should be at least 4 characters"),
   confirmPassword: Yup.string()
-    .required("ConfirmPassword is required")
+    .required("ConfirmNewPassword is required")
     .min(4, "Password length should be at least 4 characters")
     .oneOf([Yup.ref("password")], "Passwords must match"),
 });
@@ -143,7 +143,7 @@ function EditProfileForm({
               {!isUploadAvatar && (
                 <FTextField
                   name="password"
-                  label="Password"
+                  label="New password"
                   type="password"
                   fullWidth
                   rows={4}
@@ -160,7 +160,7 @@ function EditProfileForm({
               {!isUploadAvatar && (
                 <FTextField
                   name="confirmPassword"
-                  label="Confirm password"
+                  label="Confirm new password"
                   type="password"
                   fullWidth
                   rows={4}
